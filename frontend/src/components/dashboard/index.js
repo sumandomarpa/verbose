@@ -1,3 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-export default () => <h1>Dashboard</h1>
+import Layout from '../Layout'
+
+export default class Dashboard extends Component {
+  render () {
+    return (
+      <Layout>Dashboard</Layout>
+    )
+  }
+}
