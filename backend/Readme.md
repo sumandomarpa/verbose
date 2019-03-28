@@ -2,7 +2,8 @@
 
 ### Installation Guide
  - `mkdir -p postgres/data/`
- - `npm install`
+ - `yarn install`
  - `docker-compose up -d`
+ - `yarn global add prisma` If prisma is not installed already
  - `prisma deploy`
- - `npm start`
+ - `yarn start`
