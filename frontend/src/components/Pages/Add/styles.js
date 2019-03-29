@@ -7,7 +7,7 @@ export const ActionButtonsWrapper = styled.div`
 export const SortableActionButtonsWrapper = styled.div`
   margin-bottom: 20px;
   .ant-select {
-    width: 120px;
+    width: 150px;
   }
   button {
     margin-left: 10px;

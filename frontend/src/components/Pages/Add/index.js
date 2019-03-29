@@ -38,6 +38,7 @@ export default class AddPage extends Component {
                 <Option value="block">Block</Option>
                 <Option value="box">Box</Option>
                 <Option value="alert-box">Alert Box</Option>
+                <Option value="pros-cons">Pros and Cons</Option>
                 <Option value="faq">Faq</Option>
                 <Option value="faq-accordion">Faq Accordion</Option>
                 <Option value="quick-tip">Quick Tip</Option>
