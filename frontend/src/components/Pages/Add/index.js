@@ -1,14 +1,24 @@
 import React, { Component } from 'react'
-import { Card, Form, Input, Button } from 'antd';
+import { Card, Form, Input, Button, Select } from 'antd';
 
 import Layout from '../../Layout'
 import SortableList from './SortableList'
+import { SortableActionButtonsWrapper, ActionButtonsWrapper } from './styles'
+
+const Option = Select.Option;
 
 export default class AddPage extends Component {
   state = {
-    items: [1, 2, 3]
-  };
+    items: [{type: 'block'}],
+    addSectionType: 'block',
+  }
+  addSection () {
+    const { items, addSectionType } = this.state
+    items.push({type: addSectionType})
+    this.setState({items})
+  }
   render () {
+    const { items, addSectionType } = this.state
     return (
       <Layout>
         <Card title="Add New Page">
@@ -16,16 +26,29 @@ export default class AddPage extends Component {
             <Form.Item label="Title">
               <Input type="text" />
             </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">Add Page</Button>
-            </Form.Item>
             <SortableList
-              items={this.state.items}
+              items={items}
               onChange={(items) => {
-                  this.setState({ items });
+                this.setState({ items });
               }}
             >
             </SortableList>
+            <SortableActionButtonsWrapper>
+              <Select defaultValue={addSectionType} onChange={addSectionType => this.setState({addSectionType}) }>
+                <Option value="block">Block</Option>
+                <Option value="box">Box</Option>
+                <Option value="alert-box">Alert Box</Option>
+                <Option value="faq">Faq</Option>
+                <Option value="faq-accordion">Faq Accordion</Option>
+                <Option value="quick-tip">Quick Tip</Option>
+                <Option value="grid">Grid</Option>
+                <Option value="case-studies">Case Studies</Option>
+              </Select>
+              <Button type="default" onClick={this.addSection.bind(this)}>Add Section</Button>
+            </SortableActionButtonsWrapper>
+            <ActionButtonsWrapper>
+              <Button type="primary" htmlType="submit">Publish</Button>
+            </ActionButtonsWrapper>
           </Form>
         </Card>
       </Layout>
