@@ -7,9 +7,11 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import styled from 'styled-components'
 
 import Block from './Sections/Block';
+import ProsCons from './Sections/ProsCons';
 
 const Types = {
   'block': <Block />,
+  'pros-cons': <ProsCons />
 }
 
 const SortableListWrapper = styled.div`
