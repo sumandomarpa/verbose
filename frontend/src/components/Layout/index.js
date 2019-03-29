@@ -22,7 +22,9 @@ export default class DashboardLayout extends Component {
             defaultSelectedKeys={['2']}
             style={{ lineHeight: '64px' }}
           >
-            <Menu.Item key="3">Logout</Menu.Item>
+            <Menu.Item key="3">
+            <Link to="/">Logout</Link>
+            </Menu.Item>
           </Menu>
         </Header>
         <Layout>
