@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
+import { withRouter } from "react-router-dom";
 import {
   Form, Icon, Input, Button,
 } from 'antd';
 
-
 import { LoginWrapper } from './styles'
 
-export default class Login extends Component {
+export default withRouter(class Login extends Component {
+  handleSubmit () {
+    this.props.history.push('/dashboard')
+  }
   render () {
     return (
       <LoginWrapper >
         <h1>Sign in</h1>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit.bind(this)}>
         <Form.Item>
             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
         </Form.Item>
@@ -27,4 +30,4 @@ export default class Login extends Component {
       </LoginWrapper>
     )
   }
-}
+})
