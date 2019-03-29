@@ -7,6 +7,7 @@
     "lodash": "^4.17.11",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
+    "react-draft-wysiwyg": "^1.13.2",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-sortablejs": "^1.5.1",
