@@ -1,9 +1,30 @@
 import React, { Component } from 'react';
 import Sortable from 'react-sortablejs';
-import { Form, Input, Row, Col, Button, Icon } from 'antd';
+import { Row, Col, Button, Icon } from 'antd';
 import filter from 'lodash/filter'
 import uniqueId from 'lodash/uniqueId';
- 
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import styled from 'styled-components'
+
+import Block from './Sections/Block';
+import ProsCons from './Sections/ProsCons';
+
+const Types = {
+  'block': <Block />,
+  'pros-cons': <ProsCons />
+}
+
+const SortableListWrapper = styled.div`
+  .editorClassName {
+    min-height: 200px;
+    border: 1px solid #F1F1F1;
+    background: white;
+  }
+  .ant-form-item {
+    margin-bottom: 0px;
+  }
+`
+
 export default class SortableList extends Component {
   removeItem(idx) {
     const { items, onChange } = this.props
@@ -14,26 +35,25 @@ export default class SortableList extends Component {
   }
   render () {
     const { onChange, items } = this.props
-    const listItems = items.map((val, idx) => (
-      <div key={uniqueId()} data-id={idx} style={{background: '#efefef', marginBottom: '20px', padding: '20px'}}> 
-        <Row>
+    const listItems = items.map((item, idx) => (
+      <SortableListWrapper key={uniqueId()} data-id={idx} style={{background: '#fbfbfb', marginBottom: '20px', padding: '20px', border: '1px solid #eee'}}> 
+        <Row className="subsection-header" style={{ cursor: 'move' }}>
           <Col xs={12}>
-            {val.type}
+            {item.type}
           </Col>
           <Col xs={12} style={{ textAlign: 'right' }}>
             <Button type="danger" size="small" onClick={e => this.removeItem(idx)}><Icon type="close" /></Button>
           </Col>
         </Row>
-        <Form.Item label="Title">
-          <Input type="text" />
-        </Form.Item>
-      </div>
+        {Types[item.type]}
+      </SortableListWrapper>
     ));
     return (
       <div>
           <Sortable
             options={{
               animation: 150,
+              handle: '.subsection-header',
             }}
             tag="div"
             onChange={(order, sortable, evt) => {
@@ -45,5 +65,4 @@ export default class SortableList extends Component {
       </div>
     );
   }
-
 }
