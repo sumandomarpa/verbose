@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-export const LoginWrapper = styled.div`
+export const SignupWrapper = styled.div`
   max-width: 300px;
-  margin: 200px auto 0;
+  margin: 200px auto;
 
   button {
     width: 100%;

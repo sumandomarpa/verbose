@@ -5,13 +5,11 @@ export default {
   Query: {
     me(parent, args, ctx, info) {
       // check if there is a current user ID
-      if (!ctx.request.userId) {
+      if (!ctx.req.userId) {
         return null;
       }
-      return ctx.db.query.user(
-        {
-          where: { id: ctx.request.userId },
-        },
+      return ctx.prisma.user(
+        { id: ctx.req.userId },
         info
       );
     },
@@ -54,7 +52,7 @@ export default {
     },
     async login(parent, { email, password }, ctx, info) {
       // 1. check if there is a user with that email
-      const user = await ctx.prisma.user({ where: { email } });
+      const user = await ctx.prisma.user({ email: email });
       if (!user) {
         throw new Error(`No such user found for email ${email}`);
       }

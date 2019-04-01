@@ -1,16 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
 import { withRouter } from 'react-router-dom'
 import { Form, Icon, Input, Button } from 'antd'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 import styled from 'styled-components'
 import Particles from 'react-particles-js'
 import particleConfig from '../../utils/particleConfig'
-import StyledContainer from '../../styles/StyledContainer'
-import FormWrapper from '../../styles/FormWrapper'
 import Error from '../ErrorMessage'
-import { CURRENT_USER_QUERY } from '../User'
+
+import FormWrapper from '../../styles/FormWrapper'
+import StyledContainer from '../../styles/StyledContainer'
 
 const StyledHeader = styled.h2`
   text-align: center;
@@ -18,9 +18,13 @@ const StyledHeader = styled.h2`
   color: ${props => props.theme.neutralDark};
 `
 
-const LOGIN_MUTATION = gql`
-  mutation LOGIN_MUTATION($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+const SIGNUP_MUTATION = gql`
+  mutation SIGNUP_MUTATION(
+    $email: String!
+    $name: String!
+    $password: String!
+  ) {
+    signup(email: $email, name: $name, password: $password) {
       id
       email
       name
@@ -28,8 +32,9 @@ const LOGIN_MUTATION = gql`
   }
 `
 
-class Login extends Component {
+class Signup extends Component {
   state = {
+    name: '',
     email: '',
     password: '',
   }
@@ -39,34 +44,26 @@ class Login extends Component {
   }
 
   render() {
-    const { email, password } = this.state
-    const { history } = this.props
+    const { name, email, password } = this.state
     return (
       <Fragment>
         <StyledContainer>
           <FormWrapper>
-            <StyledHeader>Log into your account</StyledHeader>
-            <Mutation
-              mutation={LOGIN_MUTATION}
-              variables={this.state}
-              refetchQueries={[
-                {
-                  query: CURRENT_USER_QUERY,
-                },
-              ]}
-              awaitRefetchQueries
-            >
-              {(login, { error, loading }) => (
+            <StyledHeader>Sign up for an account</StyledHeader>
+            <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
+              {(signup, { error, loading }) => (
                 <Form
                   method="post"
                   onSubmit={async e => {
                     e.preventDefault()
-                    await login()
-                    this.setState({ email: '', password: '' })
-                    history.push('/dashboard')
+                    const res = await signup()
+                    console.log(res)
+                    this.setState({ name: '', email: '', password: '' })
                   }}
                 >
-                  <Error error={error} />
+                  <Form.Item>
+                    <Error error={error} />
+                  </Form.Item>
                   <Form.Item>
                     <Input
                       prefix={
@@ -75,8 +72,7 @@ class Login extends Component {
                           style={{ color: 'rgba(0,0,0,.25)' }}
                         />
                       }
-                      type="email"
-                      placeholder="Username"
+                      placeholder="Email will be the username"
                       name="email"
                       value={email}
                       onChange={this.saveToState}
@@ -98,12 +94,22 @@ class Login extends Component {
                     />
                   </Form.Item>
                   <Form.Item>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      style={{ fontSize: '16px' }}
-                    >
-                      Log In
+                    <Input
+                      prefix={
+                        <Icon
+                          type="user"
+                          style={{ color: 'rgba(0,0,0,.25)' }}
+                        />
+                      }
+                      placeholder="Full name"
+                      name="name"
+                      value={name}
+                      onChange={this.saveToState}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Sign up
                     </Button>
                   </Form.Item>
                 </Form>
@@ -120,8 +126,8 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+Signup.propTypes = {
   history: PropTypes.object.isRequired,
 }
 
-export default withRouter(Login)
+export default withRouter(Signup)
