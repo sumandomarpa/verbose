@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Form, Input, Button, Select } from 'antd'
+import uuidv4 from 'uuid/v4'
 
 import Layout from '../../Layout'
 import SortableList from './SortableList'
@@ -9,13 +10,13 @@ const { Option } = Select
 
 export default class AddPage extends Component {
   state = {
-    items: [{ type: 'block' }],
+    items: [{ type: 'block', orderKey: uuidv4() }],
     addSectionType: 'block',
   }
 
   addSection = () => {
     const { items, addSectionType } = this.state
-    items.push({ type: addSectionType })
+    items.push({ type: addSectionType, orderKey: uuidv4() })
     this.setState({ items })
   }
 
@@ -30,9 +31,19 @@ export default class AddPage extends Component {
             </Form.Item>
             <SortableList
               items={items}
-              onChange={items => {
-                this.setState({ items })
+              onChange={orderKeys => {
+                const { items } = this.state
+                const orderedItems = []
+                // ordering the items
+                // according to the returned keys
+                orderKeys.forEach(orderKey => {
+                  items.forEach(item => {
+                    if (item.orderKey === orderKey) orderedItems.push(item)
+                  })
+                })
+                this.setState({ items: orderedItems })
               }}
+              updateItems={items => this.setState({ items })}
             />
             <SortableActionButtonsWrapper>
               <Select

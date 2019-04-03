@@ -43,7 +43,6 @@ export default class ProsCons extends Component {
 
   render() {
     const { pros, cons } = this.state
-    console.log(pros, 'pros');
     const renderProsItems = pros.map((item, idx) => (
       <Row key={idx}>
         <Col md={22}>
