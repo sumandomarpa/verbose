@@ -3,6 +3,12 @@ enum Permission {
   USER
 }
 
+enum PageType {
+  PAGE
+  NEWS
+  ARTICLE
+}
+
 type User {
   id: ID! @unique
   name: String!
@@ -11,4 +17,24 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission]
+}
+
+type Page {
+  id: ID! @unique
+  title: String!
+  image: String
+  slug: String!
+  type: PageType!
+  vertical: String
+  blocks: [Block]!
+}
+
+type Block {
+  id: ID! @unique
+  page: Page!
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
 }

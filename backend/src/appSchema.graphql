@@ -3,6 +3,7 @@
 type Query {
   me: User
   users: [User]!
+  pages: [Page]
 }
 
 type Mutation {
@@ -14,6 +15,22 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
+  addPage(
+    title: String!
+    slug: String!
+    image: String
+    type: PageType!
+    vertical: String
+  ): Page!
+
+  addBlock(
+    title: String!
+    image: String
+    video: String
+    style: String
+    content: String
+    pageId: String
+  ): Block!
 }
 
 type SuccessMessage {

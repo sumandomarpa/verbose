@@ -5,6 +5,18 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
+    name: "Block",
+    embedded: false
+  },
+  {
+    name: "Page",
+    embedded: false
+  },
+  {
+    name: "PageType",
+    embedded: false
+  },
+  {
     name: "Permission",
     embedded: false
   },

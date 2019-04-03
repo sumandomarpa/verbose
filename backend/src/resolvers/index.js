@@ -1,5 +1,7 @@
 import user from './user'
+import page from './page'
 
 export default [
-  user
+  user,
+  page
 ]

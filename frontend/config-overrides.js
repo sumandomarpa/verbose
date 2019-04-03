@@ -1,4 +1,4 @@
-const { override, fixBabelImports, addLessLoader } = require('customize-cra');
+const { override, fixBabelImports, addLessLoader } = require('customize-cra')
 
 module.exports = override(
   fixBabelImports('import', {
@@ -11,7 +11,7 @@ module.exports = override(
     modifyVars: {
       'primary-color': '#F0B429',
       'btn-primary-color': '#8D2B0B',
-      'btn-primary-bg': '#F0B429'
+      'btn-primary-bg': '#F0B429',
     },
-  }),
-);
+  })
+)
