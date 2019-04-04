@@ -9,6 +9,9 @@ import uniqueId from 'lodash/uniqueId'
 
 import Block from './Sections/Block'
 import ProsCons from './Sections/ProsCons'
+import Faq from './Sections/Faq'
+import FaqAccordion from './Sections/FaqAccordion'
+import Grid from './Sections/Grid'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -40,6 +43,12 @@ export default class SortableList extends Component {
         return <Block {...props} />
       case 'pros-cons':
         return <ProsCons {...props} />
+      case 'faq':
+        return <Faq {...props} />
+      case 'faq-accordion':
+        return <FaqAccordion {...props} />
+      case 'grid':
+        return <Grid {...props} />
       default:
         return null
     }
@@ -53,7 +62,7 @@ export default class SortableList extends Component {
         data-id={item.orderKey}
         style={{
           background: '#fbfbfb',
-          marginBottom: '20px',
+          margin: '20px 0',
           padding: '20px',
           border: '1px solid #eee',
         }}
