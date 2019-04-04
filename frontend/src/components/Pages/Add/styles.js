@@ -13,3 +13,8 @@ export const SortableActionButtonsWrapper = styled.div`
     margin-left: 10px;
   }
 `
+export const AddNewPageWrapper = styled.div`
+  .ant-form-item {
+    margin-bottom: 0px;
+  }
+`
