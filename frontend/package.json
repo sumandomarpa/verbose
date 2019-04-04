@@ -20,13 +20,14 @@
     "react-apollo": "^2.5.3",
     "react-app-rewired": "^2.1.1",
     "react-dom": "^16.8.5",
-    "react-particles-js": "^2.5.1",
     "react-draft-wysiwyg": "^1.13.2",
+    "react-particles-js": "^2.5.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-sortablejs": "^1.5.1",
     "sortablejs": "1.6.1",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-app-rewired start",

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import Sortable from 'react-sortablejs'
 import { Row, Col, Button, Icon } from 'antd'
-import filter from 'lodash/filter'
-import uniqueId from 'lodash/uniqueId'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import filter from 'lodash/filter'
+import uniqueId from 'lodash/uniqueId'
 
 import Block from './Sections/Block'
 import ProsCons from './Sections/ProsCons'
@@ -30,12 +30,13 @@ export default class SortableList extends Component {
   static propTypes = {
     items: PropTypes.array,
     onChange: PropTypes.func,
+    updateItems: PropTypes.func,
   }
 
-  removeItem(idx) {
-    const { items, onChange } = this.props
-    const removedItems = filter(items, (obj, currentIdx) => currentIdx !== idx)
-    onChange(removedItems)
+  removeItem(orderKey) {
+    const { items, updateItems } = this.props
+    const removedItems = filter(items, item => item.orderKey !== orderKey)
+    updateItems(removedItems)
   }
 
   render() {
@@ -43,7 +44,7 @@ export default class SortableList extends Component {
     const listItems = items.map((item, idx) => (
       <SortableListWrapper
         key={uniqueId()}
-        data-id={idx}
+        data-id={item.orderKey}
         style={{
           background: '#fbfbfb',
           marginBottom: '20px',
@@ -57,7 +58,7 @@ export default class SortableList extends Component {
             <Button
               type="danger"
               size="small"
-              onClick={() => this.removeItem(idx)}
+              onClick={() => this.removeItem(item.orderKey)}
             >
               <Icon type="close" />
             </Button>
