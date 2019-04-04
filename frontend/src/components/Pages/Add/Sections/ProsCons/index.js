@@ -3,7 +3,7 @@ import { Form, Input, Row, Col, Button, Icon } from 'antd'
 import pullAt from 'lodash/pullAt'
 
 export default class ProsCons extends Component {
-  state = { pros: [{ value: '' }], cons: [{ value: '' }] }
+  state = { title: '', pros: [{ value: '' }], cons: [{ value: '' }] }
 
   addPros = () => {
     const { pros } = this.state
@@ -41,8 +41,13 @@ export default class ProsCons extends Component {
     this.setState({ cons })
   }
 
+  handleTitleChange = e => {
+    e.preventDefault()
+    this.setState({ title: e.target.value })
+  }
+
   render() {
-    const { pros, cons } = this.state
+    const { title, pros, cons } = this.state
     const renderProsItems = pros.map((item, idx) => (
       <Row key={idx}>
         <Col md={22}>
@@ -80,7 +85,7 @@ export default class ProsCons extends Component {
     return (
       <Fragment>
         <Form.Item label="Title">
-          <Input type="text" />
+          <Input type="text" value={title} onChange={this.handleTitleChange} />
         </Form.Item>
         <Row>
           <Col md={11}>
