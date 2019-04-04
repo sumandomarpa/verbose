@@ -10,11 +10,6 @@ import uniqueId from 'lodash/uniqueId'
 import Block from './Sections/Block'
 import ProsCons from './Sections/ProsCons'
 
-const Types = {
-  block: <Block />,
-  'pros-cons': <ProsCons />,
-}
-
 const SortableListWrapper = styled.div`
   .editorClassName {
     min-height: 200px;
@@ -33,15 +28,26 @@ export default class SortableList extends Component {
     updateItems: PropTypes.func,
   }
 
-  removeItem(orderKey) {
+  removeItem = orderKey => {
     const { items, updateItems } = this.props
     const removedItems = filter(items, item => item.orderKey !== orderKey)
     updateItems(removedItems)
   }
 
+  renderSection = (type, props) => {
+    switch (type) {
+      case 'block':
+        return <Block {...props} />
+      case 'pros-cons':
+        return <ProsCons {...props} />
+      default:
+        return null
+    }
+  }
+
   render() {
     const { onChange, items } = this.props
-    const listItems = items.map((item, idx) => (
+    const listItems = items.map(item => (
       <SortableListWrapper
         key={uniqueId()}
         data-id={item.orderKey}
@@ -64,7 +70,7 @@ export default class SortableList extends Component {
             </Button>
           </Col>
         </Row>
-        {Types[item.type]}
+        {this.renderSection(item.type)}
       </SortableListWrapper>
     ))
     return (
