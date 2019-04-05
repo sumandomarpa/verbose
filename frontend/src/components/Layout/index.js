@@ -85,18 +85,6 @@ export default class DashboardLayout extends Component {
                     <Menu.Item key="5">Add New</Menu.Item>
                     <Menu.Item key="6">Faq Categories</Menu.Item>
                   </SubMenu>
-                  <SubMenu
-                    key="sub4"
-                    title={
-                      <span>
-                        <Icon type="notification" />
-                        Article / News
-                      </span>
-                    }
-                  >
-                    <Menu.Item key="7">All Articles / News</Menu.Item>
-                    <Menu.Item key="8">Add New</Menu.Item>
-                  </SubMenu>
                 </Menu>
               </Sider>
               <Layout style={{ padding: '0 24px 24px' }}>

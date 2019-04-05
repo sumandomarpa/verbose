@@ -11,6 +11,9 @@ import { Query, Mutation } from 'react-apollo'
 
 import Block from './Sections/Block'
 import ProsCons from './Sections/ProsCons'
+import Faq from './Sections/Faq'
+import FaqAccordion from './Sections/FaqAccordion'
+import Grid from './Sections/Grid'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -51,19 +54,24 @@ export default class SortableList extends Component {
     updateItems(removedItems)
   }
 
-  renderSection = (type, handleBlockItemChange) => {
+  renderSection = (type, props) => {
     switch (type) {
       case 'block':
-        return <Block handleBlockItemChange={handleBlockItemChange} />
+        return <Block />
       case 'pros-cons':
-        return <ProsCons />
+        return <ProsCons {...props} />
+      case 'faq':
+        return <Faq {...props} />
+      case 'faq-accordion':
+        return <FaqAccordion {...props} />
+      case 'grid':
+        return <Grid {...props} />
       default:
         return null
     }
   }
 
   render() {
-    const { handleBlockItemChange } = this.props
     return (
       <Mutation mutation={ORDER_PAGE_ITEMS} variables={{ orderKeys: [] }}>
         {(orderPageItems, { error, loading }) => (
@@ -92,7 +100,7 @@ export default class SortableList extends Component {
                       </Button>
                     </Col>
                   </Row>
-                  {this.renderSection(item.type, handleBlockItemChange)}
+                  {this.renderSection(item.type)}
                 </SortableListWrapper>
               ))
 
