@@ -57,7 +57,7 @@ export default class SortableList extends Component {
   renderSection = (type, props) => {
     switch (type) {
       case 'block':
-        return <Block />
+        return <Block {...props} />
       case 'pros-cons':
         return <ProsCons {...props} />
       case 'faq':
@@ -100,7 +100,7 @@ export default class SortableList extends Component {
                       </Button>
                     </Col>
                   </Row>
-                  {this.renderSection(item.type)}
+                  {this.renderSection(item.type, item)}
                 </SortableListWrapper>
               ))
 

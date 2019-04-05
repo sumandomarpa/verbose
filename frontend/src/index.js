@@ -28,7 +28,7 @@ cache.writeData({
     pageItems: [{ type: 'block', orderKey, __typename: 'PageItem' }],
     blockItems: [
       {
-        orderKey,
+        id: orderKey,
         title: '',
         content: '',
         image: '',

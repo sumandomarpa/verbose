@@ -10,14 +10,14 @@ import gql from 'graphql-tag'
 const { Option } = Select
 
 export const UPDATE_BLOCK_ITEM = gql`
-  mutation UpdateBlockItem($name: String, $value: String) {
-    updateBlockItem(name: $name, value: $value) @client
+  mutation UpdateBlockItem($name: String, $value: String, $orderKey: String) {
+    updateBlockItem(name: $name, value: $value, orderKey: $orderKey) @client
   }
 `
 
 export const GET_BLOCK_ITEM = gql`
-  {
-    blockItems @client {
+  query GetBlockItem($orderKey: String) {
+    blockItem(orderKey: $orderKey) @client {
       title
       content
       video
@@ -83,23 +83,26 @@ export default class Block extends Component {
     const { orderKey } = this.props
 
     return (
-      <Query query={GET_BLOCK_ITEM} variables={{ orderKey }}>
-        {({ data: { blockItems } }) => {
-          console.log(blockItems.title)
-          return (
-            <Mutation mutation={UPDATE_BLOCK_ITEM} variables={this.state}>
-              {(updateBlockItem, { error, loading }) => (
+      <Mutation mutation={UPDATE_BLOCK_ITEM} variables={this.state}>
+        {(updateBlockItem, { error, loading }) => (
+          <Query query={GET_BLOCK_ITEM} variables={{ orderKey }}>
+            {({ data: { blockItem }, loading }) => {
+              if (loading) return null
+              const { title, image, video } = blockItem
+              console.log(title)
+              return (
                 <Fragment>
                   <Form.Item label="Title">
                     <Input
                       name="title"
                       type="text"
-                      value={blockItems.title}
+                      value={title}
                       onChange={e => {
                         updateBlockItem({
                           variables: {
                             name: 'title',
                             value: e.target.value,
+                            orderKey,
                           },
                         })
                       }}
@@ -109,7 +112,7 @@ export default class Block extends Component {
                     <Input
                       type="text"
                       placeholder="Image URL"
-                      value={blockItems.image}
+                      value={image}
                       onChange={this.handleImageChange}
                     />
                   </Form.Item>
@@ -117,7 +120,7 @@ export default class Block extends Component {
                     <Input
                       type="text"
                       placeholder="Video URL"
-                      value={blockItems.video}
+                      value={video}
                       onChange={this.handleVideoChange}
                     />
                   </Form.Item>
@@ -145,11 +148,11 @@ export default class Block extends Component {
                     />
                   </Form.Item>
                 </Fragment>
-              )}
-            </Mutation>
-          )
-        }}
-      </Query>
+              )
+            }}
+          </Query>
+        )}
+      </Mutation>
     )
   }
 }
