@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import filter from 'lodash/filter'
 import uniqueId from 'lodash/uniqueId'
+import gql from 'graphql-tag'
+import { Query, Mutation } from 'react-apollo'
 
 import Block from './Sections/Block'
 import ProsCons from './Sections/ProsCons'
@@ -18,6 +20,21 @@ const SortableListWrapper = styled.div`
   }
   .ant-form-item {
     margin-bottom: 0px;
+  }
+`
+
+export const GET_PAGE_ITEMS = gql`
+  {
+    pageItems @client {
+      type
+      orderKey
+    }
+  }
+`
+
+export const ORDER_PAGE_ITEMS = gql`
+  mutation OrderPageItems($orderKeys: [String]!) {
+    orderPageItems(orderKeys: $orderKeys) @client
   }
 `
 
@@ -34,60 +51,75 @@ export default class SortableList extends Component {
     updateItems(removedItems)
   }
 
-  renderSection = (type, props) => {
+  renderSection = (type, handleBlockItemChange) => {
     switch (type) {
       case 'block':
-        return <Block {...props} />
+        return <Block handleBlockItemChange={handleBlockItemChange} />
       case 'pros-cons':
-        return <ProsCons {...props} />
+        return <ProsCons />
       default:
         return null
     }
   }
 
   render() {
-    const { onChange, items } = this.props
-    const listItems = items.map(item => (
-      <SortableListWrapper
-        key={uniqueId()}
-        data-id={item.orderKey}
-        style={{
-          background: '#fbfbfb',
-          marginBottom: '20px',
-          padding: '20px',
-          border: '1px solid #eee',
-        }}
-      >
-        <Row className="subsection-header" style={{ cursor: 'move' }}>
-          <Col xs={12}>{item.type}</Col>
-          <Col xs={12} style={{ textAlign: 'right' }}>
-            <Button
-              type="danger"
-              size="small"
-              onClick={() => this.removeItem(item.orderKey)}
-            >
-              <Icon type="close" />
-            </Button>
-          </Col>
-        </Row>
-        {this.renderSection(item.type)}
-      </SortableListWrapper>
-    ))
+    const { handleBlockItemChange } = this.props
     return (
-      <div>
-        <Sortable
-          options={{
-            animation: 150,
-            handle: '.subsection-header',
-          }}
-          tag="div"
-          onChange={(order, sortable, evt) => {
-            onChange(order)
-          }}
-        >
-          {listItems}
-        </Sortable>
-      </div>
+      <Mutation mutation={ORDER_PAGE_ITEMS} variables={{ orderKeys: [] }}>
+        {(orderPageItems, { error, loading }) => (
+          <Query query={GET_PAGE_ITEMS}>
+            {({ data: { pageItems } }) => {
+              const listItems = pageItems.map(item => (
+                <SortableListWrapper
+                  key={uniqueId()}
+                  data-id={item.orderKey}
+                  style={{
+                    background: '#fbfbfb',
+                    marginBottom: '20px',
+                    padding: '20px',
+                    border: '1px solid #eee',
+                  }}
+                >
+                  <Row className="subsection-header" style={{ cursor: 'move' }}>
+                    <Col xs={12}>{item.type}</Col>
+                    <Col xs={12} style={{ textAlign: 'right' }}>
+                      <Button
+                        type="danger"
+                        size="small"
+                        onClick={() => this.removeItem(item.orderKey)}
+                      >
+                        <Icon type="close" />
+                      </Button>
+                    </Col>
+                  </Row>
+                  {this.renderSection(item.type, handleBlockItemChange)}
+                </SortableListWrapper>
+              ))
+
+              return (
+                <div>
+                  <Sortable
+                    options={{
+                      animation: 150,
+                      handle: '.subsection-header',
+                    }}
+                    tag="div"
+                    onChange={orderKeys => {
+                      orderPageItems({
+                        variables: {
+                          orderKeys,
+                        },
+                      })
+                    }}
+                  >
+                    {listItems}
+                  </Sortable>
+                </div>
+              )
+            }}
+          </Query>
+        )}
+      </Mutation>
     )
   }
 }

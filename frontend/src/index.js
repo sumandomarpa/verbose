@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import uuidv4 from 'uuid/v4'
 
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -7,6 +8,7 @@ import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
+import { resolvers } from './resolvers'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -17,6 +19,25 @@ const link = new HttpLink({
 const client = new ApolloClient({
   cache,
   link,
+  resolvers,
+})
+
+const orderKey = uuidv4()
+cache.writeData({
+  data: {
+    pageItems: [{ type: 'block', orderKey, __typename: 'PageItem' }],
+    blockItems: [
+      {
+        orderKey,
+        title: '',
+        content: '',
+        image: '',
+        video: '',
+        style: '',
+        __typename: 'BlockItem',
+      },
+    ],
+  },
 })
 
 ReactDOM.render(

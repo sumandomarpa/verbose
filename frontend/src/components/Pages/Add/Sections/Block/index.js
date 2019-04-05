@@ -4,8 +4,28 @@ import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw, ContentState } from 'draft-js'
 import draftToHtml from 'draftjs-to-html'
 import htmlToDraft from 'html-to-draftjs'
+import { Query, Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const { Option } = Select
+
+export const UPDATE_BLOCK_ITEM = gql`
+  mutation UpdateBlockItem($name: String, $value: String) {
+    updateBlockItem(name: $name, value: $value) @client
+  }
+`
+
+export const GET_BLOCK_ITEM = gql`
+  {
+    blockItems @client {
+      title
+      content
+      video
+      image
+      style
+    }
+  }
+`
 
 export default class Block extends Component {
   constructor(props) {
@@ -26,6 +46,10 @@ export default class Block extends Component {
         content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
       }
     }
+  }
+
+  handleChange = e => {
+    this.props.handleBlockItemChange(e)
   }
 
   handleTitleChange = e => {
@@ -56,45 +80,76 @@ export default class Block extends Component {
 
   render() {
     const { editorState } = this.state
-    const { title, image, video, style, content } = this.state
+    const { orderKey } = this.props
+
     return (
-      <Fragment>
-        <Form.Item label="Title">
-          <Input type="text" value={title} onChange={this.handleTitleChange} />
-        </Form.Item>
-        <Form.Item label="Image">
-          <Input
-            type="text"
-            placeholder="Image URL"
-            value={image}
-            onChange={this.handleImageChange}
-          />
-        </Form.Item>
-        <Form.Item label="Video">
-          <Input
-            type="text"
-            placeholder="Video URL"
-            value={video}
-            onChange={this.handleVideoChange}
-          />
-        </Form.Item>
-        <Form.Item label="Style">
-          <Select defaultValue="full-width" onChange={this.handleStyleChange}>
-            <Option value="full-width">Full Width</Option>
-            <Option value="content-left">Content Left</Option>
-            <Option value="content-right">Content Right</Option>
-            <Option value="content-left-column">Content Left Column</Option>
-            <Option value="content-right-column">Content Left Column</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="Content">
-          <Editor
-            editorClassName="editorClassName"
-            editorState={editorState}
-            onEditorStateChange={this.onEditorStateChange}
-          />
-        </Form.Item>
-      </Fragment>
+      <Query query={GET_BLOCK_ITEM} variables={{ orderKey }}>
+        {({ data: { blockItems } }) => {
+          console.log(blockItems.title)
+          return (
+            <Mutation mutation={UPDATE_BLOCK_ITEM} variables={this.state}>
+              {(updateBlockItem, { error, loading }) => (
+                <Fragment>
+                  <Form.Item label="Title">
+                    <Input
+                      name="title"
+                      type="text"
+                      value={blockItems.title}
+                      onChange={e => {
+                        updateBlockItem({
+                          variables: {
+                            name: 'title',
+                            value: e.target.value,
+                          },
+                        })
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Image">
+                    <Input
+                      type="text"
+                      placeholder="Image URL"
+                      value={blockItems.image}
+                      onChange={this.handleImageChange}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Video">
+                    <Input
+                      type="text"
+                      placeholder="Video URL"
+                      value={blockItems.video}
+                      onChange={this.handleVideoChange}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Style">
+                    <Select
+                      defaultValue="full-width"
+                      onChange={this.handleStyleChange}
+                    >
+                      <Option value="full-width">Full Width</Option>
+                      <Option value="content-left">Content Left</Option>
+                      <Option value="content-right">Content Right</Option>
+                      <Option value="content-left-column">
+                        Content Left Column
+                      </Option>
+                      <Option value="content-right-column">
+                        Content Left Column
+                      </Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Content">
+                    <Editor
+                      editorClassName="editorClassName"
+                      editorState={editorState}
+                      onEditorStateChange={this.onEditorStateChange}
+                    />
+                  </Form.Item>
+                </Fragment>
+              )}
+            </Mutation>
+          )
+        }}
+      </Query>
     )
   }
 }
