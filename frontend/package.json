@@ -27,6 +27,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-sortablejs": "^1.5.1",
+    "shortid": "^2.2.14",
     "sortablejs": "1.6.1",
     "styled-components": "^4.2.0",
     "uuid": "^3.3.2"

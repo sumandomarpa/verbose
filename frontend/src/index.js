@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import uuidv4 from 'uuid/v4'
 
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
+import shortid from 'shortid'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 import { resolvers } from './resolvers'
@@ -22,19 +22,31 @@ const client = new ApolloClient({
   resolvers,
 })
 
-const orderKey = uuidv4()
+const blockId = shortid.generate()
+const pageId = shortid.generate()
 cache.writeData({
   data: {
-    pageItems: [{ type: 'block', orderKey, __typename: 'PageItem' }],
-    blockItems: [
+    page: {
+      id: pageId,
+      title: '',
+      slug: '',
+      image: '',
+      vertical: '',
+      type: '',
+      __typename: 'Page',
+    },
+    pageItems: [
+      { type: 'block', itemId: blockId, pageId, __typename: 'PageItem' },
+    ],
+    blocks: [
       {
-        id: orderKey,
+        id: blockId,
         title: '',
         content: '',
         image: '',
         video: '',
         style: '',
-        __typename: 'BlockItem',
+        __typename: 'Block',
       },
     ],
   },

@@ -6,14 +6,15 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import filter from 'lodash/filter'
 import uniqueId from 'lodash/uniqueId'
-import gql from 'graphql-tag'
-import { Query, Mutation } from 'react-apollo'
+import { Query, withApollo } from 'react-apollo'
 
 import Block from './Sections/Block'
 import ProsCons from './Sections/ProsCons'
 import Faq from './Sections/Faq'
 import FaqAccordion from './Sections/FaqAccordion'
 import Grid from './Sections/Grid'
+import { GET_PAGE_ITEMS_BY_PAGE_ID } from '../queries'
+import { ORDER_PAGE_ITEMS } from '../mutaitons'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -26,22 +27,7 @@ const SortableListWrapper = styled.div`
   }
 `
 
-export const GET_PAGE_ITEMS = gql`
-  {
-    pageItems @client {
-      type
-      orderKey
-    }
-  }
-`
-
-export const ORDER_PAGE_ITEMS = gql`
-  mutation OrderPageItems($orderKeys: [String]!) {
-    orderPageItems(orderKeys: $orderKeys) @client
-  }
-`
-
-export default class SortableList extends Component {
+class SortableList extends Component {
   static propTypes = {
     items: PropTypes.array,
     onChange: PropTypes.func,
@@ -71,63 +57,81 @@ export default class SortableList extends Component {
     }
   }
 
-  render() {
-    return (
-      <Mutation mutation={ORDER_PAGE_ITEMS} variables={{ orderKeys: [] }}>
-        {(orderPageItems, { error, loading }) => (
-          <Query query={GET_PAGE_ITEMS}>
-            {({ data: { pageItems } }) => {
-              const listItems = pageItems.map(item => (
-                <SortableListWrapper
-                  key={uniqueId()}
-                  data-id={item.orderKey}
-                  style={{
-                    background: '#fbfbfb',
-                    marginBottom: '20px',
-                    padding: '20px',
-                    border: '1px solid #eee',
-                  }}
-                >
-                  <Row className="subsection-header" style={{ cursor: 'move' }}>
-                    <Col xs={12}>{item.type}</Col>
-                    <Col xs={12} style={{ textAlign: 'right' }}>
-                      <Button
-                        type="danger"
-                        size="small"
-                        onClick={() => this.removeItem(item.orderKey)}
-                      >
-                        <Icon type="close" />
-                      </Button>
-                    </Col>
-                  </Row>
-                  {this.renderSection(item.type, item)}
-                </SortableListWrapper>
-              ))
+  handleSortChange = itemIds => {
+    const { client, pageId } = this.props
 
-              return (
-                <div>
-                  <Sortable
-                    options={{
-                      animation: 150,
-                      handle: '.subsection-header',
-                    }}
-                    tag="div"
-                    onChange={orderKeys => {
-                      orderPageItems({
-                        variables: {
-                          orderKeys,
-                        },
-                      })
-                    }}
+    client.mutate({
+      mutation: ORDER_PAGE_ITEMS,
+      variables: {
+        itemIds,
+      },
+      refetchQueries: [
+        {
+          query: GET_PAGE_ITEMS_BY_PAGE_ID,
+          variables: {
+            pageId,
+          },
+        },
+      ],
+    })
+  }
+
+  render() {
+    const { pageId } = this.props
+    return (
+      <Query query={GET_PAGE_ITEMS_BY_PAGE_ID} variables={{ pageId }}>
+        {({ data: { pageItems }, loading }) => {
+          if (loading) return null
+          const listItems = pageItems.map(item => (
+            <SortableListWrapper
+              key={uniqueId()}
+              data-id={item.itemId}
+              style={{
+                background: '#fbfbfb',
+                marginBottom: '20px',
+                padding: '20px',
+                border: '1px solid #eee',
+              }}
+            >
+              <Row className="subsection-header" style={{ cursor: 'move' }}>
+                <Col xs={12}>{item.type}</Col>
+                <Col xs={12} style={{ textAlign: 'right' }}>
+                  <Button
+                    type="danger"
+                    size="small"
+                    onClick={() => this.removeItem(item.itemId)}
                   >
-                    {listItems}
-                  </Sortable>
-                </div>
-              )
-            }}
-          </Query>
-        )}
-      </Mutation>
+                    <Icon type="close" />
+                  </Button>
+                </Col>
+              </Row>
+              {this.renderSection(item.type, item)}
+            </SortableListWrapper>
+          ))
+
+          return (
+            <div>
+              <Sortable
+                options={{
+                  animation: 150,
+                  handle: '.subsection-header',
+                }}
+                tag="div"
+                onChange={itemIds => this.handleSortChange(itemIds)}
+              >
+                {listItems}
+              </Sortable>
+            </div>
+          )
+        }}
+      </Query>
     )
   }
 }
+
+SortableList.propTypes = {
+  pageId: PropTypes.string.isRequired,
+  client: PropTypes.object.isRequired,
+}
+
+export default withApollo(SortableList)

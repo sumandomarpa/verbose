@@ -1,47 +1,37 @@
-import uuidv4 from 'uuid/v4'
+import shortid from 'shortid'
 import gql from 'graphql-tag'
-import { GET_PAGE_ITEMS } from './components/Pages/Add/SortableList'
-import { GET_BLOCK_ITEM } from './components/Pages/Add/Sections/Block'
+import { GET_PAGE_ITEMS, GET_BLOCKS } from './components/Pages/queries'
 
 export const resolvers = {
   Query: {
-    blockItem: (_root, variables, { cache }) => {
-      const { orderKey } = variables
+    pageItems: (_root, variables, { cache }) => {
+      const { pageId } = variables
+      const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
 
-      const query = gql`
-        query GetBlockItems {
-          blockItems @client {
-            id
-            title
-            image
-            video
-            style
-            content
-          }
-        }
-      `
+      return pageItems.filter(item => item.pageId === pageId)
+    },
+    block: (_root, variables, { cache }) => {
+      const { itemId } = variables
 
-      const cachedData = cache.readQuery({ query })
+      const { blocks } = cache.readQuery({ query: GET_BLOCKS })
 
-      const blockItem = cachedData.blockItems.filter(
-        item => item.id === orderKey
-      )[0]
+      const block = blocks.filter(item => item.id === itemId)[0]
 
-      return blockItem
+      return block
     },
   },
   Mutation: {
     orderPageItems: (_root, variables, { cache }) => {
-      const { orderKeys } = variables
-      const previous = cache.readQuery({ query: GET_PAGE_ITEMS })
+      const { itemIds } = variables
+      const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
 
       const data = {
         pageItems: [],
       }
 
-      orderKeys.forEach(orderKey => {
-        previous.pageItems.forEach(item => {
-          if (item.orderKey === orderKey) data.pageItems.push(item)
+      itemIds.forEach(itemId => {
+        pageItems.forEach(item => {
+          if (item.itemId === itemId) data.pageItems.push(item)
         })
       })
 
@@ -50,61 +40,47 @@ export const resolvers = {
       return data
     },
     addPageItem: (_root, variables, { cache }) => {
-      const { type } = variables
-      const previous = cache.readQuery({ query: GET_PAGE_ITEMS })
-      const previousPageItems = previous.pageItems
-      const newItem = {
+      const { type, pageId } = variables
+      const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
+
+      const newPageItem = {
         type,
-        orderKey: uuidv4(),
+        itemId: shortid.generate(),
+        pageId,
         __typename: 'PageItem',
       }
 
       let data = {
-        pageItems: [...previousPageItems, newItem],
+        pageItems: [...pageItems, newPageItem],
       }
-
       cache.writeQuery({ query: GET_PAGE_ITEMS, data })
 
-      // block
-
-      const query = gql`
-        query GetBlockItems {
-          blockItems @client {
-            id
-            title
-            image
-            video
-            style
-            content
-          }
-        }
-      `
-
-      const existingBlocks = cache.readQuery({ query })
+      // blocks
+      const { blocks } = cache.readQuery({ query: GET_BLOCKS })
 
       const newBlock = {
-        id: newItem.orderKey,
+        id: newPageItem.itemId,
         title: '',
         content: '',
         image: '',
         video: '',
         style: '',
-        __typename: 'BlockItem',
+        __typename: 'Block',
       }
 
       data = {
-        blockItems: [...existingBlocks.blockItems, newBlock],
+        blocks: [...blocks, newBlock],
       }
 
-      cache.writeQuery({ query, data })
+      cache.writeQuery({ query: GET_BLOCKS, data })
       return data
     },
-    updateBlockItem: (_root, variables, { cache, getCacheKey }) => {
-      const { name, value, orderKey } = variables
+    updateBlock: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId } = variables
 
-      const id = getCacheKey({ __typename: 'BlockItem', id: orderKey })
+      const id = getCacheKey({ __typename: 'Block', id: itemId })
       const fragment = gql`
-        fragment updateItem on BlockItem {
+        fragment updateBlock on Block {
           ${name}
         }
       `
