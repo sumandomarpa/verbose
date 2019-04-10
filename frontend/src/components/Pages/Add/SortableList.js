@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Sortable from 'react-sortablejs'
 import { Row, Col, Button, Icon } from 'antd'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import filter from 'lodash/filter'
