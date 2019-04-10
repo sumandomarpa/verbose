@@ -31,8 +31,8 @@ cache.writeData({
       title: '',
       slug: '',
       image: '',
-      vertical: '',
-      type: '',
+      vertical: 'home-loans',
+      type: 'news',
       __typename: 'Page',
     },
     pageItems: [
