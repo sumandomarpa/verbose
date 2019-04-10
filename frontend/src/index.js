@@ -42,10 +42,10 @@ cache.writeData({
       {
         id: blockId,
         title: '',
-        content: '',
+        content: '<p></p>',
         image: '',
         video: '',
-        style: '',
+        style: 'full-width',
         __typename: 'Block',
       },
     ],

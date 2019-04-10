@@ -1,89 +1,36 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Select } from 'antd'
-import { Editor } from 'react-draft-wysiwyg'
-import { EditorState, convertToRaw, ContentState } from 'draft-js'
-import draftToHtml from 'draftjs-to-html'
-import htmlToDraft from 'html-to-draftjs'
 import { Query, withApollo } from 'react-apollo'
+import CKEditor from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+
 import { GET_BLOCK } from '../../../queries'
 import { UPDATE_BLOCK } from '../../../mutaitons'
 
 const { Option } = Select
 
 class Block extends Component {
-  constructor(props) {
-    super(props)
-    const html = '<p></p>'
-    const contentBlock = htmlToDraft(html)
-    if (contentBlock) {
-      const contentState = ContentState.createFromBlockArray(
-        contentBlock.contentBlocks
-      )
-      const editorState = EditorState.createWithContent(contentState)
-      this.state = {
-        editorState,
-        title: '',
-        image: '',
-        video: '',
-        style: '',
-        content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-      }
-    }
-  }
-
-  handleChange = e => {
-    this.props.handleBlockItemChange(e)
-  }
-
-  handleTitleChange = e => {
-    e.preventDefault()
-    this.setState({ title: e.target.value })
-  }
-
-  handleImageChange = e => {
-    e.preventDefault()
-    this.setState({ image: e.target.value })
-  }
-
-  handleVideoChange = e => {
-    e.preventDefault()
-    this.setState({ video: e.target.value })
-  }
-
-  handleStyleChange = value => {
-    this.setState({ style: value })
-  }
-
-  onEditorStateChange = editorState => {
-    this.setState({
-      editorState,
-      content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-    })
-  }
-
-  handleInputChange = e => {
+  handleInputChange = (e, name, value) => {
     const { client, itemId } = this.props
 
     client.mutate({
       mutation: UPDATE_BLOCK,
       variables: {
-        name: e.target.name,
-        value: e.target.value,
+        name: name || e.target.name,
+        value: value || e.target.value,
         itemId,
       },
     })
   }
 
   render() {
-    const { editorState } = this.state
     const { itemId } = this.props
-
     return (
       <Query query={GET_BLOCK} variables={{ itemId }}>
         {({ data: { block }, loading }) => {
           if (loading) return null
-          const { title, image, video } = block
+          const { title, image, video, style, content } = block
           return (
             <Fragment>
               <Form.Item label="Title">
@@ -96,24 +43,28 @@ class Block extends Component {
               </Form.Item>
               <Form.Item label="Image">
                 <Input
+                  name="image"
                   type="text"
                   placeholder="Image URL"
                   value={image}
-                  onChange={this.handleImageChange}
+                  onChange={this.handleInputChange}
                 />
               </Form.Item>
               <Form.Item label="Video">
                 <Input
+                  name="video"
                   type="text"
                   placeholder="Video URL"
                   value={video}
-                  onChange={this.handleVideoChange}
+                  onChange={this.handleInputChange}
                 />
               </Form.Item>
               <Form.Item label="Style">
                 <Select
-                  defaultValue="full-width"
-                  onChange={this.handleStyleChange}
+                  defaultValue={style}
+                  onChange={value =>
+                    this.handleInputChange(null, 'style', value)
+                  }
                 >
                   <Option value="full-width">Full Width</Option>
                   <Option value="content-left">Content Left</Option>
@@ -127,10 +78,13 @@ class Block extends Component {
                 </Select>
               </Form.Item>
               <Form.Item label="Content">
-                <Editor
-                  editorClassName="editorClassName"
-                  editorState={editorState}
-                  onEditorStateChange={this.onEditorStateChange}
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={content}
+                  onChange={(event, editor) => {
+                    const data = editor.getData() || '<p></p>'
+                    this.handleInputChange(null, 'content', data)
+                  }}
                 />
               </Form.Item>
             </Fragment>

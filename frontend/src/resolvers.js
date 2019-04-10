@@ -61,10 +61,10 @@ export const resolvers = {
       const newBlock = {
         id: newPageItem.itemId,
         title: '',
-        content: '',
+        content: '<p></p>',
         image: '',
         video: '',
-        style: '',
+        style: 'full-width',
         __typename: 'Block',
       }
 
