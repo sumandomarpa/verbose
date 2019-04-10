@@ -1,5 +1,18 @@
 import gql from 'graphql-tag'
 
+export const GET_PAGE = gql`
+  {
+    page @client {
+      id
+      title
+      image
+      vertical
+      type
+      slug
+    }
+  }
+`
+
 export const GET_PAGE_ITEMS = gql`
   query GetPageItems {
     pageItems @client {

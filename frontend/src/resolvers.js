@@ -1,6 +1,10 @@
 import shortid from 'shortid'
 import gql from 'graphql-tag'
-import { GET_PAGE_ITEMS, GET_BLOCKS } from './components/Pages/queries'
+import {
+  GET_PAGE,
+  GET_PAGE_ITEMS,
+  GET_BLOCKS,
+} from './components/Pages/queries'
 
 export const resolvers = {
   Query: {
@@ -21,6 +25,14 @@ export const resolvers = {
     },
   },
   Mutation: {
+    updatePage: (_root, variables, { cache }) => {
+      const { name, value } = variables
+
+      const { page } = cache.readQuery({ query: GET_PAGE })
+      page[name] = value
+
+      cache.writeQuery({ query: GET_PAGE, data: page })
+    },
     orderPageItems: (_root, variables, { cache }) => {
       const { itemIds } = variables
       const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
