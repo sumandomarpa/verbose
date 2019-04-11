@@ -12,7 +12,7 @@ import ProsCons from './Sections/ProsCons'
 import Faq from './Sections/Faq'
 import FaqAccordion from './Sections/FaqAccordion'
 import Grid from './Sections/Grid'
-import { GET_PAGE_ITEMS_BY_PAGE_ID } from '../queries'
+import { GET_PAGE_ITEMS } from '../queries'
 import { ORDER_PAGE_ITEMS } from '../mutaitons'
 
 const SortableListWrapper = styled.div`
@@ -57,7 +57,7 @@ class SortableList extends Component {
   }
 
   handleSortChange = itemIds => {
-    const { client, pageId } = this.props
+    const { client } = this.props
 
     client.mutate({
       mutation: ORDER_PAGE_ITEMS,
@@ -66,19 +66,15 @@ class SortableList extends Component {
       },
       refetchQueries: [
         {
-          query: GET_PAGE_ITEMS_BY_PAGE_ID,
-          variables: {
-            pageId,
-          },
+          query: GET_PAGE_ITEMS,
         },
       ],
     })
   }
 
   render() {
-    const { pageId } = this.props
     return (
-      <Query query={GET_PAGE_ITEMS_BY_PAGE_ID} variables={{ pageId }}>
+      <Query query={GET_PAGE_ITEMS}>
         {({ data: { pageItems }, loading }) => {
           if (loading) return null
           const listItems = pageItems.map(item => (
@@ -129,7 +125,6 @@ class SortableList extends Component {
 }
 
 SortableList.propTypes = {
-  pageId: PropTypes.string.isRequired,
   client: PropTypes.object.isRequired,
 }
 

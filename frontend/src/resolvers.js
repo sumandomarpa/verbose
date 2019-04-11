@@ -1,18 +1,12 @@
 import shortid from 'shortid'
 import gql from 'graphql-tag'
-import {
-  GET_PAGE,
-  GET_PAGE_ITEMS,
-  GET_BLOCKS,
-} from './components/Pages/queries'
+import { GET_PAGE_ITEMS, GET_BLOCKS } from './components/Pages/queries'
 
 export const resolvers = {
   Query: {
     pageItems: (_root, variables, { cache }) => {
-      const { pageId } = variables
       const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
-
-      return pageItems.filter(item => item.pageId === pageId)
+      return pageItems
     },
     block: (_root, variables, { cache }) => {
       const { itemId } = variables
@@ -25,13 +19,19 @@ export const resolvers = {
     },
   },
   Mutation: {
-    updatePage: (_root, variables, { cache }) => {
-      const { name, value } = variables
+    updatePage: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, pageId } = variables
 
-      const { page } = cache.readQuery({ query: GET_PAGE })
-      page[name] = value
+      const id = getCacheKey({ __typename: 'Page', id: pageId })
+      const fragment = gql`
+        fragment updatePage on Page {
+          ${name}
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
 
-      cache.writeQuery({ query: GET_PAGE, data: page })
+      const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
     },
     orderPageItems: (_root, variables, { cache }) => {
       const { itemIds } = variables
