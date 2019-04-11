@@ -14,9 +14,18 @@ export default {
   },
   Mutation: {
     async addPage (parent, args, ctx, info) {
+      const { title, slug, image, type, vertical, blocks } = args
+
       const page = await ctx.prisma.createPage({
-        ...args
-      })
+        title,
+        image,
+        slug,
+        type,
+        vertical,
+        blocks: {
+          create: blocks
+        }
+      }, info)
 
       return page
     },
@@ -36,7 +45,16 @@ export default {
         }
       }, info)
 
+      console.log('block', block)
       return block
+    }
+  },
+  Page: {
+    blocks: (parent, args, ctx, info) => {
+      console.log(parent)
+      return ctx.prisma.page({
+        id: parent.id
+      }).blocks()
     }
   }
 }

@@ -53,9 +53,9 @@ class PageForm extends Component {
                     this.handleInputChange(id, null, 'type', value)
                   }
                 >
-                  <Option value="page">Page</Option>
-                  <Option value="news">News</Option>
-                  <Option value="article">Article</Option>
+                  <Option value="PAGE">Page</Option>
+                  <Option value="NEWS">News</Option>
+                  <Option value="ARTICLE">Article</Option>
                 </Select>
               </Form.Item>
               <Form.Item label="Slug">

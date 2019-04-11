@@ -23,3 +23,31 @@ export const ORDER_PAGE_ITEMS = gql`
     orderPageItems(itemIds: $itemIds) @client
   }
 `
+
+export const SAVE_PAGE_TO_DB = gql`
+  mutation ADD_PAGE(
+    $title: String!
+    $slug: String!
+    $type: PageType!
+    $vertical: String
+    $blocks: [BlockInput]
+  ) {
+    addPage(
+      title: $title
+      slug: $slug
+      type: $type
+      vertical: $vertical
+      blocks: $blocks
+    ) {
+      id
+      title
+      slug
+      type
+      vertical
+      blocks {
+        id
+        title
+      }
+    }
+  }
+`
