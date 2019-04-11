@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Card, Button } from 'antd'
 import { withApollo } from 'react-apollo'
+import PropTypes from 'prop-types'
+
 import Layout from '../../Layout'
 import PageForm from './PageForm'
 import SortableList from './SortableList'
@@ -11,7 +13,7 @@ import { SAVE_PAGE_TO_DB } from '../mutaitons'
 
 class AddPage extends Component {
   handleSubmit = async () => {
-    const { client } = this.props
+    const { client, history } = this.props
     const { page } = client.readQuery({
       query: GET_PAGE,
     })
@@ -35,7 +37,9 @@ class AddPage extends Component {
       }
     })
 
-    const result = await client.mutate({
+    const {
+      data: { addPage },
+    } = await client.mutate({
       mutation: SAVE_PAGE_TO_DB,
       variables: {
         title: page.title,
@@ -44,11 +48,9 @@ class AddPage extends Component {
         vertical: page.vertical,
         blocks: trimBlocks,
       },
-      update: (cache, { data }) => {
-        console.log(data)
-        // cache.writeData({ data })
-      },
     })
+
+    history.push(`/dashboard/pages/edit/${addPage.id}`)
   }
 
   render() {
@@ -69,6 +71,11 @@ class AddPage extends Component {
       </Layout>
     )
   }
+}
+
+AddPage.propTypes = {
+  client: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 }
 
 export default withApollo(AddPage)

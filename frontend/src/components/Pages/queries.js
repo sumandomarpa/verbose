@@ -47,3 +47,24 @@ export const GET_BLOCK = gql`
     }
   }
 `
+
+export const GET_PAGE_DB = gql`
+  query getPage($id: ID) {
+    page(id: $id) {
+      id
+      title
+      image
+      slug
+      type
+      vertical
+      blocks {
+        id
+        title
+        image
+        video
+        style
+        content
+      }
+    }
+  }
+`

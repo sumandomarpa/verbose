@@ -52,6 +52,8 @@ cache.writeData({
   },
 })
 
+client.replaceStore = data => cache.writeData(data)
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />

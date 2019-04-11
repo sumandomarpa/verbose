@@ -4,6 +4,7 @@ type Query {
   me: User
   users: [User]!
   pages: [Page]
+  page(id: ID): Page
 }
 
 input BlockInput {

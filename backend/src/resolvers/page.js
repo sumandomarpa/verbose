@@ -11,6 +11,9 @@ export default {
       // 2. if they do, query all the users!
       return ctx.prisma.pages({}, info);
     },
+    async page(parent, args, ctx, info) {
+      return ctx.prisma.page(args, info);
+    },
   },
   Mutation: {
     async addPage (parent, args, ctx, info) {
