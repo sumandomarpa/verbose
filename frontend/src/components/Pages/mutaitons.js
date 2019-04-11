@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const UPDATE_PAGE = gql`
-  mutation UpdatePage($name: String, $value: String) {
-    updatePage(name: $name, value: $value) @client
+  mutation UpdatePage($name: String, $value: String, $pageId: String) {
+    updatePage(name: $name, value: $value, pageId: $pageId) @client
   }
 `
 

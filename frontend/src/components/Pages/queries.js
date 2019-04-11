@@ -47,12 +47,3 @@ export const GET_BLOCK = gql`
     }
   }
 `
-
-export const GET_PAGE_ITEMS_BY_PAGE_ID = gql`
-  query GetPageItemsByPageId($pageId: String) {
-    pageItems(pageId: $pageId) @client {
-      type
-      itemId
-    }
-  }
-`
