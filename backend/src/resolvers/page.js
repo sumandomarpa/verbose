@@ -1,3 +1,7 @@
+import differenceBy from 'lodash/differenceBy'
+import intersectionBy from 'lodash/intersectionBy'
+import omit from 'lodash/omit'
+
 export default {
   Query: {
     async pages(parent, args, ctx, info) {
@@ -32,6 +36,54 @@ export default {
 
       return page
     },
+    async updatePage (parent, args, ctx, info) {
+      const { id, title, slug, image, type, vertical, blocks } = args
+
+      /** get all the existing blocks */
+      const existingBlocks = await ctx.prisma.page({ id }).blocks()
+
+      let blocksQuery = {};
+      let blocksUpdate = []
+      let blocksCreate = []
+      let blocksDelete = []
+
+      // preparing the query
+      const blocksToCreate = differenceBy(blocks, existingBlocks, 'id')
+      const blocksToDelete = differenceBy(existingBlocks, blocks, 'id')
+      const blocksToUpdate = intersectionBy(blocks, existingBlocks, 'id')
+
+      blocksCreate = blocksToCreate.map(block => { return omit(block, 'id')})
+      blocksDelete = blocksToDelete.map(block => { return { id: block.id } })
+      blocksUpdate = blocksToUpdate.map(block => {
+        return {
+          where: {
+            id: block.id
+          },
+          data: omit(block, 'id')
+        }
+      })
+      
+      blocksQuery = {
+        update: blocksUpdate,
+        create: blocksCreate,
+        delete: blocksDelete
+      }
+
+      /** Executing the query */
+      const page = await ctx.prisma.updatePage({
+        data: {
+          title,
+          image,
+          slug,
+          type,
+          vertical,
+          blocks: blocksQuery
+        },
+        where: { id }
+      }, info)
+
+      return page
+    },
     async addBlock (parent, args, ctx, info) {
       const { title, content, image, video, style } = args
 
@@ -48,13 +100,11 @@ export default {
         }
       }, info)
 
-      console.log('block', block)
       return block
     }
   },
   Page: {
     blocks: (parent, args, ctx, info) => {
-      console.log(parent)
       return ctx.prisma.page({
         id: parent.id
       }).blocks()

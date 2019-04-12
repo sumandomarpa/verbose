@@ -8,6 +8,7 @@ type Query {
 }
 
 input BlockInput {
+  id: ID
   title: String
   image: String
   video: String
@@ -25,6 +26,15 @@ type Mutation {
     confirmPassword: String!
   ): User!
   addPage(
+    title: String!
+    slug: String!
+    image: String
+    type: PageType!
+    vertical: String
+    blocks: [BlockInput]
+  ): Page!
+  updatePage(
+    id: ID!
     title: String!
     slug: String!
     image: String
