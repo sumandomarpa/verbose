@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Button } from 'antd'
 import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
+import findIndex from 'lodash/findIndex'
 
 import Layout from '../../Layout'
 import PageForm from './PageForm'
@@ -27,13 +28,14 @@ class AddPage extends Component {
     })
 
     const trimBlocks = blocks.map(block => {
-      const { title, content, image, video, style } = block
+      const { id, title, content, image, video, style } = block
       return {
         title,
         content,
         image,
         video,
         style,
+        order: findIndex(pageItems, pageItem => pageItem.itemId === id),
       }
     })
 

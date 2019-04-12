@@ -3,6 +3,8 @@ import { Card, Button } from 'antd'
 import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
+import sortBy from 'lodash/sortBy'
+import findIndex from 'lodash/findIndex'
 
 import Layout from '../../Layout'
 import PageForm from '../Add/PageForm'
@@ -31,7 +33,17 @@ class EditPage extends Component {
       query: GET_BLOCKS,
     })
 
-    const trimBlocks = blocks.map(block => omit(block, ['__typename']))
+    const trimBlocks = blocks.map(block => {
+      const { id, title, content, image, video, style } = block
+      return {
+        title,
+        content,
+        image,
+        video,
+        style,
+        order: findIndex(pageItems, pageItem => pageItem.itemId === id),
+      }
+    })
 
     try {
       const {
@@ -74,7 +86,7 @@ class EditPage extends Component {
     const { blocks } = page
     const pageItems = []
 
-    blocks.forEach(block => {
+    sortBy(blocks, ['order']).forEach(block => {
       const pageItem = {
         type: 'block',
         itemId: block.id,

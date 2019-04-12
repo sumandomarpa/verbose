@@ -64,6 +64,7 @@ export const GET_PAGE_DB = gql`
         video
         style
         content
+        order
       }
     }
   }
