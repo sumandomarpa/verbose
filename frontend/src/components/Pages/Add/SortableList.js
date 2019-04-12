@@ -3,7 +3,6 @@ import Sortable from 'react-sortablejs'
 import { Row, Col, Button, Icon } from 'antd'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import filter from 'lodash/filter'
 import uniqueId from 'lodash/uniqueId'
 import { Query, withApollo } from 'react-apollo'
 
@@ -13,7 +12,7 @@ import Faq from './Sections/Faq'
 import FaqAccordion from './Sections/FaqAccordion'
 import Grid from './Sections/Grid'
 import { GET_PAGE_ITEMS } from '../queries'
-import { ORDER_PAGE_ITEMS } from '../mutaitons'
+import { ORDER_PAGE_ITEMS, REMOVE_PAGE_ITEM } from '../mutaitons'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -30,14 +29,9 @@ class SortableList extends Component {
   static propTypes = {
     items: PropTypes.array,
     onChange: PropTypes.func,
-    updateItems: PropTypes.func,
   }
 
-  removeItem = orderKey => {
-    const { items, updateItems } = this.props
-    const removedItems = filter(items, item => item.orderKey !== orderKey)
-    updateItems(removedItems)
-  }
+  state = { loading: false }
 
   renderSection = (type, props) => {
     switch (type) {
@@ -72,8 +66,27 @@ class SortableList extends Component {
     })
   }
 
+  removeItem = itemId => {
+    const { client } = this.props
+    this.setState({ loading: true })
+    client
+      .mutate(
+        {
+          mutation: REMOVE_PAGE_ITEM,
+          variables: {
+            itemId,
+          },
+        },
+        () => console.log('after data')
+      )
+      .then(() => {
+        this.setState({ loading: false })
+      })
+  }
+
   render() {
-    return (
+    const { loading } = this.state
+    return !loading ? (
       <Query query={GET_PAGE_ITEMS}>
         {({ data: { pageItems }, loading }) => {
           if (loading) return null
@@ -120,7 +133,7 @@ class SortableList extends Component {
           )
         }}
       </Query>
-    )
+    ) : null
   }
 }
 

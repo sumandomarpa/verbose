@@ -1,5 +1,7 @@
 import shortid from 'shortid'
 import gql from 'graphql-tag'
+import remove from 'lodash/remove'
+
 import { GET_PAGE_ITEMS, GET_BLOCKS } from './components/Pages/queries'
 
 export const resolvers = {
@@ -86,6 +88,29 @@ export const resolvers = {
 
       cache.writeQuery({ query: GET_BLOCKS, data })
       return data
+    },
+    removePageItem: (_root, variables, { cache }) => {
+      const { itemId } = variables
+      console.log(itemId, 'itemId')
+
+      const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
+      remove(pageItems, pageItem => pageItem.itemId === itemId)
+
+      let data = {
+        pageItems,
+      }
+
+      cache.writeQuery({ query: GET_PAGE_ITEMS, data })
+
+      // blocks
+      const { blocks } = cache.readQuery({ query: GET_BLOCKS })
+      remove(blocks, block => block.id === itemId)
+      data = {
+        blocks,
+      }
+
+      cache.writeQuery({ query: GET_BLOCKS, data })
+      return data.blocks
     },
     updateBlock: (_root, variables, { cache, getCacheKey }) => {
       const { name, value, itemId } = variables
