@@ -14,6 +14,7 @@ input BlockInput {
   video: String
   style: String
   content: String
+  order: Int
 }
 
 type Mutation {

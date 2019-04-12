@@ -91,7 +91,6 @@ export const resolvers = {
     },
     removePageItem: (_root, variables, { cache }) => {
       const { itemId } = variables
-      console.log(itemId, 'itemId')
 
       const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
       remove(pageItems, pageItem => pageItem.itemId === itemId)

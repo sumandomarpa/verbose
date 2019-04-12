@@ -37,4 +37,5 @@ type Block {
   video: String
   style: String
   content: String
+  order: Int
 }

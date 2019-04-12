@@ -70,15 +70,12 @@ class SortableList extends Component {
     const { client } = this.props
     this.setState({ loading: true })
     client
-      .mutate(
-        {
-          mutation: REMOVE_PAGE_ITEM,
-          variables: {
-            itemId,
-          },
+      .mutate({
+        mutation: REMOVE_PAGE_ITEM,
+        variables: {
+          itemId,
         },
-        () => console.log('after data')
-      )
+      })
       .then(() => {
         this.setState({ loading: false })
       })
