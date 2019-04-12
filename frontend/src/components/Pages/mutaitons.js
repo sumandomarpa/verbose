@@ -18,6 +18,12 @@ export const ADD_PAGE_ITEM = gql`
   }
 `
 
+export const REMOVE_PAGE_ITEM = gql`
+  mutation RemovePageItem($itemId: ID) {
+    removePageItem(itemId: $itemId) @client
+  }
+`
+
 export const ORDER_PAGE_ITEMS = gql`
   mutation OrderPageItems($itemIds: [String]!) {
     orderPageItems(itemIds: $itemIds) @client
