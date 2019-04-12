@@ -51,3 +51,33 @@ export const SAVE_PAGE_TO_DB = gql`
     }
   }
 `
+
+export const UPDATE_PAGE_TO_DB = gql`
+  mutation UPDATE_PAGE(
+    $id: ID!
+    $title: String!
+    $slug: String!
+    $type: PageType!
+    $vertical: String
+    $blocks: [BlockInput]
+  ) {
+    updatePage(
+      id: $id
+      title: $title
+      slug: $slug
+      type: $type
+      vertical: $vertical
+      blocks: $blocks
+    ) {
+      id
+      title
+      slug
+      type
+      vertical
+      blocks {
+        id
+        title
+      }
+    }
+  }
+`
