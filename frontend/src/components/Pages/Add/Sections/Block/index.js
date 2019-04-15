@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
-import CKEditor from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import TinyMCEditor from '../../../../TinyMCEditor'
 
 import { GET_BLOCK } from '../../../queries'
 import { UPDATE_BLOCK } from '../../../mutaitons'
@@ -22,6 +21,10 @@ class Block extends Component {
         itemId,
       },
     })
+  }
+
+  handleEditorChange = e => {
+    console.log('Content was updated:', e.target.getContent())
   }
 
   render() {
@@ -78,13 +81,9 @@ class Block extends Component {
                 </Select>
               </Form.Item>
               <Form.Item label="Content">
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={content}
-                  onChange={(event, editor) => {
-                    const data = editor.getData() || '<p></p>'
-                    this.handleInputChange(null, 'content', data)
-                  }}
+                <TinyMCEditor
+                  id="blockEditor"
+                  onEditorChange={content => console.log(content)}
                 />
               </Form.Item>
             </Fragment>
