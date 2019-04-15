@@ -2,4 +2,4 @@
 
 ### Installation Guide
  - `yarn install`
- - `PORT=3001 yarn start`
+ - `PORT=3003 yarn start`
