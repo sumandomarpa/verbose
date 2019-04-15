@@ -23,6 +23,10 @@ var models = [
   {
     name: "Block",
     embedded: false
+  },
+  {
+    name: "Box",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

@@ -12,6 +12,12 @@ export const UPDATE_BLOCK = gql`
   }
 `
 
+export const UPDATE_BOX = gql`
+  mutation UpdateBox($name: String, $value: String, $itemId: String) {
+    updateBox(name: $name, value: $value, itemId: $itemId) @client
+  }
+`
+
 export const ADD_PAGE_ITEM = gql`
   mutation AddPageItem($type: String!, $pageId: String!) {
     addPageItem(type: $type, pageId: $pageId) @client
@@ -19,8 +25,8 @@ export const ADD_PAGE_ITEM = gql`
 `
 
 export const REMOVE_PAGE_ITEM = gql`
-  mutation RemovePageItem($itemId: ID) {
-    removePageItem(itemId: $itemId) @client
+  mutation RemovePageItem($itemId: ID, $type: String) {
+    removePageItem(itemId: $itemId, type: $type) @client
   }
 `
 
@@ -37,6 +43,7 @@ export const SAVE_PAGE_TO_DB = gql`
     $type: PageType!
     $vertical: String
     $blocks: [BlockInput]
+    $boxes: [BoxInput]
   ) {
     addPage(
       title: $title
@@ -44,6 +51,7 @@ export const SAVE_PAGE_TO_DB = gql`
       type: $type
       vertical: $vertical
       blocks: $blocks
+      boxes: $boxes
     ) {
       id
       title
@@ -53,6 +61,20 @@ export const SAVE_PAGE_TO_DB = gql`
       blocks {
         id
         title
+        image
+        video
+        style
+        content
+        order
+      }
+      boxes {
+        id
+        title
+        image
+        video
+        style
+        content
+        order
       }
     }
   }
@@ -66,6 +88,7 @@ export const UPDATE_PAGE_TO_DB = gql`
     $type: PageType!
     $vertical: String
     $blocks: [BlockInput]
+    $boxes: [BoxInput]
   ) {
     updatePage(
       id: $id
@@ -74,6 +97,7 @@ export const UPDATE_PAGE_TO_DB = gql`
       type: $type
       vertical: $vertical
       blocks: $blocks
+      boxes: $boxes
     ) {
       id
       title
@@ -83,6 +107,20 @@ export const UPDATE_PAGE_TO_DB = gql`
       blocks {
         id
         title
+        image
+        video
+        style
+        content
+        order
+      }
+      boxes {
+        id
+        title
+        image
+        video
+        style
+        content
+        order
       }
     }
   }

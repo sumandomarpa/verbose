@@ -5,8 +5,10 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import uniqueId from 'lodash/uniqueId'
 import { Query, withApollo } from 'react-apollo'
+import { sentenceCase } from 'change-case'
 
 import Block from './Sections/Block'
+import Box from './Sections/Box'
 import ProsCons from './Sections/ProsCons'
 import Faq from './Sections/Faq'
 import FaqAccordion from './Sections/FaqAccordion'
@@ -37,6 +39,8 @@ class SortableList extends Component {
     switch (type) {
       case 'block':
         return <Block {...props} />
+      case 'box':
+        return <Box {...props} />
       case 'pros-cons':
         return <ProsCons {...props} />
       case 'faq':
@@ -66,7 +70,7 @@ class SortableList extends Component {
     })
   }
 
-  removeItem = itemId => {
+  removeItem = (itemId, type) => {
     const { client } = this.props
     this.setState({ loading: true })
     client
@@ -74,6 +78,7 @@ class SortableList extends Component {
         mutation: REMOVE_PAGE_ITEM,
         variables: {
           itemId,
+          type,
         },
       })
       .then(() => {
@@ -87,7 +92,7 @@ class SortableList extends Component {
       <Query query={GET_PAGE_ITEMS}>
         {({ data: { pageItems }, loading }) => {
           if (loading) return null
-          const listItems = pageItems.map(item => (
+          const listItems = pageItems.map((item, idx) => (
             <SortableListWrapper
               key={uniqueId()}
               data-id={item.itemId}
@@ -99,12 +104,14 @@ class SortableList extends Component {
               }}
             >
               <Row className="subsection-header" style={{ cursor: 'move' }}>
-                <Col xs={12}>{item.type}</Col>
+                <Col xs={12}>
+                  {sentenceCase(item.type)} #{idx + 1}
+                </Col>
                 <Col xs={12} style={{ textAlign: 'right' }}>
                   <Button
                     type="danger"
                     size="small"
-                    onClick={() => this.removeItem(item.itemId)}
+                    onClick={() => this.removeItem(item.itemId, item.type)}
                   >
                     <Icon type="close" />
                   </Button>

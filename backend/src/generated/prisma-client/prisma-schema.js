@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateBox {
+  count: Int!
+}
+
 type AggregatePage {
   count: Int!
 }
@@ -380,6 +384,367 @@ input BlockWhereUniqueInput {
   id: ID
 }
 
+type Box {
+  id: ID!
+  page: Page!
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+type BoxConnection {
+  pageInfo: PageInfo!
+  edges: [BoxEdge]!
+  aggregate: AggregateBox!
+}
+
+input BoxCreateInput {
+  page: PageCreateOneWithoutBoxesInput!
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+input BoxCreateManyWithoutPageInput {
+  create: [BoxCreateWithoutPageInput!]
+  connect: [BoxWhereUniqueInput!]
+}
+
+input BoxCreateWithoutPageInput {
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+type BoxEdge {
+  node: Box!
+  cursor: String!
+}
+
+enum BoxOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  image_ASC
+  image_DESC
+  video_ASC
+  video_DESC
+  style_ASC
+  style_DESC
+  content_ASC
+  content_DESC
+  order_ASC
+  order_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type BoxPreviousValues {
+  id: ID!
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+input BoxScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  video: String
+  video_not: String
+  video_in: [String!]
+  video_not_in: [String!]
+  video_lt: String
+  video_lte: String
+  video_gt: String
+  video_gte: String
+  video_contains: String
+  video_not_contains: String
+  video_starts_with: String
+  video_not_starts_with: String
+  video_ends_with: String
+  video_not_ends_with: String
+  style: String
+  style_not: String
+  style_in: [String!]
+  style_not_in: [String!]
+  style_lt: String
+  style_lte: String
+  style_gt: String
+  style_gte: String
+  style_contains: String
+  style_not_contains: String
+  style_starts_with: String
+  style_not_starts_with: String
+  style_ends_with: String
+  style_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  AND: [BoxScalarWhereInput!]
+  OR: [BoxScalarWhereInput!]
+  NOT: [BoxScalarWhereInput!]
+}
+
+type BoxSubscriptionPayload {
+  mutation: MutationType!
+  node: Box
+  updatedFields: [String!]
+  previousValues: BoxPreviousValues
+}
+
+input BoxSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: BoxWhereInput
+  AND: [BoxSubscriptionWhereInput!]
+  OR: [BoxSubscriptionWhereInput!]
+  NOT: [BoxSubscriptionWhereInput!]
+}
+
+input BoxUpdateInput {
+  page: PageUpdateOneRequiredWithoutBoxesInput
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+input BoxUpdateManyDataInput {
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+input BoxUpdateManyMutationInput {
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+input BoxUpdateManyWithoutPageInput {
+  create: [BoxCreateWithoutPageInput!]
+  delete: [BoxWhereUniqueInput!]
+  connect: [BoxWhereUniqueInput!]
+  set: [BoxWhereUniqueInput!]
+  disconnect: [BoxWhereUniqueInput!]
+  update: [BoxUpdateWithWhereUniqueWithoutPageInput!]
+  upsert: [BoxUpsertWithWhereUniqueWithoutPageInput!]
+  deleteMany: [BoxScalarWhereInput!]
+  updateMany: [BoxUpdateManyWithWhereNestedInput!]
+}
+
+input BoxUpdateManyWithWhereNestedInput {
+  where: BoxScalarWhereInput!
+  data: BoxUpdateManyDataInput!
+}
+
+input BoxUpdateWithoutPageDataInput {
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+input BoxUpdateWithWhereUniqueWithoutPageInput {
+  where: BoxWhereUniqueInput!
+  data: BoxUpdateWithoutPageDataInput!
+}
+
+input BoxUpsertWithWhereUniqueWithoutPageInput {
+  where: BoxWhereUniqueInput!
+  update: BoxUpdateWithoutPageDataInput!
+  create: BoxCreateWithoutPageInput!
+}
+
+input BoxWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  page: PageWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  video: String
+  video_not: String
+  video_in: [String!]
+  video_not_in: [String!]
+  video_lt: String
+  video_lte: String
+  video_gt: String
+  video_gte: String
+  video_contains: String
+  video_not_contains: String
+  video_starts_with: String
+  video_not_starts_with: String
+  video_ends_with: String
+  video_not_ends_with: String
+  style: String
+  style_not: String
+  style_in: [String!]
+  style_not_in: [String!]
+  style_lt: String
+  style_lte: String
+  style_gt: String
+  style_gte: String
+  style_contains: String
+  style_not_contains: String
+  style_starts_with: String
+  style_not_starts_with: String
+  style_ends_with: String
+  style_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  AND: [BoxWhereInput!]
+  OR: [BoxWhereInput!]
+  NOT: [BoxWhereInput!]
+}
+
+input BoxWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
@@ -389,6 +754,12 @@ type Mutation {
   upsertBlock(where: BlockWhereUniqueInput!, create: BlockCreateInput!, update: BlockUpdateInput!): Block!
   deleteBlock(where: BlockWhereUniqueInput!): Block
   deleteManyBlocks(where: BlockWhereInput): BatchPayload!
+  createBox(data: BoxCreateInput!): Box!
+  updateBox(data: BoxUpdateInput!, where: BoxWhereUniqueInput!): Box
+  updateManyBoxes(data: BoxUpdateManyMutationInput!, where: BoxWhereInput): BatchPayload!
+  upsertBox(where: BoxWhereUniqueInput!, create: BoxCreateInput!, update: BoxUpdateInput!): Box!
+  deleteBox(where: BoxWhereUniqueInput!): Box
+  deleteManyBoxes(where: BoxWhereInput): BatchPayload!
   createPage(data: PageCreateInput!): Page!
   updatePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
   updateManyPages(data: PageUpdateManyMutationInput!, where: PageWhereInput): BatchPayload!
@@ -421,6 +792,7 @@ type Page {
   type: PageType!
   vertical: String
   blocks(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Block!]
+  boxes(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Box!]
 }
 
 type PageConnection {
@@ -436,10 +808,16 @@ input PageCreateInput {
   type: PageType!
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
+  boxes: BoxCreateManyWithoutPageInput
 }
 
 input PageCreateOneWithoutBlocksInput {
   create: PageCreateWithoutBlocksInput
+  connect: PageWhereUniqueInput
+}
+
+input PageCreateOneWithoutBoxesInput {
+  create: PageCreateWithoutBoxesInput
   connect: PageWhereUniqueInput
 }
 
@@ -449,6 +827,16 @@ input PageCreateWithoutBlocksInput {
   slug: String!
   type: PageType!
   vertical: String
+  boxes: BoxCreateManyWithoutPageInput
+}
+
+input PageCreateWithoutBoxesInput {
+  title: String!
+  image: String
+  slug: String!
+  type: PageType!
+  vertical: String
+  blocks: BlockCreateManyWithoutPageInput
 }
 
 type PageEdge {
@@ -522,6 +910,7 @@ input PageUpdateInput {
   type: PageType
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
+  boxes: BoxUpdateManyWithoutPageInput
 }
 
 input PageUpdateManyMutationInput {
@@ -539,17 +928,39 @@ input PageUpdateOneRequiredWithoutBlocksInput {
   connect: PageWhereUniqueInput
 }
 
+input PageUpdateOneRequiredWithoutBoxesInput {
+  create: PageCreateWithoutBoxesInput
+  update: PageUpdateWithoutBoxesDataInput
+  upsert: PageUpsertWithoutBoxesInput
+  connect: PageWhereUniqueInput
+}
+
 input PageUpdateWithoutBlocksDataInput {
   title: String
   image: String
   slug: String
   type: PageType
   vertical: String
+  boxes: BoxUpdateManyWithoutPageInput
+}
+
+input PageUpdateWithoutBoxesDataInput {
+  title: String
+  image: String
+  slug: String
+  type: PageType
+  vertical: String
+  blocks: BlockUpdateManyWithoutPageInput
 }
 
 input PageUpsertWithoutBlocksInput {
   update: PageUpdateWithoutBlocksDataInput!
   create: PageCreateWithoutBlocksInput!
+}
+
+input PageUpsertWithoutBoxesInput {
+  update: PageUpdateWithoutBoxesDataInput!
+  create: PageCreateWithoutBoxesInput!
 }
 
 input PageWhereInput {
@@ -630,6 +1041,9 @@ input PageWhereInput {
   blocks_every: BlockWhereInput
   blocks_some: BlockWhereInput
   blocks_none: BlockWhereInput
+  boxes_every: BoxWhereInput
+  boxes_some: BoxWhereInput
+  boxes_none: BoxWhereInput
   AND: [PageWhereInput!]
   OR: [PageWhereInput!]
   NOT: [PageWhereInput!]
@@ -648,6 +1062,9 @@ type Query {
   block(where: BlockWhereUniqueInput!): Block
   blocks(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Block]!
   blocksConnection(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlockConnection!
+  box(where: BoxWhereUniqueInput!): Box
+  boxes(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Box]!
+  boxesConnection(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BoxConnection!
   page(where: PageWhereUniqueInput!): Page
   pages(where: PageWhereInput, orderBy: PageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Page]!
   pagesConnection(where: PageWhereInput, orderBy: PageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PageConnection!
@@ -659,6 +1076,7 @@ type Query {
 
 type Subscription {
   block(where: BlockSubscriptionWhereInput): BlockSubscriptionPayload
+  box(where: BoxSubscriptionWhereInput): BoxSubscriptionPayload
   page(where: PageSubscriptionWhereInput): PageSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
