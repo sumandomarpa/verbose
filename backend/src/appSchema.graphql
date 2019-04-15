@@ -17,6 +17,16 @@ input BlockInput {
   order: Int
 }
 
+input BoxInput {
+  id: ID
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
 type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   login(email: String!, password: String!): User!
@@ -33,6 +43,7 @@ type Mutation {
     type: PageType!
     vertical: String
     blocks: [BlockInput]
+    boxes: [BoxInput]
   ): Page!
   updatePage(
     id: ID!
@@ -42,6 +53,7 @@ type Mutation {
     type: PageType!
     vertical: String
     blocks: [BlockInput]
+    boxes: [BoxInput]
   ): Page!
 
   addBlock(

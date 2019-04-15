@@ -21,7 +21,7 @@ export default {
   },
   Mutation: {
     async addPage (parent, args, ctx, info) {
-      const { title, slug, image, type, vertical, blocks } = args
+      const { title, slug, image, type, vertical, blocks, boxes } = args
 
       const page = await ctx.prisma.createPage({
         title,
@@ -31,13 +31,16 @@ export default {
         vertical,
         blocks: {
           create: blocks
+        },
+        boxes: {
+          create: boxes
         }
       }, info)
 
       return page
     },
     async updatePage (parent, args, ctx, info) {
-      const { id, title, slug, image, type, vertical, blocks } = args
+      const { id, title, slug, image, type, vertical, blocks, boxes } = args
 
       /** get all the existing blocks */
       const existingBlocks = await ctx.prisma.page({ id }).blocks()
@@ -69,6 +72,36 @@ export default {
         delete: blocksDelete
       }
 
+      /** get all the existing boxes */
+      const existingBoxes = await ctx.prisma.page({ id }).boxes()
+
+      let boxesQuery = {};
+      let boxesUpdate = []
+      let boxesCreate = []
+      let boxesDelete = []
+
+      // preparing the query
+      const boxesToCreate = differenceBy(boxes, existingBoxes, 'id')
+      const boxesToDelete = differenceBy(existingBoxes, boxes, 'id')
+      const boxesToUpdate = intersectionBy(boxes, existingBoxes, 'id')
+
+      boxesCreate = boxesToCreate.map(box => { return omit(box, 'id')})
+      boxesDelete = boxesToDelete.map(box => { return { id: box.id } })
+      boxesUpdate = boxesToUpdate.map(box => {
+        return {
+          where: {
+            id: box.id
+          },
+          data: omit(box, 'id')
+        }
+      })
+      
+      boxesQuery = {
+        update: boxesUpdate,
+        create: boxesCreate,
+        delete: boxesDelete
+      }
+
       /** Executing the query */
       const page = await ctx.prisma.updatePage({
         data: {
@@ -77,7 +110,8 @@ export default {
           slug,
           type,
           vertical,
-          blocks: blocksQuery
+          blocks: blocksQuery,
+          boxes: boxesQuery
         },
         where: { id }
       }, info)
@@ -108,6 +142,11 @@ export default {
       return ctx.prisma.page({
         id: parent.id
       }).blocks()
+    },
+    boxes: (parent, args, ctx, info) => {
+      return ctx.prisma.page({
+        id: parent.id
+      }).boxes()
     }
   }
 }

@@ -5,13 +5,21 @@ import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import assign from 'lodash/assign'
+import { lowerCase } from 'change-case'
 
 import Layout from '../../Layout'
 import PageForm from '../Add/PageForm'
 import SortableList from '../Add/SortableList'
 import PageItem from '../Add/PageItem'
 import { ActionButtonsWrapper, AddNewPageWrapper } from '../Add/styles'
-import { GET_PAGE_DB, GET_PAGE, GET_BLOCKS, GET_PAGE_ITEMS } from '../queries'
+import {
+  GET_PAGE_DB,
+  GET_PAGE,
+  GET_BLOCKS,
+  GET_BOXES,
+  GET_PAGE_ITEMS,
+} from '../queries'
 import { UPDATE_PAGE_TO_DB } from '../mutaitons'
 
 class EditPage extends Component {
@@ -32,18 +40,20 @@ class EditPage extends Component {
     const { blocks } = client.readQuery({
       query: GET_BLOCKS,
     })
+    const trimBlocks = blocks.map(block =>
+      assign(omit(block, ['__typename']), {
+        order: findIndex(pageItems, pageItem => pageItem.itemId === block.id),
+      })
+    )
 
-    const trimBlocks = blocks.map(block => {
-      const { id, title, content, image, video, style } = block
-      return {
-        title,
-        content,
-        image,
-        video,
-        style,
-        order: findIndex(pageItems, pageItem => pageItem.itemId === id),
-      }
+    const { boxes } = client.readQuery({
+      query: GET_BOXES,
     })
+    const trimBoxes = boxes.map(box =>
+      assign(omit(box, ['__typename']), {
+        order: findIndex(pageItems, pageItem => pageItem.itemId === box.id),
+      })
+    )
 
     try {
       const {
@@ -57,6 +67,7 @@ class EditPage extends Component {
           type: page.type,
           vertical: page.vertical,
           blocks: trimBlocks,
+          boxes: trimBoxes,
         },
       })
       if (updatePage.id) {
@@ -84,13 +95,16 @@ class EditPage extends Component {
 
     const pageData = omit(page, ['blocks'])
     const { blocks } = page
+    const { boxes } = page
     const pageItems = []
 
-    sortBy(blocks, ['order']).forEach(block => {
+    const pageItemsMerge = [...blocks, ...boxes]
+
+    sortBy(pageItemsMerge, ['order']).forEach(item => {
       const pageItem = {
-        type: 'block',
-        itemId: block.id,
-        pageId: pageData.id,
+        type: lowerCase(item.__typename),
+        itemId: item.id,
+        pageId: page.id,
         __typename: 'PageItem',
       }
       pageItems.push(pageItem)
@@ -101,6 +115,7 @@ class EditPage extends Component {
         page: pageData,
         pageItems,
         blocks,
+        boxes,
       },
     })
   }

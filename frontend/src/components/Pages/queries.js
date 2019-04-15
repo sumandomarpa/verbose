@@ -48,6 +48,31 @@ export const GET_BLOCK = gql`
   }
 `
 
+export const GET_BOXES = gql`
+  query GetBoxes {
+    boxes @client {
+      id
+      title
+      image
+      video
+      style
+      content
+    }
+  }
+`
+
+export const GET_BOX = gql`
+  query GetBox($itemId: String) {
+    box(itemId: $itemId) @client {
+      title
+      content
+      video
+      image
+      style
+    }
+  }
+`
+
 export const GET_PAGE_DB = gql`
   query getPage($id: ID) {
     page(id: $id) {
@@ -58,6 +83,15 @@ export const GET_PAGE_DB = gql`
       type
       vertical
       blocks {
+        id
+        title
+        image
+        video
+        style
+        content
+        order
+      }
+      boxes {
         id
         title
         image

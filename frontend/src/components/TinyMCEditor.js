@@ -38,7 +38,7 @@ class TinyMCEditor extends Component {
 
   render() {
     const { id, content } = this.props
-    return <textarea id={id} value={content} />
+    return <textarea id={id} value={content} onChange={() => {}} />
   }
 }
 

@@ -49,6 +49,7 @@ cache.writeData({
         __typename: 'Block',
       },
     ],
+    boxes: [],
   },
 })
 

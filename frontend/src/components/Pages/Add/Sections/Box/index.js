@@ -4,17 +4,17 @@ import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 import TinyMCEditor from '../../../../TinyMCEditor'
 
-import { GET_BLOCK } from '../../../queries'
-import { UPDATE_BLOCK } from '../../../mutaitons'
+import { GET_BOX } from '../../../queries'
+import { UPDATE_BOX } from '../../../mutaitons'
 
 const { Option } = Select
 
-class Block extends Component {
+class Box extends Component {
   handleInputChange = (e, name, value) => {
     const { client, itemId } = this.props
 
     client.mutate({
-      mutation: UPDATE_BLOCK,
+      mutation: UPDATE_BOX,
       variables: {
         name: name || e.target.name,
         value: value || e.target.value,
@@ -26,10 +26,10 @@ class Block extends Component {
   render() {
     const { itemId } = this.props
     return (
-      <Query query={GET_BLOCK} variables={{ itemId }}>
-        {({ data: { block }, loading }) => {
+      <Query query={GET_BOX} variables={{ itemId }}>
+        {({ data: { box }, loading }) => {
           if (loading) return null
-          const { title, image, video, style, content } = block
+          const { title, image, video, style, content } = box
           return (
             <Fragment>
               <Form.Item label="Title">
@@ -65,15 +65,9 @@ class Block extends Component {
                     this.handleInputChange(null, 'style', value)
                   }
                 >
-                  <Option value="full-width">Full Width</Option>
-                  <Option value="content-left">Content Left</Option>
-                  <Option value="content-right">Content Right</Option>
-                  <Option value="content-left-column">
-                    Content Left Column
-                  </Option>
-                  <Option value="content-right-column">
-                    Content Left Column
-                  </Option>
+                  <Option value="white">White</Option>
+                  <Option value="grey">Grey</Option>
+                  <Option value="vertical">Vertical</Option>
                 </Select>
               </Form.Item>
               <Form.Item label="Content">
@@ -97,9 +91,9 @@ class Block extends Component {
   }
 }
 
-Block.propTypes = {
+Box.propTypes = {
   client: PropTypes.object.isRequired,
   itemId: PropTypes.string.isRequired,
 }
 
-export default withApollo(Block)
+export default withApollo(Box)

@@ -27,9 +27,21 @@ type Page {
   type: PageType!
   vertical: String
   blocks: [Block]!
+  boxes: [Box]!
 }
 
 type Block {
+  id: ID! @unique
+  page: Page!
+  title: String
+  image: String
+  video: String
+  style: String
+  content: String
+  order: Int
+}
+
+type Box {
   id: ID! @unique
   page: Page!
   title: String

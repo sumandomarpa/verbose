@@ -15,6 +15,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 
 export interface Exists {
   block: (where?: BlockWhereInput) => Promise<boolean>;
+  box: (where?: BoxWhereInput) => Promise<boolean>;
   page: (where?: PageWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -61,6 +62,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => BlockConnectionPromise;
+  box: (where: BoxWhereUniqueInput) => BoxPromise;
+  boxes: (
+    args?: {
+      where?: BoxWhereInput;
+      orderBy?: BoxOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Box>;
+  boxesConnection: (
+    args?: {
+      where?: BoxWhereInput;
+      orderBy?: BoxOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => BoxConnectionPromise;
   page: (where: PageWhereUniqueInput) => PagePromise;
   pages: (
     args?: {
@@ -129,6 +153,22 @@ export interface Prisma {
   ) => BlockPromise;
   deleteBlock: (where: BlockWhereUniqueInput) => BlockPromise;
   deleteManyBlocks: (where?: BlockWhereInput) => BatchPayloadPromise;
+  createBox: (data: BoxCreateInput) => BoxPromise;
+  updateBox: (
+    args: { data: BoxUpdateInput; where: BoxWhereUniqueInput }
+  ) => BoxPromise;
+  updateManyBoxes: (
+    args: { data: BoxUpdateManyMutationInput; where?: BoxWhereInput }
+  ) => BatchPayloadPromise;
+  upsertBox: (
+    args: {
+      where: BoxWhereUniqueInput;
+      create: BoxCreateInput;
+      update: BoxUpdateInput;
+    }
+  ) => BoxPromise;
+  deleteBox: (where: BoxWhereUniqueInput) => BoxPromise;
+  deleteManyBoxes: (where?: BoxWhereInput) => BatchPayloadPromise;
   createPage: (data: PageCreateInput) => PagePromise;
   updatePage: (
     args: { data: PageUpdateInput; where: PageWhereUniqueInput }
@@ -173,6 +213,9 @@ export interface Subscription {
   block: (
     where?: BlockSubscriptionWhereInput
   ) => BlockSubscriptionPayloadSubscription;
+  box: (
+    where?: BoxSubscriptionWhereInput
+  ) => BoxSubscriptionPayloadSubscription;
   page: (
     where?: PageSubscriptionWhereInput
   ) => PageSubscriptionPayloadSubscription;
@@ -190,6 +233,26 @@ export interface ClientConstructor<T> {
  */
 
 export type BlockOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "video_ASC"
+  | "video_DESC"
+  | "style_ASC"
+  | "style_DESC"
+  | "content_ASC"
+  | "content_DESC"
+  | "order_ASC"
+  | "order_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type BoxOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "title_ASC"
@@ -251,8 +314,7 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface BlockUpdateInput {
-  page?: PageUpdateOneRequiredWithoutBlocksInput;
+export interface BoxUpdateWithoutPageDataInput {
   title?: String;
   image?: String;
   video?: String;
@@ -265,7 +327,211 @@ export type BlockWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface BlockScalarWhereInput {
+export interface PageUpdateOneRequiredWithoutBoxesInput {
+  create?: PageCreateWithoutBoxesInput;
+  update?: PageUpdateWithoutBoxesDataInput;
+  upsert?: PageUpsertWithoutBoxesInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface BoxUpdateManyDataInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockCreateInput {
+  page: PageCreateOneWithoutBlocksInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface PageCreateOneWithoutBlocksInput {
+  create?: PageCreateWithoutBlocksInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface BoxSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: BoxWhereInput;
+  AND?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
+  OR?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
+  NOT?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
+}
+
+export interface PageCreateWithoutBlocksInput {
+  title: String;
+  image?: String;
+  slug: String;
+  type: PageType;
+  vertical?: String;
+  boxes?: BoxCreateManyWithoutPageInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: String;
+  email?: String;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface BoxCreateManyWithoutPageInput {
+  create?: BoxCreateWithoutPageInput[] | BoxCreateWithoutPageInput;
+  connect?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
+}
+
+export type BoxWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface BoxCreateWithoutPageInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface BlockUpdateInput {
+  page?: PageUpdateOneRequiredWithoutBlocksInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export type PageWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface PageUpdateOneRequiredWithoutBlocksInput {
+  create?: PageCreateWithoutBlocksInput;
+  update?: PageUpdateWithoutBlocksDataInput;
+  upsert?: PageUpsertWithoutBlocksInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface PageUpdateManyMutationInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+}
+
+export interface PageUpdateWithoutBlocksDataInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+  boxes?: BoxUpdateManyWithoutPageInput;
+}
+
+export interface PageCreateInput {
+  title: String;
+  image?: String;
+  slug: String;
+  type: PageType;
+  vertical?: String;
+  blocks?: BlockCreateManyWithoutPageInput;
+  boxes?: BoxCreateManyWithoutPageInput;
+}
+
+export interface BoxUpdateManyWithoutPageInput {
+  create?: BoxCreateWithoutPageInput[] | BoxCreateWithoutPageInput;
+  delete?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
+  connect?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
+  set?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
+  disconnect?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
+  update?:
+    | BoxUpdateWithWhereUniqueWithoutPageInput[]
+    | BoxUpdateWithWhereUniqueWithoutPageInput;
+  upsert?:
+    | BoxUpsertWithWhereUniqueWithoutPageInput[]
+    | BoxUpsertWithWhereUniqueWithoutPageInput;
+  deleteMany?: BoxScalarWhereInput[] | BoxScalarWhereInput;
+  updateMany?:
+    | BoxUpdateManyWithWhereNestedInput[]
+    | BoxUpdateManyWithWhereNestedInput;
+}
+
+export interface BoxUpdateManyMutationInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BoxUpdateWithWhereUniqueWithoutPageInput {
+  where: BoxWhereUniqueInput;
+  data: BoxUpdateWithoutPageDataInput;
+}
+
+export interface BlockUpdateManyDataInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockUpdateWithWhereUniqueWithoutPageInput {
+  where: BlockWhereUniqueInput;
+  data: BlockUpdateWithoutPageDataInput;
+}
+
+export interface BlockUpdateManyWithWhereNestedInput {
+  where: BlockScalarWhereInput;
+  data: BlockUpdateManyDataInput;
+}
+
+export interface BoxUpsertWithWhereUniqueWithoutPageInput {
+  where: BoxWhereUniqueInput;
+  update: BoxUpdateWithoutPageDataInput;
+  create: BoxCreateWithoutPageInput;
+}
+
+export interface BlockUpsertWithWhereUniqueWithoutPageInput {
+  where: BlockWhereUniqueInput;
+  update: BlockUpdateWithoutPageDataInput;
+  create: BlockCreateWithoutPageInput;
+}
+
+export interface BoxScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -358,214 +624,9 @@ export interface BlockScalarWhereInput {
   order_lte?: Int;
   order_gt?: Int;
   order_gte?: Int;
-  AND?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-  OR?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-  NOT?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-}
-
-export interface BlockCreateManyWithoutPageInput {
-  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
-  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-}
-
-export interface BlockUpsertWithWhereUniqueWithoutPageInput {
-  where: BlockWhereUniqueInput;
-  update: BlockUpdateWithoutPageDataInput;
-  create: BlockCreateWithoutPageInput;
-}
-
-export interface BlockUpdateManyMutationInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface BlockUpdateWithoutPageDataInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface PageSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PageWhereInput;
-  AND?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
-  OR?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
-  NOT?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
-}
-
-export interface BlockUpdateWithWhereUniqueWithoutPageInput {
-  where: BlockWhereUniqueInput;
-  data: BlockUpdateWithoutPageDataInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  name?: String;
-  email?: String;
-  password?: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions?: UserUpdatepermissionsInput;
-}
-
-export type PageWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface UserUpdateInput {
-  name?: String;
-  email?: String;
-  password?: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions?: UserUpdatepermissionsInput;
-}
-
-export interface BlockCreateInput {
-  page: PageCreateOneWithoutBlocksInput;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface UserCreateInput {
-  name: String;
-  email: String;
-  password: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions?: UserCreatepermissionsInput;
-}
-
-export interface PageCreateOneWithoutBlocksInput {
-  create?: PageCreateWithoutBlocksInput;
-  connect?: PageWhereUniqueInput;
-}
-
-export interface PageUpdateManyMutationInput {
-  title?: String;
-  image?: String;
-  slug?: String;
-  type?: PageType;
-  vertical?: String;
-}
-
-export interface PageCreateWithoutBlocksInput {
-  title: String;
-  image?: String;
-  slug: String;
-  type: PageType;
-  vertical?: String;
-}
-
-export interface BlockUpdateManyWithWhereNestedInput {
-  where: BlockScalarWhereInput;
-  data: BlockUpdateManyDataInput;
-}
-
-export interface BlockUpdateManyWithoutPageInput {
-  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
-  delete?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  set?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  disconnect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  update?:
-    | BlockUpdateWithWhereUniqueWithoutPageInput[]
-    | BlockUpdateWithWhereUniqueWithoutPageInput;
-  upsert?:
-    | BlockUpsertWithWhereUniqueWithoutPageInput[]
-    | BlockUpsertWithWhereUniqueWithoutPageInput;
-  deleteMany?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-  updateMany?:
-    | BlockUpdateManyWithWhereNestedInput[]
-    | BlockUpdateManyWithWhereNestedInput;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface PageUpdateOneRequiredWithoutBlocksInput {
-  create?: PageCreateWithoutBlocksInput;
-  update?: PageUpdateWithoutBlocksDataInput;
-  upsert?: PageUpsertWithoutBlocksInput;
-  connect?: PageWhereUniqueInput;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface PageUpdateWithoutBlocksDataInput {
-  title?: String;
-  image?: String;
-  slug?: String;
-  type?: PageType;
-  vertical?: String;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface PageUpsertWithoutBlocksInput {
-  update: PageUpdateWithoutBlocksDataInput;
-  create: PageCreateWithoutBlocksInput;
-}
-
-export interface BlockUpdateManyDataInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface PageCreateInput {
-  title: String;
-  image?: String;
-  slug: String;
-  type: PageType;
-  vertical?: String;
-  blocks?: BlockCreateManyWithoutPageInput;
-}
-
-export interface BlockCreateWithoutPageInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface PageUpdateInput {
-  title?: String;
-  image?: String;
-  slug?: String;
-  type?: PageType;
-  vertical?: String;
-  blocks?: BlockUpdateManyWithoutPageInput;
+  AND?: BoxScalarWhereInput[] | BoxScalarWhereInput;
+  OR?: BoxScalarWhereInput[] | BoxScalarWhereInput;
+  NOT?: BoxScalarWhereInput[] | BoxScalarWhereInput;
 }
 
 export interface PageWhereInput {
@@ -646,12 +707,31 @@ export interface PageWhereInput {
   blocks_every?: BlockWhereInput;
   blocks_some?: BlockWhereInput;
   blocks_none?: BlockWhereInput;
+  boxes_every?: BoxWhereInput;
+  boxes_some?: BoxWhereInput;
+  boxes_none?: BoxWhereInput;
   AND?: PageWhereInput[] | PageWhereInput;
   OR?: PageWhereInput[] | PageWhereInput;
   NOT?: PageWhereInput[] | PageWhereInput;
 }
 
-export interface UserWhereInput {
+export interface BoxUpdateManyWithWhereNestedInput {
+  where: BoxScalarWhereInput;
+  data: BoxUpdateManyDataInput;
+}
+
+export interface BlockSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: BlockWhereInput;
+  AND?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+  OR?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+  NOT?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+}
+
+export interface BoxWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -666,79 +746,103 @@ export interface UserWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  password?: String;
-  password_not?: String;
-  password_in?: String[] | String;
-  password_not_in?: String[] | String;
-  password_lt?: String;
-  password_lte?: String;
-  password_gt?: String;
-  password_gte?: String;
-  password_contains?: String;
-  password_not_contains?: String;
-  password_starts_with?: String;
-  password_not_starts_with?: String;
-  password_ends_with?: String;
-  password_not_ends_with?: String;
-  resetToken?: String;
-  resetToken_not?: String;
-  resetToken_in?: String[] | String;
-  resetToken_not_in?: String[] | String;
-  resetToken_lt?: String;
-  resetToken_lte?: String;
-  resetToken_gt?: String;
-  resetToken_gte?: String;
-  resetToken_contains?: String;
-  resetToken_not_contains?: String;
-  resetToken_starts_with?: String;
-  resetToken_not_starts_with?: String;
-  resetToken_ends_with?: String;
-  resetToken_not_ends_with?: String;
-  resetTokenExpiry?: Float;
-  resetTokenExpiry_not?: Float;
-  resetTokenExpiry_in?: Float[] | Float;
-  resetTokenExpiry_not_in?: Float[] | Float;
-  resetTokenExpiry_lt?: Float;
-  resetTokenExpiry_lte?: Float;
-  resetTokenExpiry_gt?: Float;
-  resetTokenExpiry_gte?: Float;
-  AND?: UserWhereInput[] | UserWhereInput;
-  OR?: UserWhereInput[] | UserWhereInput;
-  NOT?: UserWhereInput[] | UserWhereInput;
+  page?: PageWhereInput;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  video?: String;
+  video_not?: String;
+  video_in?: String[] | String;
+  video_not_in?: String[] | String;
+  video_lt?: String;
+  video_lte?: String;
+  video_gt?: String;
+  video_gte?: String;
+  video_contains?: String;
+  video_not_contains?: String;
+  video_starts_with?: String;
+  video_not_starts_with?: String;
+  video_ends_with?: String;
+  video_not_ends_with?: String;
+  style?: String;
+  style_not?: String;
+  style_in?: String[] | String;
+  style_not_in?: String[] | String;
+  style_lt?: String;
+  style_lte?: String;
+  style_gt?: String;
+  style_gte?: String;
+  style_contains?: String;
+  style_not_contains?: String;
+  style_starts_with?: String;
+  style_not_starts_with?: String;
+  style_ends_with?: String;
+  style_not_ends_with?: String;
+  content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
+  order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: BoxWhereInput[] | BoxWhereInput;
+  OR?: BoxWhereInput[] | BoxWhereInput;
+  NOT?: BoxWhereInput[] | BoxWhereInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
+export interface UserUpdateInput {
+  name?: String;
   email?: String;
-}>;
+  password?: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface PageUpsertWithoutBlocksInput {
+  update: PageUpdateWithoutBlocksDataInput;
+  create: PageCreateWithoutBlocksInput;
+}
 
 export interface BlockWhereInput {
   id?: ID_Input;
@@ -839,15 +943,323 @@ export interface BlockWhereInput {
   NOT?: BlockWhereInput[] | BlockWhereInput;
 }
 
-export interface BlockSubscriptionWhereInput {
+export interface BlockUpdateManyMutationInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
+export interface BlockUpdateManyWithoutPageInput {
+  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
+  delete?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  set?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  disconnect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  update?:
+    | BlockUpdateWithWhereUniqueWithoutPageInput[]
+    | BlockUpdateWithWhereUniqueWithoutPageInput;
+  upsert?:
+    | BlockUpsertWithWhereUniqueWithoutPageInput[]
+    | BlockUpsertWithWhereUniqueWithoutPageInput;
+  deleteMany?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+  updateMany?:
+    | BlockUpdateManyWithWhereNestedInput[]
+    | BlockUpdateManyWithWhereNestedInput;
+}
+
+export interface UserWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
+  resetToken?: String;
+  resetToken_not?: String;
+  resetToken_in?: String[] | String;
+  resetToken_not_in?: String[] | String;
+  resetToken_lt?: String;
+  resetToken_lte?: String;
+  resetToken_gt?: String;
+  resetToken_gte?: String;
+  resetToken_contains?: String;
+  resetToken_not_contains?: String;
+  resetToken_starts_with?: String;
+  resetToken_not_starts_with?: String;
+  resetToken_ends_with?: String;
+  resetToken_not_ends_with?: String;
+  resetTokenExpiry?: Float;
+  resetTokenExpiry_not?: Float;
+  resetTokenExpiry_in?: Float[] | Float;
+  resetTokenExpiry_not_in?: Float[] | Float;
+  resetTokenExpiry_lt?: Float;
+  resetTokenExpiry_lte?: Float;
+  resetTokenExpiry_gt?: Float;
+  resetTokenExpiry_gte?: Float;
+  AND?: UserWhereInput[] | UserWhereInput;
+  OR?: UserWhereInput[] | UserWhereInput;
+  NOT?: UserWhereInput[] | UserWhereInput;
+}
+
+export interface PageUpdateWithoutBoxesDataInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+  blocks?: BlockUpdateManyWithoutPageInput;
+}
+
+export interface BlockUpdateWithoutPageDataInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BoxCreateInput {
+  page: PageCreateOneWithoutBoxesInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface PageCreateOneWithoutBoxesInput {
+  create?: PageCreateWithoutBoxesInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface PageUpdateInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+  blocks?: BlockUpdateManyWithoutPageInput;
+  boxes?: BoxUpdateManyWithoutPageInput;
+}
+
+export interface BoxUpdateInput {
+  page?: PageUpdateOneRequiredWithoutBoxesInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockCreateWithoutPageInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockCreateManyWithoutPageInput {
+  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
+  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+}
+
+export interface PageCreateWithoutBoxesInput {
+  title: String;
+  image?: String;
+  slug: String;
+  type: PageType;
+  vertical?: String;
+  blocks?: BlockCreateManyWithoutPageInput;
+}
+
+export interface PageUpsertWithoutBoxesInput {
+  update: PageUpdateWithoutBoxesDataInput;
+  create: PageCreateWithoutBoxesInput;
+}
+
+export interface UserCreateInput {
+  name: String;
+  email: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions?: UserCreatepermissionsInput;
+}
+
+export interface PageSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: BlockWhereInput;
-  AND?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
-  OR?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
-  NOT?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+  node?: PageWhereInput;
+  AND?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
+  OR?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
+  NOT?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
+}
+
+export interface BlockScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  video?: String;
+  video_not?: String;
+  video_in?: String[] | String;
+  video_not_in?: String[] | String;
+  video_lt?: String;
+  video_lte?: String;
+  video_gt?: String;
+  video_gte?: String;
+  video_contains?: String;
+  video_not_contains?: String;
+  video_starts_with?: String;
+  video_not_starts_with?: String;
+  video_ends_with?: String;
+  video_not_ends_with?: String;
+  style?: String;
+  style_not?: String;
+  style_in?: String[] | String;
+  style_not_in?: String[] | String;
+  style_lt?: String;
+  style_lte?: String;
+  style_gt?: String;
+  style_gte?: String;
+  style_contains?: String;
+  style_not_contains?: String;
+  style_starts_with?: String;
+  style_not_starts_with?: String;
+  style_ends_with?: String;
+  style_not_ends_with?: String;
+  content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
+  order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+  OR?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+  NOT?: BlockScalarWhereInput[] | BlockScalarWhereInput;
 }
 
 export interface NodeNode {
@@ -888,81 +1300,79 @@ export interface UserPreviousValuesSubscription
   permissions: () => Promise<AsyncIterator<Permission[]>>;
 }
 
-export interface AggregatePage {
+export interface AggregateBox {
   count: Int;
 }
 
-export interface AggregatePagePromise
-  extends Promise<AggregatePage>,
+export interface AggregateBoxPromise
+  extends Promise<AggregateBox>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregatePageSubscription
-  extends Promise<AsyncIterator<AggregatePage>>,
+export interface AggregateBoxSubscription
+  extends Promise<AsyncIterator<AggregateBox>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
+export interface BlockConnection {
+  pageInfo: PageInfo;
+  edges: BlockEdge[];
 }
 
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
+export interface BlockConnectionPromise
+  extends Promise<BlockConnection>,
     Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BlockEdge>>() => T;
+  aggregate: <T = AggregateBlockPromise>() => T;
 }
 
-export interface PageEdge {
-  node: Page;
+export interface BlockConnectionSubscription
+  extends Promise<AsyncIterator<BlockConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BlockEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBlockSubscription>() => T;
+}
+
+export interface BoxEdge {
+  node: Box;
   cursor: String;
 }
 
-export interface PageEdgePromise extends Promise<PageEdge>, Fragmentable {
-  node: <T = PagePromise>() => T;
+export interface BoxEdgePromise extends Promise<BoxEdge>, Fragmentable {
+  node: <T = BoxPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface PageEdgeSubscription
-  extends Promise<AsyncIterator<PageEdge>>,
+export interface BoxEdgeSubscription
+  extends Promise<AsyncIterator<BoxEdge>>,
     Fragmentable {
-  node: <T = PageSubscription>() => T;
+  node: <T = BoxSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PageConnection {
+export interface BoxConnection {
   pageInfo: PageInfo;
-  edges: PageEdge[];
+  edges: BoxEdge[];
 }
 
-export interface PageConnectionPromise
-  extends Promise<PageConnection>,
+export interface BoxConnectionPromise
+  extends Promise<BoxConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PageEdge>>() => T;
-  aggregate: <T = AggregatePagePromise>() => T;
+  edges: <T = FragmentableArray<BoxEdge>>() => T;
+  aggregate: <T = AggregateBoxPromise>() => T;
 }
 
-export interface PageConnectionSubscription
-  extends Promise<AsyncIterator<PageConnection>>,
+export interface BoxConnectionSubscription
+  extends Promise<AsyncIterator<BoxConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PageEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePageSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BoxEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBoxSubscription>() => T;
 }
 
 export interface BatchPayload {
@@ -1051,60 +1461,7 @@ export interface BlockEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BlockConnection {
-  pageInfo: PageInfo;
-  edges: BlockEdge[];
-}
-
-export interface BlockConnectionPromise
-  extends Promise<BlockConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BlockEdge>>() => T;
-  aggregate: <T = AggregateBlockPromise>() => T;
-}
-
-export interface BlockConnectionSubscription
-  extends Promise<AsyncIterator<BlockConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<BlockEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateBlockSubscription>() => T;
-}
-
-export interface User {
-  id: ID_Output;
-  name: String;
-  email: String;
-  password: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions: Permission[];
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  resetToken: () => Promise<String>;
-  resetTokenExpiry: () => Promise<Float>;
-  permissions: () => Promise<Permission[]>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  resetToken: () => Promise<AsyncIterator<String>>;
-  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
-  permissions: () => Promise<AsyncIterator<Permission[]>>;
-}
-
-export interface BlockPreviousValues {
+export interface Box {
   id: ID_Output;
   title?: String;
   image?: String;
@@ -1114,66 +1471,7 @@ export interface BlockPreviousValues {
   order?: Int;
 }
 
-export interface BlockPreviousValuesPromise
-  extends Promise<BlockPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  image: () => Promise<String>;
-  video: () => Promise<String>;
-  style: () => Promise<String>;
-  content: () => Promise<String>;
-  order: () => Promise<Int>;
-}
-
-export interface BlockPreviousValuesSubscription
-  extends Promise<AsyncIterator<BlockPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  video: () => Promise<AsyncIterator<String>>;
-  style: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
-  order: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface BlockSubscriptionPayload {
-  mutation: MutationType;
-  node: Block;
-  updatedFields: String[];
-  previousValues: BlockPreviousValues;
-}
-
-export interface BlockSubscriptionPayloadPromise
-  extends Promise<BlockSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = BlockPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = BlockPreviousValuesPromise>() => T;
-}
-
-export interface BlockSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<BlockSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = BlockSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = BlockPreviousValuesSubscription>() => T;
-}
-
-export interface Block {
-  id: ID_Output;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface BlockPromise extends Promise<Block>, Fragmentable {
+export interface BoxPromise extends Promise<Box>, Fragmentable {
   id: () => Promise<ID_Output>;
   page: <T = PagePromise>() => T;
   title: () => Promise<String>;
@@ -1184,8 +1482,8 @@ export interface BlockPromise extends Promise<Block>, Fragmentable {
   order: () => Promise<Int>;
 }
 
-export interface BlockSubscription
-  extends Promise<AsyncIterator<Block>>,
+export interface BoxSubscription
+  extends Promise<AsyncIterator<Box>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   page: <T = PageSubscription>() => T;
@@ -1222,6 +1520,114 @@ export interface PageSubscriptionPayloadSubscription
   previousValues: <T = PagePreviousValuesSubscription>() => T;
 }
 
+export interface User {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions: Permission[];
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
+  permissions: () => Promise<Permission[]>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+}
+
+export interface Block {
+  id: ID_Output;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockPromise extends Promise<Block>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  page: <T = PagePromise>() => T;
+  title: () => Promise<String>;
+  image: () => Promise<String>;
+  video: () => Promise<String>;
+  style: () => Promise<String>;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
+}
+
+export interface BlockSubscription
+  extends Promise<AsyncIterator<Block>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  page: <T = PageSubscription>() => T;
+  title: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  video: () => Promise<AsyncIterator<String>>;
+  style: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PageEdge {
+  node: Page;
+  cursor: String;
+}
+
+export interface PageEdgePromise extends Promise<PageEdge>, Fragmentable {
+  node: <T = PagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PageEdgeSubscription
+  extends Promise<AsyncIterator<PageEdge>>,
+    Fragmentable {
+  node: <T = PageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BlockSubscriptionPayload {
+  mutation: MutationType;
+  node: Block;
+  updatedFields: String[];
+  previousValues: BlockPreviousValues;
+}
+
+export interface BlockSubscriptionPayloadPromise
+  extends Promise<BlockSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = BlockPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = BlockPreviousValuesPromise>() => T;
+}
+
+export interface BlockSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<BlockSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = BlockSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = BlockPreviousValuesSubscription>() => T;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -1245,6 +1651,195 @@ export interface UserSubscriptionPayloadSubscription
   node: <T = UserSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface Page {
+  id: ID_Output;
+  title: String;
+  image?: String;
+  slug: String;
+  type: PageType;
+  vertical?: String;
+}
+
+export interface PagePromise extends Promise<Page>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  image: () => Promise<String>;
+  slug: () => Promise<String>;
+  type: () => Promise<PageType>;
+  vertical: () => Promise<String>;
+  blocks: <T = FragmentableArray<Block>>(
+    args?: {
+      where?: BlockWhereInput;
+      orderBy?: BlockOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  boxes: <T = FragmentableArray<Box>>(
+    args?: {
+      where?: BoxWhereInput;
+      orderBy?: BoxOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface PageSubscription
+  extends Promise<AsyncIterator<Page>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  slug: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<PageType>>;
+  vertical: () => Promise<AsyncIterator<String>>;
+  blocks: <T = Promise<AsyncIterator<BlockSubscription>>>(
+    args?: {
+      where?: BlockWhereInput;
+      orderBy?: BlockOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  boxes: <T = Promise<AsyncIterator<BoxSubscription>>>(
+    args?: {
+      where?: BoxWhereInput;
+      orderBy?: BoxOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface BoxPreviousValues {
+  id: ID_Output;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BoxPreviousValuesPromise
+  extends Promise<BoxPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  image: () => Promise<String>;
+  video: () => Promise<String>;
+  style: () => Promise<String>;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
+}
+
+export interface BoxPreviousValuesSubscription
+  extends Promise<AsyncIterator<BoxPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  video: () => Promise<AsyncIterator<String>>;
+  style: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BoxSubscriptionPayload {
+  mutation: MutationType;
+  node: Box;
+  updatedFields: String[];
+  previousValues: BoxPreviousValues;
+}
+
+export interface BoxSubscriptionPayloadPromise
+  extends Promise<BoxSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = BoxPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = BoxPreviousValuesPromise>() => T;
+}
+
+export interface BoxSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<BoxSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = BoxSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = BoxPreviousValuesSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BlockPreviousValues {
+  id: ID_Output;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockPreviousValuesPromise
+  extends Promise<BlockPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  image: () => Promise<String>;
+  video: () => Promise<String>;
+  style: () => Promise<String>;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
+}
+
+export interface BlockPreviousValuesSubscription
+  extends Promise<AsyncIterator<BlockPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  video: () => Promise<AsyncIterator<String>>;
+  style: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PagePreviousValues {
@@ -1278,57 +1873,6 @@ export interface PagePreviousValuesSubscription
   vertical: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Page {
-  id: ID_Output;
-  title: String;
-  image?: String;
-  slug: String;
-  type: PageType;
-  vertical?: String;
-}
-
-export interface PagePromise extends Promise<Page>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  image: () => Promise<String>;
-  slug: () => Promise<String>;
-  type: () => Promise<PageType>;
-  vertical: () => Promise<String>;
-  blocks: <T = FragmentableArray<Block>>(
-    args?: {
-      where?: BlockWhereInput;
-      orderBy?: BlockOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface PageSubscription
-  extends Promise<AsyncIterator<Page>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  slug: () => Promise<AsyncIterator<String>>;
-  type: () => Promise<AsyncIterator<PageType>>;
-  vertical: () => Promise<AsyncIterator<String>>;
-  blocks: <T = Promise<AsyncIterator<BlockSubscription>>>(
-    args?: {
-      where?: BlockWhereInput;
-      orderBy?: BlockOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
 export interface UserEdge {
   node: User;
   cursor: String;
@@ -1344,6 +1888,43 @@ export interface UserEdgeSubscription
     Fragmentable {
   node: <T = UserSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PageConnection {
+  pageInfo: PageInfo;
+  edges: PageEdge[];
+}
+
+export interface PageConnectionPromise
+  extends Promise<PageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PageEdge>>() => T;
+  aggregate: <T = AggregatePagePromise>() => T;
+}
+
+export interface PageConnectionSubscription
+  extends Promise<AsyncIterator<PageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePageSubscription>() => T;
+}
+
+export interface AggregatePage {
+  count: Int;
+}
+
+export interface AggregatePagePromise
+  extends Promise<AggregatePage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePageSubscription
+  extends Promise<AsyncIterator<AggregatePage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 /*
@@ -1397,6 +1978,10 @@ export const models: Model[] = [
   },
   {
     name: "Block",
+    embedded: false
+  },
+  {
+    name: "Box",
     embedded: false
   }
 ];
