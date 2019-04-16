@@ -40,7 +40,7 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state
-    const { history } = this.props
+    const { updateToken } = this.props
     return (
       <Fragment>
         <StyledContainer>
@@ -63,7 +63,7 @@ class Login extends Component {
                     e.preventDefault()
                     await login()
                     this.setState({ email: '', password: '' })
-                    history.push('/dashboard')
+                    updateToken();
                   }}
                 >
                   <Error error={error} />
