@@ -15,6 +15,14 @@ type AggregateCons {
   count: Int!
 }
 
+type AggregateFaq {
+  count: Int!
+}
+
+type AggregateFaqCategory {
+  count: Int!
+}
+
 type AggregatePage {
   count: Int!
 }
@@ -966,6 +974,558 @@ input ConsWhereUniqueInput {
   id: ID
 }
 
+scalar DateTime
+
+type Faq {
+  id: ID!
+  title: String!
+  description: String!
+  short_description: String
+  creator: User!
+  slug: String!
+  type: FaqType!
+  vertical: String
+  category(where: FaqCategoryWhereInput, orderBy: FaqCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FaqCategory!]
+  readingTime: Int
+  order: Int
+  variant: [String!]!
+  tag: [String!]!
+  pubDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FaqCategory {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+}
+
+type FaqCategoryConnection {
+  pageInfo: PageInfo!
+  edges: [FaqCategoryEdge]!
+  aggregate: AggregateFaqCategory!
+}
+
+input FaqCategoryCreateInput {
+  name: String!
+  slug: String!
+  description: String!
+}
+
+input FaqCategoryCreateManyInput {
+  create: [FaqCategoryCreateInput!]
+  connect: [FaqCategoryWhereUniqueInput!]
+}
+
+type FaqCategoryEdge {
+  node: FaqCategory!
+  cursor: String!
+}
+
+enum FaqCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  slug_ASC
+  slug_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type FaqCategoryPreviousValues {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+}
+
+input FaqCategoryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_lt: String
+  slug_lte: String
+  slug_gt: String
+  slug_gte: String
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  AND: [FaqCategoryScalarWhereInput!]
+  OR: [FaqCategoryScalarWhereInput!]
+  NOT: [FaqCategoryScalarWhereInput!]
+}
+
+type FaqCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: FaqCategory
+  updatedFields: [String!]
+  previousValues: FaqCategoryPreviousValues
+}
+
+input FaqCategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FaqCategoryWhereInput
+  AND: [FaqCategorySubscriptionWhereInput!]
+  OR: [FaqCategorySubscriptionWhereInput!]
+  NOT: [FaqCategorySubscriptionWhereInput!]
+}
+
+input FaqCategoryUpdateDataInput {
+  name: String
+  slug: String
+  description: String
+}
+
+input FaqCategoryUpdateInput {
+  name: String
+  slug: String
+  description: String
+}
+
+input FaqCategoryUpdateManyDataInput {
+  name: String
+  slug: String
+  description: String
+}
+
+input FaqCategoryUpdateManyInput {
+  create: [FaqCategoryCreateInput!]
+  update: [FaqCategoryUpdateWithWhereUniqueNestedInput!]
+  upsert: [FaqCategoryUpsertWithWhereUniqueNestedInput!]
+  delete: [FaqCategoryWhereUniqueInput!]
+  connect: [FaqCategoryWhereUniqueInput!]
+  set: [FaqCategoryWhereUniqueInput!]
+  disconnect: [FaqCategoryWhereUniqueInput!]
+  deleteMany: [FaqCategoryScalarWhereInput!]
+  updateMany: [FaqCategoryUpdateManyWithWhereNestedInput!]
+}
+
+input FaqCategoryUpdateManyMutationInput {
+  name: String
+  slug: String
+  description: String
+}
+
+input FaqCategoryUpdateManyWithWhereNestedInput {
+  where: FaqCategoryScalarWhereInput!
+  data: FaqCategoryUpdateManyDataInput!
+}
+
+input FaqCategoryUpdateWithWhereUniqueNestedInput {
+  where: FaqCategoryWhereUniqueInput!
+  data: FaqCategoryUpdateDataInput!
+}
+
+input FaqCategoryUpsertWithWhereUniqueNestedInput {
+  where: FaqCategoryWhereUniqueInput!
+  update: FaqCategoryUpdateDataInput!
+  create: FaqCategoryCreateInput!
+}
+
+input FaqCategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_lt: String
+  slug_lte: String
+  slug_gt: String
+  slug_gte: String
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  AND: [FaqCategoryWhereInput!]
+  OR: [FaqCategoryWhereInput!]
+  NOT: [FaqCategoryWhereInput!]
+}
+
+input FaqCategoryWhereUniqueInput {
+  id: ID
+}
+
+type FaqConnection {
+  pageInfo: PageInfo!
+  edges: [FaqEdge]!
+  aggregate: AggregateFaq!
+}
+
+input FaqCreateInput {
+  title: String!
+  description: String!
+  short_description: String
+  creator: UserCreateOneInput!
+  slug: String!
+  type: FaqType!
+  vertical: String
+  category: FaqCategoryCreateManyInput
+  readingTime: Int
+  order: Int
+  variant: FaqCreatevariantInput
+  tag: FaqCreatetagInput
+  pubDate: DateTime
+}
+
+input FaqCreatetagInput {
+  set: [String!]
+}
+
+input FaqCreatevariantInput {
+  set: [String!]
+}
+
+type FaqEdge {
+  node: Faq!
+  cursor: String!
+}
+
+enum FaqOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  short_description_ASC
+  short_description_DESC
+  slug_ASC
+  slug_DESC
+  type_ASC
+  type_DESC
+  vertical_ASC
+  vertical_DESC
+  readingTime_ASC
+  readingTime_DESC
+  order_ASC
+  order_DESC
+  pubDate_ASC
+  pubDate_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type FaqPreviousValues {
+  id: ID!
+  title: String!
+  description: String!
+  short_description: String
+  slug: String!
+  type: FaqType!
+  vertical: String
+  readingTime: Int
+  order: Int
+  variant: [String!]!
+  tag: [String!]!
+  pubDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FaqSubscriptionPayload {
+  mutation: MutationType!
+  node: Faq
+  updatedFields: [String!]
+  previousValues: FaqPreviousValues
+}
+
+input FaqSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FaqWhereInput
+  AND: [FaqSubscriptionWhereInput!]
+  OR: [FaqSubscriptionWhereInput!]
+  NOT: [FaqSubscriptionWhereInput!]
+}
+
+enum FaqType {
+  FAQ
+  TOOLTIP
+}
+
+input FaqUpdateInput {
+  title: String
+  description: String
+  short_description: String
+  creator: UserUpdateOneRequiredInput
+  slug: String
+  type: FaqType
+  vertical: String
+  category: FaqCategoryUpdateManyInput
+  readingTime: Int
+  order: Int
+  variant: FaqUpdatevariantInput
+  tag: FaqUpdatetagInput
+  pubDate: DateTime
+}
+
+input FaqUpdateManyMutationInput {
+  title: String
+  description: String
+  short_description: String
+  slug: String
+  type: FaqType
+  vertical: String
+  readingTime: Int
+  order: Int
+  variant: FaqUpdatevariantInput
+  tag: FaqUpdatetagInput
+  pubDate: DateTime
+}
+
+input FaqUpdatetagInput {
+  set: [String!]
+}
+
+input FaqUpdatevariantInput {
+  set: [String!]
+}
+
+input FaqWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  short_description: String
+  short_description_not: String
+  short_description_in: [String!]
+  short_description_not_in: [String!]
+  short_description_lt: String
+  short_description_lte: String
+  short_description_gt: String
+  short_description_gte: String
+  short_description_contains: String
+  short_description_not_contains: String
+  short_description_starts_with: String
+  short_description_not_starts_with: String
+  short_description_ends_with: String
+  short_description_not_ends_with: String
+  creator: UserWhereInput
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_lt: String
+  slug_lte: String
+  slug_gt: String
+  slug_gte: String
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  type: FaqType
+  type_not: FaqType
+  type_in: [FaqType!]
+  type_not_in: [FaqType!]
+  vertical: String
+  vertical_not: String
+  vertical_in: [String!]
+  vertical_not_in: [String!]
+  vertical_lt: String
+  vertical_lte: String
+  vertical_gt: String
+  vertical_gte: String
+  vertical_contains: String
+  vertical_not_contains: String
+  vertical_starts_with: String
+  vertical_not_starts_with: String
+  vertical_ends_with: String
+  vertical_not_ends_with: String
+  category_every: FaqCategoryWhereInput
+  category_some: FaqCategoryWhereInput
+  category_none: FaqCategoryWhereInput
+  readingTime: Int
+  readingTime_not: Int
+  readingTime_in: [Int!]
+  readingTime_not_in: [Int!]
+  readingTime_lt: Int
+  readingTime_lte: Int
+  readingTime_gt: Int
+  readingTime_gte: Int
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  pubDate: DateTime
+  pubDate_not: DateTime
+  pubDate_in: [DateTime!]
+  pubDate_not_in: [DateTime!]
+  pubDate_lt: DateTime
+  pubDate_lte: DateTime
+  pubDate_gt: DateTime
+  pubDate_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [FaqWhereInput!]
+  OR: [FaqWhereInput!]
+  NOT: [FaqWhereInput!]
+}
+
+input FaqWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
@@ -987,6 +1547,18 @@ type Mutation {
   upsertCons(where: ConsWhereUniqueInput!, create: ConsCreateInput!, update: ConsUpdateInput!): Cons!
   deleteCons(where: ConsWhereUniqueInput!): Cons
   deleteManyConses(where: ConsWhereInput): BatchPayload!
+  createFaq(data: FaqCreateInput!): Faq!
+  updateFaq(data: FaqUpdateInput!, where: FaqWhereUniqueInput!): Faq
+  updateManyFaqs(data: FaqUpdateManyMutationInput!, where: FaqWhereInput): BatchPayload!
+  upsertFaq(where: FaqWhereUniqueInput!, create: FaqCreateInput!, update: FaqUpdateInput!): Faq!
+  deleteFaq(where: FaqWhereUniqueInput!): Faq
+  deleteManyFaqs(where: FaqWhereInput): BatchPayload!
+  createFaqCategory(data: FaqCategoryCreateInput!): FaqCategory!
+  updateFaqCategory(data: FaqCategoryUpdateInput!, where: FaqCategoryWhereUniqueInput!): FaqCategory
+  updateManyFaqCategories(data: FaqCategoryUpdateManyMutationInput!, where: FaqCategoryWhereInput): BatchPayload!
+  upsertFaqCategory(where: FaqCategoryWhereUniqueInput!, create: FaqCategoryCreateInput!, update: FaqCategoryUpdateInput!): FaqCategory!
+  deleteFaqCategory(where: FaqCategoryWhereUniqueInput!): FaqCategory
+  deleteManyFaqCategories(where: FaqCategoryWhereInput): BatchPayload!
   createPage(data: PageCreateInput!): Page!
   updatePage(data: PageUpdateInput!, where: PageWhereUniqueInput!): Page
   updateManyPages(data: PageUpdateManyMutationInput!, where: PageWhereInput): BatchPayload!
@@ -1850,6 +2422,12 @@ type Query {
   cons(where: ConsWhereUniqueInput!): Cons
   conses(where: ConsWhereInput, orderBy: ConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cons]!
   consesConnection(where: ConsWhereInput, orderBy: ConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConsConnection!
+  faq(where: FaqWhereUniqueInput!): Faq
+  faqs(where: FaqWhereInput, orderBy: FaqOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Faq]!
+  faqsConnection(where: FaqWhereInput, orderBy: FaqOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FaqConnection!
+  faqCategory(where: FaqCategoryWhereUniqueInput!): FaqCategory
+  faqCategories(where: FaqCategoryWhereInput, orderBy: FaqCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FaqCategory]!
+  faqCategoriesConnection(where: FaqCategoryWhereInput, orderBy: FaqCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FaqCategoryConnection!
   page(where: PageWhereUniqueInput!): Page
   pages(where: PageWhereInput, orderBy: PageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Page]!
   pagesConnection(where: PageWhereInput, orderBy: PageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PageConnection!
@@ -1869,6 +2447,8 @@ type Subscription {
   block(where: BlockSubscriptionWhereInput): BlockSubscriptionPayload
   box(where: BoxSubscriptionWhereInput): BoxSubscriptionPayload
   cons(where: ConsSubscriptionWhereInput): ConsSubscriptionPayload
+  faq(where: FaqSubscriptionWhereInput): FaqSubscriptionPayload
+  faqCategory(where: FaqCategorySubscriptionWhereInput): FaqCategorySubscriptionPayload
   page(where: PageSubscriptionWhereInput): PageSubscriptionPayload
   pros(where: ProsSubscriptionWhereInput): ProsSubscriptionPayload
   prosAndCons(where: ProsAndConsSubscriptionWhereInput): ProsAndConsSubscriptionPayload
@@ -1898,6 +2478,11 @@ input UserCreateInput {
   resetToken: String
   resetTokenExpiry: Float
   permissions: UserCreatepermissionsInput
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreatepermissionsInput {
@@ -1956,6 +2541,15 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  name: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+}
+
 input UserUpdateInput {
   name: String
   email: String
@@ -1974,8 +2568,20 @@ input UserUpdateManyMutationInput {
   permissions: UserUpdatepermissionsInput
 }
 
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdatepermissionsInput {
   set: [Permission!]
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {

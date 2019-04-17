@@ -13,6 +13,10 @@ var models = [
     embedded: false
   },
   {
+    name: "FaqType",
+    embedded: false
+  },
+  {
     name: "User",
     embedded: false
   },
@@ -38,6 +42,14 @@ var models = [
   },
   {
     name: "Cons",
+    embedded: false
+  },
+  {
+    name: "Faq",
+    embedded: false
+  },
+  {
+    name: "FaqCategory",
     embedded: false
   }
 ];

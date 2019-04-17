@@ -9,6 +9,11 @@ enum PageType {
   ARTICLE
 }
 
+enum FaqType {
+  FAQ
+  TOOLTIP
+}
+
 type User {
   id: ID! @unique
   name: String!
@@ -74,4 +79,30 @@ type Cons {
   prosAndCons: ProsAndCons! @relation(name: "ConsOnProsAndCons", onDelete: SET_NULL)
   content: String
   order: Int
+}
+
+type Faq {
+  id: ID! @unique
+  title: String!
+  description: String!
+  short_description: String
+  creator: User!
+  slug: String!
+  type: FaqType!
+  vertical: String
+  category: [FaqCategory!]!
+  readingTime: Int
+  order: Int
+  variant: [String]
+  tag: [String]
+  pubDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FaqCategory {
+  id: ID! @unique
+  name: String!
+  slug: String!
+  description: String!
 }
