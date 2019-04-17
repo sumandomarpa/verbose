@@ -16,7 +16,10 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export interface Exists {
   block: (where?: BlockWhereInput) => Promise<boolean>;
   box: (where?: BoxWhereInput) => Promise<boolean>;
+  cons: (where?: ConsWhereInput) => Promise<boolean>;
   page: (where?: PageWhereInput) => Promise<boolean>;
+  pros: (where?: ProsWhereInput) => Promise<boolean>;
+  prosAndCons: (where?: ProsAndConsWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -85,6 +88,29 @@ export interface Prisma {
       last?: Int;
     }
   ) => BoxConnectionPromise;
+  cons: (where: ConsWhereUniqueInput) => ConsPromise;
+  conses: (
+    args?: {
+      where?: ConsWhereInput;
+      orderBy?: ConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Cons>;
+  consesConnection: (
+    args?: {
+      where?: ConsWhereInput;
+      orderBy?: ConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ConsConnectionPromise;
   page: (where: PageWhereUniqueInput) => PagePromise;
   pages: (
     args?: {
@@ -108,6 +134,52 @@ export interface Prisma {
       last?: Int;
     }
   ) => PageConnectionPromise;
+  pros: (where: ProsWhereUniqueInput) => ProsPromise;
+  proses: (
+    args?: {
+      where?: ProsWhereInput;
+      orderBy?: ProsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Pros>;
+  prosesConnection: (
+    args?: {
+      where?: ProsWhereInput;
+      orderBy?: ProsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ProsConnectionPromise;
+  prosAndCons: (where: ProsAndConsWhereUniqueInput) => ProsAndConsPromise;
+  prosAndConses: (
+    args?: {
+      where?: ProsAndConsWhereInput;
+      orderBy?: ProsAndConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<ProsAndCons>;
+  prosAndConsesConnection: (
+    args?: {
+      where?: ProsAndConsWhereInput;
+      orderBy?: ProsAndConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ProsAndConsConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -169,6 +241,22 @@ export interface Prisma {
   ) => BoxPromise;
   deleteBox: (where: BoxWhereUniqueInput) => BoxPromise;
   deleteManyBoxes: (where?: BoxWhereInput) => BatchPayloadPromise;
+  createCons: (data: ConsCreateInput) => ConsPromise;
+  updateCons: (
+    args: { data: ConsUpdateInput; where: ConsWhereUniqueInput }
+  ) => ConsPromise;
+  updateManyConses: (
+    args: { data: ConsUpdateManyMutationInput; where?: ConsWhereInput }
+  ) => BatchPayloadPromise;
+  upsertCons: (
+    args: {
+      where: ConsWhereUniqueInput;
+      create: ConsCreateInput;
+      update: ConsUpdateInput;
+    }
+  ) => ConsPromise;
+  deleteCons: (where: ConsWhereUniqueInput) => ConsPromise;
+  deleteManyConses: (where?: ConsWhereInput) => BatchPayloadPromise;
   createPage: (data: PageCreateInput) => PagePromise;
   updatePage: (
     args: { data: PageUpdateInput; where: PageWhereUniqueInput }
@@ -185,6 +273,43 @@ export interface Prisma {
   ) => PagePromise;
   deletePage: (where: PageWhereUniqueInput) => PagePromise;
   deleteManyPages: (where?: PageWhereInput) => BatchPayloadPromise;
+  createPros: (data: ProsCreateInput) => ProsPromise;
+  updatePros: (
+    args: { data: ProsUpdateInput; where: ProsWhereUniqueInput }
+  ) => ProsPromise;
+  updateManyProses: (
+    args: { data: ProsUpdateManyMutationInput; where?: ProsWhereInput }
+  ) => BatchPayloadPromise;
+  upsertPros: (
+    args: {
+      where: ProsWhereUniqueInput;
+      create: ProsCreateInput;
+      update: ProsUpdateInput;
+    }
+  ) => ProsPromise;
+  deletePros: (where: ProsWhereUniqueInput) => ProsPromise;
+  deleteManyProses: (where?: ProsWhereInput) => BatchPayloadPromise;
+  createProsAndCons: (data: ProsAndConsCreateInput) => ProsAndConsPromise;
+  updateProsAndCons: (
+    args: { data: ProsAndConsUpdateInput; where: ProsAndConsWhereUniqueInput }
+  ) => ProsAndConsPromise;
+  updateManyProsAndConses: (
+    args: {
+      data: ProsAndConsUpdateManyMutationInput;
+      where?: ProsAndConsWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  upsertProsAndCons: (
+    args: {
+      where: ProsAndConsWhereUniqueInput;
+      create: ProsAndConsCreateInput;
+      update: ProsAndConsUpdateInput;
+    }
+  ) => ProsAndConsPromise;
+  deleteProsAndCons: (where: ProsAndConsWhereUniqueInput) => ProsAndConsPromise;
+  deleteManyProsAndConses: (
+    where?: ProsAndConsWhereInput
+  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
     args: { data: UserUpdateInput; where: UserWhereUniqueInput }
@@ -216,9 +341,18 @@ export interface Subscription {
   box: (
     where?: BoxSubscriptionWhereInput
   ) => BoxSubscriptionPayloadSubscription;
+  cons: (
+    where?: ConsSubscriptionWhereInput
+  ) => ConsSubscriptionPayloadSubscription;
   page: (
     where?: PageSubscriptionWhereInput
   ) => PageSubscriptionPayloadSubscription;
+  pros: (
+    where?: ProsSubscriptionWhereInput
+  ) => ProsSubscriptionPayloadSubscription;
+  prosAndCons: (
+    where?: ProsAndConsSubscriptionWhereInput
+  ) => ProsAndConsSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -231,6 +365,24 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type PageOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "slug_ASC"
+  | "slug_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "vertical_ASC"
+  | "vertical_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type BlockOrderByInput =
   | "id_ASC"
@@ -272,23 +424,43 @@ export type BoxOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type PageOrderByInput =
+export type ProsAndConsOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "image_ASC"
-  | "image_DESC"
-  | "slug_ASC"
-  | "slug_DESC"
-  | "type_ASC"
-  | "type_DESC"
-  | "vertical_ASC"
-  | "vertical_DESC"
+  | "order_ASC"
+  | "order_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
+
+export type ProsOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "content_ASC"
+  | "content_DESC"
+  | "order_ASC"
+  | "order_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type ConsOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "content_ASC"
+  | "content_DESC"
+  | "order_ASC"
+  | "order_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type PageType = "PAGE" | "NEWS" | "ARTICLE";
 
@@ -312,141 +484,152 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export interface BoxUpdateWithoutPageDataInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
+export interface ProsUpdateManyWithWhereNestedInput {
+  where: ProsScalarWhereInput;
+  data: ProsUpdateManyDataInput;
 }
 
 export type BlockWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface PageUpdateOneRequiredWithoutBoxesInput {
-  create?: PageCreateWithoutBoxesInput;
-  update?: PageUpdateWithoutBoxesDataInput;
-  upsert?: PageUpsertWithoutBoxesInput;
-  connect?: PageWhereUniqueInput;
-}
-
-export interface BoxUpdateManyDataInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
+export interface ConsScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
   content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
   order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: ConsScalarWhereInput[] | ConsScalarWhereInput;
+  OR?: ConsScalarWhereInput[] | ConsScalarWhereInput;
+  NOT?: ConsScalarWhereInput[] | ConsScalarWhereInput;
 }
 
-export interface BlockCreateInput {
-  page: PageCreateOneWithoutBlocksInput;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
+export interface ConsWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  prosAndCons?: ProsAndConsWhereInput;
   content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
   order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: ConsWhereInput[] | ConsWhereInput;
+  OR?: ConsWhereInput[] | ConsWhereInput;
+  NOT?: ConsWhereInput[] | ConsWhereInput;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface ConsUpdateManyWithWhereNestedInput {
+  where: ConsScalarWhereInput;
+  data: ConsUpdateManyDataInput;
 }
 
-export interface PageCreateOneWithoutBlocksInput {
-  create?: PageCreateWithoutBlocksInput;
-  connect?: PageWhereUniqueInput;
-}
-
-export interface BoxSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: BoxWhereInput;
-  AND?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
-  OR?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
-  NOT?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
-}
-
-export interface PageCreateWithoutBlocksInput {
-  title: String;
-  image?: String;
-  slug: String;
-  type: PageType;
-  vertical?: String;
-  boxes?: BoxCreateManyWithoutPageInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  name?: String;
-  email?: String;
-  password?: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions?: UserUpdatepermissionsInput;
-}
-
-export interface BoxCreateManyWithoutPageInput {
-  create?: BoxCreateWithoutPageInput[] | BoxCreateWithoutPageInput;
-  connect?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
-}
-
-export type BoxWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface BoxCreateWithoutPageInput {
+export interface ProsAndConsWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  page?: PageWhereInput;
   title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
   order?: Int;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface BlockUpdateInput {
-  page?: PageUpdateOneRequiredWithoutBlocksInput;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export type PageWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface PageUpdateOneRequiredWithoutBlocksInput {
-  create?: PageCreateWithoutBlocksInput;
-  update?: PageUpdateWithoutBlocksDataInput;
-  upsert?: PageUpsertWithoutBlocksInput;
-  connect?: PageWhereUniqueInput;
-}
-
-export interface PageUpdateManyMutationInput {
-  title?: String;
-  image?: String;
-  slug?: String;
-  type?: PageType;
-  vertical?: String;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  pros_every?: ProsWhereInput;
+  pros_some?: ProsWhereInput;
+  pros_none?: ProsWhereInput;
+  cons_every?: ConsWhereInput;
+  cons_some?: ConsWhereInput;
+  cons_none?: ConsWhereInput;
+  AND?: ProsAndConsWhereInput[] | ProsAndConsWhereInput;
+  OR?: ProsAndConsWhereInput[] | ProsAndConsWhereInput;
+  NOT?: ProsAndConsWhereInput[] | ProsAndConsWhereInput;
 }
 
 export interface PageUpdateWithoutBlocksDataInput {
@@ -456,9 +639,10 @@ export interface PageUpdateWithoutBlocksDataInput {
   type?: PageType;
   vertical?: String;
   boxes?: BoxUpdateManyWithoutPageInput;
+  prosAndCons?: ProsAndConsUpdateManyWithoutPageInput;
 }
 
-export interface PageCreateInput {
+export interface PageCreateWithoutProsAndConsInput {
   title: String;
   image?: String;
   slug: String;
@@ -486,11 +670,7 @@ export interface BoxUpdateManyWithoutPageInput {
     | BoxUpdateManyWithWhereNestedInput;
 }
 
-export interface BoxUpdateManyMutationInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
+export interface ConsUpdateManyDataInput {
   content?: String;
   order?: Int;
 }
@@ -500,7 +680,18 @@ export interface BoxUpdateWithWhereUniqueWithoutPageInput {
   data: BoxUpdateWithoutPageDataInput;
 }
 
-export interface BlockUpdateManyDataInput {
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface BoxUpdateWithoutPageDataInput {
   title?: String;
   image?: String;
   video?: String;
@@ -509,14 +700,15 @@ export interface BlockUpdateManyDataInput {
   order?: Int;
 }
 
-export interface BlockUpdateWithWhereUniqueWithoutPageInput {
-  where: BlockWhereUniqueInput;
-  data: BlockUpdateWithoutPageDataInput;
-}
-
-export interface BlockUpdateManyWithWhereNestedInput {
-  where: BlockScalarWhereInput;
-  data: BlockUpdateManyDataInput;
+export interface ProsAndConsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ProsAndConsWhereInput;
+  AND?: ProsAndConsSubscriptionWhereInput[] | ProsAndConsSubscriptionWhereInput;
+  OR?: ProsAndConsSubscriptionWhereInput[] | ProsAndConsSubscriptionWhereInput;
+  NOT?: ProsAndConsSubscriptionWhereInput[] | ProsAndConsSubscriptionWhereInput;
 }
 
 export interface BoxUpsertWithWhereUniqueWithoutPageInput {
@@ -525,10 +717,15 @@ export interface BoxUpsertWithWhereUniqueWithoutPageInput {
   create: BoxCreateWithoutPageInput;
 }
 
-export interface BlockUpsertWithWhereUniqueWithoutPageInput {
-  where: BlockWhereUniqueInput;
-  update: BlockUpdateWithoutPageDataInput;
-  create: BlockCreateWithoutPageInput;
+export interface PageSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PageWhereInput;
+  AND?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
+  OR?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
+  NOT?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
 }
 
 export interface BoxScalarWhereInput {
@@ -629,7 +826,381 @@ export interface BoxScalarWhereInput {
   NOT?: BoxScalarWhereInput[] | BoxScalarWhereInput;
 }
 
-export interface PageWhereInput {
+export interface BoxSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: BoxWhereInput;
+  AND?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
+  OR?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
+  NOT?: BoxSubscriptionWhereInput[] | BoxSubscriptionWhereInput;
+}
+
+export interface BoxUpdateManyWithWhereNestedInput {
+  where: BoxScalarWhereInput;
+  data: BoxUpdateManyDataInput;
+}
+
+export type BoxWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface BoxUpdateManyDataInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface ProsAndConsUpdateManyWithoutPageInput {
+  create?:
+    | ProsAndConsCreateWithoutPageInput[]
+    | ProsAndConsCreateWithoutPageInput;
+  delete?: ProsAndConsWhereUniqueInput[] | ProsAndConsWhereUniqueInput;
+  connect?: ProsAndConsWhereUniqueInput[] | ProsAndConsWhereUniqueInput;
+  set?: ProsAndConsWhereUniqueInput[] | ProsAndConsWhereUniqueInput;
+  disconnect?: ProsAndConsWhereUniqueInput[] | ProsAndConsWhereUniqueInput;
+  update?:
+    | ProsAndConsUpdateWithWhereUniqueWithoutPageInput[]
+    | ProsAndConsUpdateWithWhereUniqueWithoutPageInput;
+  upsert?:
+    | ProsAndConsUpsertWithWhereUniqueWithoutPageInput[]
+    | ProsAndConsUpsertWithWhereUniqueWithoutPageInput;
+  deleteMany?: ProsAndConsScalarWhereInput[] | ProsAndConsScalarWhereInput;
+  updateMany?:
+    | ProsAndConsUpdateManyWithWhereNestedInput[]
+    | ProsAndConsUpdateManyWithWhereNestedInput;
+}
+
+export type ConsWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ProsAndConsUpdateWithWhereUniqueWithoutPageInput {
+  where: ProsAndConsWhereUniqueInput;
+  data: ProsAndConsUpdateWithoutPageDataInput;
+}
+
+export interface UserCreateInput {
+  name: String;
+  email: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions?: UserCreatepermissionsInput;
+}
+
+export interface ProsAndConsUpdateWithoutPageDataInput {
+  title?: String;
+  order?: Int;
+  pros?: ProsUpdateManyWithoutProsAndConsInput;
+  cons?: ConsUpdateManyWithoutProsAndConsInput;
+}
+
+export type PageWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface ProsUpdateManyWithoutProsAndConsInput {
+  create?:
+    | ProsCreateWithoutProsAndConsInput[]
+    | ProsCreateWithoutProsAndConsInput;
+  delete?: ProsWhereUniqueInput[] | ProsWhereUniqueInput;
+  connect?: ProsWhereUniqueInput[] | ProsWhereUniqueInput;
+  set?: ProsWhereUniqueInput[] | ProsWhereUniqueInput;
+  disconnect?: ProsWhereUniqueInput[] | ProsWhereUniqueInput;
+  update?:
+    | ProsUpdateWithWhereUniqueWithoutProsAndConsInput[]
+    | ProsUpdateWithWhereUniqueWithoutProsAndConsInput;
+  upsert?:
+    | ProsUpsertWithWhereUniqueWithoutProsAndConsInput[]
+    | ProsUpsertWithWhereUniqueWithoutProsAndConsInput;
+  deleteMany?: ProsScalarWhereInput[] | ProsScalarWhereInput;
+  updateMany?:
+    | ProsUpdateManyWithWhereNestedInput[]
+    | ProsUpdateManyWithWhereNestedInput;
+}
+
+export interface ProsAndConsUpdateInput {
+  page?: PageUpdateOneRequiredWithoutProsAndConsInput;
+  title?: String;
+  order?: Int;
+  pros?: ProsUpdateManyWithoutProsAndConsInput;
+  cons?: ConsUpdateManyWithoutProsAndConsInput;
+}
+
+export interface ProsUpdateWithWhereUniqueWithoutProsAndConsInput {
+  where: ProsWhereUniqueInput;
+  data: ProsUpdateWithoutProsAndConsDataInput;
+}
+
+export interface ProsUpdateManyMutationInput {
+  content?: String;
+  order?: Int;
+}
+
+export interface ProsUpdateWithoutProsAndConsDataInput {
+  content?: String;
+  order?: Int;
+}
+
+export interface ProsAndConsUpsertWithoutProsInput {
+  update: ProsAndConsUpdateWithoutProsDataInput;
+  create: ProsAndConsCreateWithoutProsInput;
+}
+
+export interface ProsUpsertWithWhereUniqueWithoutProsAndConsInput {
+  where: ProsWhereUniqueInput;
+  update: ProsUpdateWithoutProsAndConsDataInput;
+  create: ProsCreateWithoutProsAndConsInput;
+}
+
+export interface ProsAndConsUpdateOneRequiredWithoutProsInput {
+  create?: ProsAndConsCreateWithoutProsInput;
+  update?: ProsAndConsUpdateWithoutProsDataInput;
+  upsert?: ProsAndConsUpsertWithoutProsInput;
+  connect?: ProsAndConsWhereUniqueInput;
+}
+
+export interface ProsScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
+  order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: ProsScalarWhereInput[] | ProsScalarWhereInput;
+  OR?: ProsScalarWhereInput[] | ProsScalarWhereInput;
+  NOT?: ProsScalarWhereInput[] | ProsScalarWhereInput;
+}
+
+export interface ProsUpdateInput {
+  prosAndCons?: ProsAndConsUpdateOneRequiredWithoutProsInput;
+  content?: String;
+  order?: Int;
+}
+
+export interface PageUpdateWithoutProsAndConsDataInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+  blocks?: BlockUpdateManyWithoutPageInput;
+  boxes?: BoxUpdateManyWithoutPageInput;
+}
+
+export interface ProsAndConsCreateOneWithoutProsInput {
+  create?: ProsAndConsCreateWithoutProsInput;
+  connect?: ProsAndConsWhereUniqueInput;
+}
+
+export interface ProsUpdateManyDataInput {
+  content?: String;
+  order?: Int;
+}
+
+export interface ProsCreateInput {
+  prosAndCons: ProsAndConsCreateOneWithoutProsInput;
+  content?: String;
+  order?: Int;
+}
+
+export interface ConsUpdateManyWithoutProsAndConsInput {
+  create?:
+    | ConsCreateWithoutProsAndConsInput[]
+    | ConsCreateWithoutProsAndConsInput;
+  delete?: ConsWhereUniqueInput[] | ConsWhereUniqueInput;
+  connect?: ConsWhereUniqueInput[] | ConsWhereUniqueInput;
+  set?: ConsWhereUniqueInput[] | ConsWhereUniqueInput;
+  disconnect?: ConsWhereUniqueInput[] | ConsWhereUniqueInput;
+  update?:
+    | ConsUpdateWithWhereUniqueWithoutProsAndConsInput[]
+    | ConsUpdateWithWhereUniqueWithoutProsAndConsInput;
+  upsert?:
+    | ConsUpsertWithWhereUniqueWithoutProsAndConsInput[]
+    | ConsUpsertWithWhereUniqueWithoutProsAndConsInput;
+  deleteMany?: ConsScalarWhereInput[] | ConsScalarWhereInput;
+  updateMany?:
+    | ConsUpdateManyWithWhereNestedInput[]
+    | ConsUpdateManyWithWhereNestedInput;
+}
+
+export interface PageUpdateInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+  blocks?: BlockUpdateManyWithoutPageInput;
+  boxes?: BoxUpdateManyWithoutPageInput;
+  prosAndCons?: ProsAndConsUpdateManyWithoutPageInput;
+}
+
+export interface ConsUpdateWithWhereUniqueWithoutProsAndConsInput {
+  where: ConsWhereUniqueInput;
+  data: ConsUpdateWithoutProsAndConsDataInput;
+}
+
+export interface PageCreateInput {
+  title: String;
+  image?: String;
+  slug: String;
+  type: PageType;
+  vertical?: String;
+  blocks?: BlockCreateManyWithoutPageInput;
+  boxes?: BoxCreateManyWithoutPageInput;
+  prosAndCons?: ProsAndConsCreateManyWithoutPageInput;
+}
+
+export interface ConsUpdateWithoutProsAndConsDataInput {
+  content?: String;
+  order?: Int;
+}
+
+export interface ProsAndConsUpsertWithoutConsInput {
+  update: ProsAndConsUpdateWithoutConsDataInput;
+  create: ProsAndConsCreateWithoutConsInput;
+}
+
+export interface ConsUpsertWithWhereUniqueWithoutProsAndConsInput {
+  where: ConsWhereUniqueInput;
+  update: ConsUpdateWithoutProsAndConsDataInput;
+  create: ConsCreateWithoutProsAndConsInput;
+}
+
+export interface PageCreateOneWithoutBlocksInput {
+  create?: PageCreateWithoutBlocksInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface ProsWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  prosAndCons?: ProsAndConsWhereInput;
+  content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
+  order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: ProsWhereInput[] | ProsWhereInput;
+  OR?: ProsWhereInput[] | ProsWhereInput;
+  NOT?: ProsWhereInput[] | ProsWhereInput;
+}
+
+export interface BoxCreateManyWithoutPageInput {
+  create?: BoxCreateWithoutPageInput[] | BoxCreateWithoutPageInput;
+  connect?: BoxWhereUniqueInput[] | BoxWhereUniqueInput;
+}
+
+export interface PageUpdateOneRequiredWithoutProsAndConsInput {
+  create?: PageCreateWithoutProsAndConsInput;
+  update?: PageUpdateWithoutProsAndConsDataInput;
+  upsert?: PageUpsertWithoutProsAndConsInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface ProsAndConsCreateManyWithoutPageInput {
+  create?:
+    | ProsAndConsCreateWithoutPageInput[]
+    | ProsAndConsCreateWithoutPageInput;
+  connect?: ProsAndConsWhereUniqueInput[] | ProsAndConsWhereUniqueInput;
+}
+
+export interface ProsAndConsUpdateWithoutConsDataInput {
+  page?: PageUpdateOneRequiredWithoutProsAndConsInput;
+  title?: String;
+  order?: Int;
+  pros?: ProsUpdateManyWithoutProsAndConsInput;
+}
+
+export interface ProsCreateManyWithoutProsAndConsInput {
+  create?:
+    | ProsCreateWithoutProsAndConsInput[]
+    | ProsCreateWithoutProsAndConsInput;
+  connect?: ProsWhereUniqueInput[] | ProsWhereUniqueInput;
+}
+
+export interface ProsAndConsUpsertWithWhereUniqueWithoutPageInput {
+  where: ProsAndConsWhereUniqueInput;
+  update: ProsAndConsUpdateWithoutPageDataInput;
+  create: ProsAndConsCreateWithoutPageInput;
+}
+
+export interface ConsCreateManyWithoutProsAndConsInput {
+  create?:
+    | ConsCreateWithoutProsAndConsInput[]
+    | ConsCreateWithoutProsAndConsInput;
+  connect?: ConsWhereUniqueInput[] | ConsWhereUniqueInput;
+}
+
+export interface ProsAndConsScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -658,77 +1229,32 @@ export interface PageWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
+  order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: ProsAndConsScalarWhereInput[] | ProsAndConsScalarWhereInput;
+  OR?: ProsAndConsScalarWhereInput[] | ProsAndConsScalarWhereInput;
+  NOT?: ProsAndConsScalarWhereInput[] | ProsAndConsScalarWhereInput;
+}
+
+export interface BlockUpdateInput {
+  page?: PageUpdateOneRequiredWithoutBlocksInput;
+  title?: String;
   image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  slug?: String;
-  slug_not?: String;
-  slug_in?: String[] | String;
-  slug_not_in?: String[] | String;
-  slug_lt?: String;
-  slug_lte?: String;
-  slug_gt?: String;
-  slug_gte?: String;
-  slug_contains?: String;
-  slug_not_contains?: String;
-  slug_starts_with?: String;
-  slug_not_starts_with?: String;
-  slug_ends_with?: String;
-  slug_not_ends_with?: String;
-  type?: PageType;
-  type_not?: PageType;
-  type_in?: PageType[] | PageType;
-  type_not_in?: PageType[] | PageType;
-  vertical?: String;
-  vertical_not?: String;
-  vertical_in?: String[] | String;
-  vertical_not_in?: String[] | String;
-  vertical_lt?: String;
-  vertical_lte?: String;
-  vertical_gt?: String;
-  vertical_gte?: String;
-  vertical_contains?: String;
-  vertical_not_contains?: String;
-  vertical_starts_with?: String;
-  vertical_not_starts_with?: String;
-  vertical_ends_with?: String;
-  vertical_not_ends_with?: String;
-  blocks_every?: BlockWhereInput;
-  blocks_some?: BlockWhereInput;
-  blocks_none?: BlockWhereInput;
-  boxes_every?: BoxWhereInput;
-  boxes_some?: BoxWhereInput;
-  boxes_none?: BoxWhereInput;
-  AND?: PageWhereInput[] | PageWhereInput;
-  OR?: PageWhereInput[] | PageWhereInput;
-  NOT?: PageWhereInput[] | PageWhereInput;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
 }
 
-export interface BoxUpdateManyWithWhereNestedInput {
-  where: BoxScalarWhereInput;
-  data: BoxUpdateManyDataInput;
-}
-
-export interface BlockSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: BlockWhereInput;
-  AND?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
-  OR?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
-  NOT?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+export interface ProsAndConsUpdateManyWithWhereNestedInput {
+  where: ProsAndConsScalarWhereInput;
+  data: ProsAndConsUpdateManyDataInput;
 }
 
 export interface BoxWhereInput {
@@ -830,6 +1356,47 @@ export interface BoxWhereInput {
   NOT?: BoxWhereInput[] | BoxWhereInput;
 }
 
+export interface ProsAndConsUpdateManyDataInput {
+  title?: String;
+  order?: Int;
+}
+
+export interface ProsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ProsWhereInput;
+  AND?: ProsSubscriptionWhereInput[] | ProsSubscriptionWhereInput;
+  OR?: ProsSubscriptionWhereInput[] | ProsSubscriptionWhereInput;
+  NOT?: ProsSubscriptionWhereInput[] | ProsSubscriptionWhereInput;
+}
+
+export interface PageUpsertWithoutBlocksInput {
+  update: PageUpdateWithoutBlocksDataInput;
+  create: PageCreateWithoutBlocksInput;
+}
+
+export interface BlockSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: BlockWhereInput;
+  AND?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+  OR?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+  NOT?: BlockSubscriptionWhereInput[] | BlockSubscriptionWhereInput;
+}
+
+export interface BlockUpdateManyMutationInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
 export interface UserUpdateInput {
   name?: String;
   email?: String;
@@ -839,9 +1406,434 @@ export interface UserUpdateInput {
   permissions?: UserUpdatepermissionsInput;
 }
 
-export interface PageUpsertWithoutBlocksInput {
-  update: PageUpdateWithoutBlocksDataInput;
-  create: PageCreateWithoutBlocksInput;
+export interface ProsAndConsUpdateOneRequiredWithoutConsInput {
+  create?: ProsAndConsCreateWithoutConsInput;
+  update?: ProsAndConsUpdateWithoutConsDataInput;
+  upsert?: ProsAndConsUpsertWithoutConsInput;
+  connect?: ProsAndConsWhereUniqueInput;
+}
+
+export interface ProsAndConsUpdateManyMutationInput {
+  title?: String;
+  order?: Int;
+}
+
+export interface ConsUpdateInput {
+  prosAndCons?: ProsAndConsUpdateOneRequiredWithoutConsInput;
+  content?: String;
+  order?: Int;
+}
+
+export interface ProsAndConsCreateInput {
+  page: PageCreateOneWithoutProsAndConsInput;
+  title?: String;
+  order?: Int;
+  pros?: ProsCreateManyWithoutProsAndConsInput;
+  cons?: ConsCreateManyWithoutProsAndConsInput;
+}
+
+export interface BoxCreateInput {
+  page: PageCreateOneWithoutBoxesInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface ProsAndConsUpdateWithoutProsDataInput {
+  page?: PageUpdateOneRequiredWithoutProsAndConsInput;
+  title?: String;
+  order?: Int;
+  cons?: ConsUpdateManyWithoutProsAndConsInput;
+}
+
+export interface PageCreateOneWithoutBoxesInput {
+  create?: PageCreateWithoutBoxesInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface ProsAndConsCreateWithoutProsInput {
+  page: PageCreateOneWithoutProsAndConsInput;
+  title?: String;
+  order?: Int;
+  cons?: ConsCreateManyWithoutProsAndConsInput;
+}
+
+export interface PageCreateWithoutBoxesInput {
+  title: String;
+  image?: String;
+  slug: String;
+  type: PageType;
+  vertical?: String;
+  blocks?: BlockCreateManyWithoutPageInput;
+  prosAndCons?: ProsAndConsCreateManyWithoutPageInput;
+}
+
+export interface PageUpdateManyMutationInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+}
+
+export interface BlockCreateManyWithoutPageInput {
+  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
+  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+}
+
+export interface ConsUpdateManyMutationInput {
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockCreateWithoutPageInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockCreateInput {
+  page: PageCreateOneWithoutBlocksInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BoxUpdateInput {
+  page?: PageUpdateOneRequiredWithoutBoxesInput;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BoxCreateWithoutPageInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface PageUpdateOneRequiredWithoutBoxesInput {
+  create?: PageCreateWithoutBoxesInput;
+  update?: PageUpdateWithoutBoxesDataInput;
+  upsert?: PageUpsertWithoutBoxesInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface ProsCreateWithoutProsAndConsInput {
+  content?: String;
+  order?: Int;
+}
+
+export interface PageUpdateWithoutBoxesDataInput {
+  title?: String;
+  image?: String;
+  slug?: String;
+  type?: PageType;
+  vertical?: String;
+  blocks?: BlockUpdateManyWithoutPageInput;
+  prosAndCons?: ProsAndConsUpdateManyWithoutPageInput;
+}
+
+export interface PageUpdateOneRequiredWithoutBlocksInput {
+  create?: PageCreateWithoutBlocksInput;
+  update?: PageUpdateWithoutBlocksDataInput;
+  upsert?: PageUpsertWithoutBlocksInput;
+  connect?: PageWhereUniqueInput;
+}
+
+export interface BlockUpdateManyWithoutPageInput {
+  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
+  delete?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  set?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  disconnect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
+  update?:
+    | BlockUpdateWithWhereUniqueWithoutPageInput[]
+    | BlockUpdateWithWhereUniqueWithoutPageInput;
+  upsert?:
+    | BlockUpsertWithWhereUniqueWithoutPageInput[]
+    | BlockUpsertWithWhereUniqueWithoutPageInput;
+  deleteMany?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+  updateMany?:
+    | BlockUpdateManyWithWhereNestedInput[]
+    | BlockUpdateManyWithWhereNestedInput;
+}
+
+export interface ConsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ConsWhereInput;
+  AND?: ConsSubscriptionWhereInput[] | ConsSubscriptionWhereInput;
+  OR?: ConsSubscriptionWhereInput[] | ConsSubscriptionWhereInput;
+  NOT?: ConsSubscriptionWhereInput[] | ConsSubscriptionWhereInput;
+}
+
+export interface BlockUpdateWithWhereUniqueWithoutPageInput {
+  where: BlockWhereUniqueInput;
+  data: BlockUpdateWithoutPageDataInput;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface BlockUpdateWithoutPageDataInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export type ProsWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface BlockUpsertWithWhereUniqueWithoutPageInput {
+  where: BlockWhereUniqueInput;
+  update: BlockUpdateWithoutPageDataInput;
+  create: BlockCreateWithoutPageInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
+export interface BlockScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  video?: String;
+  video_not?: String;
+  video_in?: String[] | String;
+  video_not_in?: String[] | String;
+  video_lt?: String;
+  video_lte?: String;
+  video_gt?: String;
+  video_gte?: String;
+  video_contains?: String;
+  video_not_contains?: String;
+  video_starts_with?: String;
+  video_not_starts_with?: String;
+  video_ends_with?: String;
+  video_not_ends_with?: String;
+  style?: String;
+  style_not?: String;
+  style_in?: String[] | String;
+  style_not_in?: String[] | String;
+  style_lt?: String;
+  style_lte?: String;
+  style_gt?: String;
+  style_gte?: String;
+  style_contains?: String;
+  style_not_contains?: String;
+  style_starts_with?: String;
+  style_not_starts_with?: String;
+  style_ends_with?: String;
+  style_not_ends_with?: String;
+  content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
+  order?: Int;
+  order_not?: Int;
+  order_in?: Int[] | Int;
+  order_not_in?: Int[] | Int;
+  order_lt?: Int;
+  order_lte?: Int;
+  order_gt?: Int;
+  order_gte?: Int;
+  AND?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+  OR?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+  NOT?: BlockScalarWhereInput[] | BlockScalarWhereInput;
+}
+
+export interface PageUpsertWithoutProsAndConsInput {
+  update: PageUpdateWithoutProsAndConsDataInput;
+  create: PageCreateWithoutProsAndConsInput;
+}
+
+export interface BlockUpdateManyWithWhereNestedInput {
+  where: BlockScalarWhereInput;
+  data: BlockUpdateManyDataInput;
+}
+
+export interface ProsAndConsCreateWithoutPageInput {
+  title?: String;
+  order?: Int;
+  pros?: ProsCreateManyWithoutProsAndConsInput;
+  cons?: ConsCreateManyWithoutProsAndConsInput;
+}
+
+export interface BlockUpdateManyDataInput {
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface PageWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  slug?: String;
+  slug_not?: String;
+  slug_in?: String[] | String;
+  slug_not_in?: String[] | String;
+  slug_lt?: String;
+  slug_lte?: String;
+  slug_gt?: String;
+  slug_gte?: String;
+  slug_contains?: String;
+  slug_not_contains?: String;
+  slug_starts_with?: String;
+  slug_not_starts_with?: String;
+  slug_ends_with?: String;
+  slug_not_ends_with?: String;
+  type?: PageType;
+  type_not?: PageType;
+  type_in?: PageType[] | PageType;
+  type_not_in?: PageType[] | PageType;
+  vertical?: String;
+  vertical_not?: String;
+  vertical_in?: String[] | String;
+  vertical_not_in?: String[] | String;
+  vertical_lt?: String;
+  vertical_lte?: String;
+  vertical_gt?: String;
+  vertical_gte?: String;
+  vertical_contains?: String;
+  vertical_not_contains?: String;
+  vertical_starts_with?: String;
+  vertical_not_starts_with?: String;
+  vertical_ends_with?: String;
+  vertical_not_ends_with?: String;
+  blocks_every?: BlockWhereInput;
+  blocks_some?: BlockWhereInput;
+  blocks_none?: BlockWhereInput;
+  boxes_every?: BoxWhereInput;
+  boxes_some?: BoxWhereInput;
+  boxes_none?: BoxWhereInput;
+  prosAndCons_every?: ProsAndConsWhereInput;
+  prosAndCons_some?: ProsAndConsWhereInput;
+  prosAndCons_none?: ProsAndConsWhereInput;
+  AND?: PageWhereInput[] | PageWhereInput;
+  OR?: PageWhereInput[] | PageWhereInput;
+  NOT?: PageWhereInput[] | PageWhereInput;
+}
+
+export interface PageUpsertWithoutBoxesInput {
+  update: PageUpdateWithoutBoxesDataInput;
+  create: PageCreateWithoutBoxesInput;
 }
 
 export interface BlockWhereInput {
@@ -943,36 +1935,13 @@ export interface BlockWhereInput {
   NOT?: BlockWhereInput[] | BlockWhereInput;
 }
 
-export interface BlockUpdateManyMutationInput {
+export interface BoxUpdateManyMutationInput {
   title?: String;
   image?: String;
   video?: String;
   style?: String;
   content?: String;
   order?: Int;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
-export interface BlockUpdateManyWithoutPageInput {
-  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
-  delete?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  set?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  disconnect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-  update?:
-    | BlockUpdateWithWhereUniqueWithoutPageInput[]
-    | BlockUpdateWithWhereUniqueWithoutPageInput;
-  upsert?:
-    | BlockUpsertWithWhereUniqueWithoutPageInput[]
-    | BlockUpsertWithWhereUniqueWithoutPageInput;
-  deleteMany?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-  updateMany?:
-    | BlockUpdateManyWithWhereNestedInput[]
-    | BlockUpdateManyWithWhereNestedInput;
 }
 
 export interface UserWhereInput {
@@ -1059,207 +2028,55 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface PageUpdateWithoutBoxesDataInput {
-  title?: String;
-  image?: String;
-  slug?: String;
-  type?: PageType;
-  vertical?: String;
-  blocks?: BlockUpdateManyWithoutPageInput;
-}
-
-export interface BlockUpdateWithoutPageDataInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface BoxCreateInput {
-  page: PageCreateOneWithoutBoxesInput;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface PageCreateOneWithoutBoxesInput {
-  create?: PageCreateWithoutBoxesInput;
+export interface PageCreateOneWithoutProsAndConsInput {
+  create?: PageCreateWithoutProsAndConsInput;
   connect?: PageWhereUniqueInput;
 }
 
-export interface PageUpdateInput {
+export interface ProsAndConsCreateWithoutConsInput {
+  page: PageCreateOneWithoutProsAndConsInput;
   title?: String;
-  image?: String;
-  slug?: String;
-  type?: PageType;
-  vertical?: String;
-  blocks?: BlockUpdateManyWithoutPageInput;
-  boxes?: BoxUpdateManyWithoutPageInput;
+  order?: Int;
+  pros?: ProsCreateManyWithoutProsAndConsInput;
 }
 
-export interface BoxUpdateInput {
-  page?: PageUpdateOneRequiredWithoutBoxesInput;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
+export interface ProsAndConsCreateOneWithoutConsInput {
+  create?: ProsAndConsCreateWithoutConsInput;
+  connect?: ProsAndConsWhereUniqueInput;
+}
+
+export interface ConsCreateInput {
+  prosAndCons: ProsAndConsCreateOneWithoutConsInput;
   content?: String;
   order?: Int;
 }
 
-export interface BlockCreateWithoutPageInput {
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
-  content?: String;
-  order?: Int;
-}
-
-export interface BlockCreateManyWithoutPageInput {
-  create?: BlockCreateWithoutPageInput[] | BlockCreateWithoutPageInput;
-  connect?: BlockWhereUniqueInput[] | BlockWhereUniqueInput;
-}
-
-export interface PageCreateWithoutBoxesInput {
+export interface PageCreateWithoutBlocksInput {
   title: String;
   image?: String;
   slug: String;
   type: PageType;
   vertical?: String;
-  blocks?: BlockCreateManyWithoutPageInput;
+  boxes?: BoxCreateManyWithoutPageInput;
+  prosAndCons?: ProsAndConsCreateManyWithoutPageInput;
 }
 
-export interface PageUpsertWithoutBoxesInput {
-  update: PageUpdateWithoutBoxesDataInput;
-  create: PageCreateWithoutBoxesInput;
-}
+export type ProsAndConsWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
-export interface UserCreateInput {
-  name: String;
-  email: String;
-  password: String;
+export interface UserUpdateManyMutationInput {
+  name?: String;
+  email?: String;
+  password?: String;
   resetToken?: String;
   resetTokenExpiry?: Float;
-  permissions?: UserCreatepermissionsInput;
+  permissions?: UserUpdatepermissionsInput;
 }
 
-export interface PageSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PageWhereInput;
-  AND?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
-  OR?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
-  NOT?: PageSubscriptionWhereInput[] | PageSubscriptionWhereInput;
-}
-
-export interface BlockScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  video?: String;
-  video_not?: String;
-  video_in?: String[] | String;
-  video_not_in?: String[] | String;
-  video_lt?: String;
-  video_lte?: String;
-  video_gt?: String;
-  video_gte?: String;
-  video_contains?: String;
-  video_not_contains?: String;
-  video_starts_with?: String;
-  video_not_starts_with?: String;
-  video_ends_with?: String;
-  video_not_ends_with?: String;
-  style?: String;
-  style_not?: String;
-  style_in?: String[] | String;
-  style_not_in?: String[] | String;
-  style_lt?: String;
-  style_lte?: String;
-  style_gt?: String;
-  style_gte?: String;
-  style_contains?: String;
-  style_not_contains?: String;
-  style_starts_with?: String;
-  style_not_starts_with?: String;
-  style_ends_with?: String;
-  style_not_ends_with?: String;
+export interface ConsCreateWithoutProsAndConsInput {
   content?: String;
-  content_not?: String;
-  content_in?: String[] | String;
-  content_not_in?: String[] | String;
-  content_lt?: String;
-  content_lte?: String;
-  content_gt?: String;
-  content_gte?: String;
-  content_contains?: String;
-  content_not_contains?: String;
-  content_starts_with?: String;
-  content_not_starts_with?: String;
-  content_ends_with?: String;
-  content_not_ends_with?: String;
   order?: Int;
-  order_not?: Int;
-  order_in?: Int[] | Int;
-  order_not_in?: Int[] | Int;
-  order_lt?: Int;
-  order_lte?: Int;
-  order_gt?: Int;
-  order_gte?: Int;
-  AND?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-  OR?: BlockScalarWhereInput[] | BlockScalarWhereInput;
-  NOT?: BlockScalarWhereInput[] | BlockScalarWhereInput;
 }
 
 export interface NodeNode {
@@ -1300,6 +2117,66 @@ export interface UserPreviousValuesSubscription
   permissions: () => Promise<AsyncIterator<Permission[]>>;
 }
 
+export interface ConsEdge {
+  node: Cons;
+  cursor: String;
+}
+
+export interface ConsEdgePromise extends Promise<ConsEdge>, Fragmentable {
+  node: <T = ConsPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ConsEdgeSubscription
+  extends Promise<AsyncIterator<ConsEdge>>,
+    Fragmentable {
+  node: <T = ConsSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Cons {
+  id: ID_Output;
+  content?: String;
+  order?: Int;
+}
+
+export interface ConsPromise extends Promise<Cons>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  prosAndCons: <T = ProsAndConsPromise>() => T;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
+}
+
+export interface ConsSubscription
+  extends Promise<AsyncIterator<Cons>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  prosAndCons: <T = ProsAndConsSubscription>() => T;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ConsConnection {
+  pageInfo: PageInfo;
+  edges: ConsEdge[];
+}
+
+export interface ConsConnectionPromise
+  extends Promise<ConsConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ConsEdge>>() => T;
+  aggregate: <T = AggregateConsPromise>() => T;
+}
+
+export interface ConsConnectionSubscription
+  extends Promise<AsyncIterator<ConsConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ConsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateConsSubscription>() => T;
+}
+
 export interface AggregateBox {
   count: Int;
 }
@@ -1316,65 +2193,6 @@ export interface AggregateBoxSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BlockConnection {
-  pageInfo: PageInfo;
-  edges: BlockEdge[];
-}
-
-export interface BlockConnectionPromise
-  extends Promise<BlockConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BlockEdge>>() => T;
-  aggregate: <T = AggregateBlockPromise>() => T;
-}
-
-export interface BlockConnectionSubscription
-  extends Promise<AsyncIterator<BlockConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<BlockEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateBlockSubscription>() => T;
-}
-
-export interface BoxEdge {
-  node: Box;
-  cursor: String;
-}
-
-export interface BoxEdgePromise extends Promise<BoxEdge>, Fragmentable {
-  node: <T = BoxPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface BoxEdgeSubscription
-  extends Promise<AsyncIterator<BoxEdge>>,
-    Fragmentable {
-  node: <T = BoxSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface BoxConnection {
-  pageInfo: PageInfo;
-  edges: BoxEdge[];
-}
-
-export interface BoxConnectionPromise
-  extends Promise<BoxConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BoxEdge>>() => T;
-  aggregate: <T = AggregateBoxPromise>() => T;
-}
-
-export interface BoxConnectionSubscription
-  extends Promise<AsyncIterator<BoxConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<BoxEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateBoxSubscription>() => T;
-}
-
 export interface BatchPayload {
   count: Long;
 }
@@ -1389,76 +2207,6 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateBlock {
-  count: Int;
-}
-
-export interface AggregateBlockPromise
-  extends Promise<AggregateBlock>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateBlockSubscription
-  extends Promise<AsyncIterator<AggregateBlock>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface BlockEdge {
-  node: Block;
-  cursor: String;
-}
-
-export interface BlockEdgePromise extends Promise<BlockEdge>, Fragmentable {
-  node: <T = BlockPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface BlockEdgeSubscription
-  extends Promise<AsyncIterator<BlockEdge>>,
-    Fragmentable {
-  node: <T = BlockSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Box {
@@ -1495,61 +2243,117 @@ export interface BoxSubscription
   order: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface PageSubscriptionPayload {
-  mutation: MutationType;
-  node: Page;
-  updatedFields: String[];
-  previousValues: PagePreviousValues;
+export interface BoxEdge {
+  node: Box;
+  cursor: String;
 }
 
-export interface PageSubscriptionPayloadPromise
-  extends Promise<PageSubscriptionPayload>,
+export interface BoxEdgePromise extends Promise<BoxEdge>, Fragmentable {
+  node: <T = BoxPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface BoxEdgeSubscription
+  extends Promise<AsyncIterator<BoxEdge>>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PagePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PagePreviousValuesPromise>() => T;
+  node: <T = BoxSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PageSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PageSubscriptionPayload>>,
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PageSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PagePreviousValuesSubscription>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface User {
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BoxConnection {
+  pageInfo: PageInfo;
+  edges: BoxEdge[];
+}
+
+export interface BoxConnectionPromise
+  extends Promise<BoxConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BoxEdge>>() => T;
+  aggregate: <T = AggregateBoxPromise>() => T;
+}
+
+export interface BoxConnectionSubscription
+  extends Promise<AsyncIterator<BoxConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BoxEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBoxSubscription>() => T;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface AggregateBlock {
+  count: Int;
+}
+
+export interface AggregateBlockPromise
+  extends Promise<AggregateBlock>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateBlockSubscription
+  extends Promise<AsyncIterator<AggregateBlock>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Pros {
   id: ID_Output;
-  name: String;
-  email: String;
-  password: String;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-  permissions: Permission[];
+  content?: String;
+  order?: Int;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface ProsPromise extends Promise<Pros>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  resetToken: () => Promise<String>;
-  resetTokenExpiry: () => Promise<Float>;
-  permissions: () => Promise<Permission[]>;
+  prosAndCons: <T = ProsAndConsPromise>() => T;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface ProsSubscription
+  extends Promise<AsyncIterator<Pros>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  resetToken: () => Promise<AsyncIterator<String>>;
-  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
-  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  prosAndCons: <T = ProsAndConsSubscription>() => T;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface Block {
@@ -1586,21 +2390,36 @@ export interface BlockSubscription
   order: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface PageEdge {
-  node: Page;
-  cursor: String;
+export interface User {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password: String;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  permissions: Permission[];
 }
 
-export interface PageEdgePromise extends Promise<PageEdge>, Fragmentable {
-  node: <T = PagePromise>() => T;
-  cursor: () => Promise<String>;
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
+  permissions: () => Promise<Permission[]>;
 }
 
-export interface PageEdgeSubscription
-  extends Promise<AsyncIterator<PageEdge>>,
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
     Fragmentable {
-  node: <T = PageSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
 }
 
 export interface BlockSubscriptionPayload {
@@ -1628,6 +2447,230 @@ export interface BlockSubscriptionPayloadSubscription
   previousValues: <T = BlockPreviousValuesSubscription>() => T;
 }
 
+export interface ProsAndConsEdge {
+  node: ProsAndCons;
+  cursor: String;
+}
+
+export interface ProsAndConsEdgePromise
+  extends Promise<ProsAndConsEdge>,
+    Fragmentable {
+  node: <T = ProsAndConsPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ProsAndConsEdgeSubscription
+  extends Promise<AsyncIterator<ProsAndConsEdge>>,
+    Fragmentable {
+  node: <T = ProsAndConsSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BlockPreviousValues {
+  id: ID_Output;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BlockPreviousValuesPromise
+  extends Promise<BlockPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  image: () => Promise<String>;
+  video: () => Promise<String>;
+  style: () => Promise<String>;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
+}
+
+export interface BlockPreviousValuesSubscription
+  extends Promise<AsyncIterator<BlockPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  video: () => Promise<AsyncIterator<String>>;
+  style: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregatePros {
+  count: Int;
+}
+
+export interface AggregateProsPromise
+  extends Promise<AggregatePros>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateProsSubscription
+  extends Promise<AsyncIterator<AggregatePros>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BlockEdge {
+  node: Block;
+  cursor: String;
+}
+
+export interface BlockEdgePromise extends Promise<BlockEdge>, Fragmentable {
+  node: <T = BlockPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface BlockEdgeSubscription
+  extends Promise<AsyncIterator<BlockEdge>>,
+    Fragmentable {
+  node: <T = BlockSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ProsConnection {
+  pageInfo: PageInfo;
+  edges: ProsEdge[];
+}
+
+export interface ProsConnectionPromise
+  extends Promise<ProsConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProsEdge>>() => T;
+  aggregate: <T = AggregateProsPromise>() => T;
+}
+
+export interface ProsConnectionSubscription
+  extends Promise<AsyncIterator<ProsConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProsSubscription>() => T;
+}
+
+export interface BoxSubscriptionPayload {
+  mutation: MutationType;
+  node: Box;
+  updatedFields: String[];
+  previousValues: BoxPreviousValues;
+}
+
+export interface BoxSubscriptionPayloadPromise
+  extends Promise<BoxSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = BoxPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = BoxPreviousValuesPromise>() => T;
+}
+
+export interface BoxSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<BoxSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = BoxSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = BoxPreviousValuesSubscription>() => T;
+}
+
+export interface PageEdge {
+  node: Page;
+  cursor: String;
+}
+
+export interface PageEdgePromise extends Promise<PageEdge>, Fragmentable {
+  node: <T = PagePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PageEdgeSubscription
+  extends Promise<AsyncIterator<PageEdge>>,
+    Fragmentable {
+  node: <T = PageSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BoxPreviousValues {
+  id: ID_Output;
+  title?: String;
+  image?: String;
+  video?: String;
+  style?: String;
+  content?: String;
+  order?: Int;
+}
+
+export interface BoxPreviousValuesPromise
+  extends Promise<BoxPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  image: () => Promise<String>;
+  video: () => Promise<String>;
+  style: () => Promise<String>;
+  content: () => Promise<String>;
+  order: () => Promise<Int>;
+}
+
+export interface BoxPreviousValuesSubscription
+  extends Promise<AsyncIterator<BoxPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  video: () => Promise<AsyncIterator<String>>;
+  style: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateCons {
+  count: Int;
+}
+
+export interface AggregateConsPromise
+  extends Promise<AggregateCons>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateConsSubscription
+  extends Promise<AsyncIterator<AggregateCons>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProsAndConsSubscriptionPayload {
+  mutation: MutationType;
+  node: ProsAndCons;
+  updatedFields: String[];
+  previousValues: ProsAndConsPreviousValues;
+}
+
+export interface ProsAndConsSubscriptionPayloadPromise
+  extends Promise<ProsAndConsSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ProsAndConsPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ProsAndConsPreviousValuesPromise>() => T;
+}
+
+export interface ProsAndConsSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ProsAndConsSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ProsAndConsSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ProsAndConsPreviousValuesSubscription>() => T;
+}
+
 export interface UserSubscriptionPayload {
   mutation: MutationType;
   node: User;
@@ -1651,6 +2694,31 @@ export interface UserSubscriptionPayloadSubscription
   node: <T = UserSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
   previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface ConsSubscriptionPayload {
+  mutation: MutationType;
+  node: Cons;
+  updatedFields: String[];
+  previousValues: ConsPreviousValues;
+}
+
+export interface ConsSubscriptionPayloadPromise
+  extends Promise<ConsSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ConsPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ConsPreviousValuesPromise>() => T;
+}
+
+export interface ConsSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ConsSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ConsSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ConsPreviousValuesSubscription>() => T;
 }
 
 export interface Page {
@@ -1691,6 +2759,17 @@ export interface PagePromise extends Promise<Page>, Fragmentable {
       last?: Int;
     }
   ) => T;
+  prosAndCons: <T = FragmentableArray<ProsAndCons>>(
+    args?: {
+      where?: ProsAndConsWhereInput;
+      orderBy?: ProsAndConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface PageSubscription
@@ -1724,65 +2803,55 @@ export interface PageSubscription
       last?: Int;
     }
   ) => T;
+  prosAndCons: <T = Promise<AsyncIterator<ProsAndConsSubscription>>>(
+    args?: {
+      where?: ProsAndConsWhereInput;
+      orderBy?: ProsAndConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
-export interface BoxPreviousValues {
+export interface ConsPreviousValues {
   id: ID_Output;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
   content?: String;
   order?: Int;
 }
 
-export interface BoxPreviousValuesPromise
-  extends Promise<BoxPreviousValues>,
+export interface ConsPreviousValuesPromise
+  extends Promise<ConsPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  image: () => Promise<String>;
-  video: () => Promise<String>;
-  style: () => Promise<String>;
   content: () => Promise<String>;
   order: () => Promise<Int>;
 }
 
-export interface BoxPreviousValuesSubscription
-  extends Promise<AsyncIterator<BoxPreviousValues>>,
+export interface ConsPreviousValuesSubscription
+  extends Promise<AsyncIterator<ConsPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  video: () => Promise<AsyncIterator<String>>;
-  style: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   order: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BoxSubscriptionPayload {
-  mutation: MutationType;
-  node: Box;
-  updatedFields: String[];
-  previousValues: BoxPreviousValues;
+export interface AggregateProsAndCons {
+  count: Int;
 }
 
-export interface BoxSubscriptionPayloadPromise
-  extends Promise<BoxSubscriptionPayload>,
+export interface AggregateProsAndConsPromise
+  extends Promise<AggregateProsAndCons>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = BoxPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = BoxPreviousValuesPromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface BoxSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<BoxSubscriptionPayload>>,
+export interface AggregateProsAndConsSubscription
+  extends Promise<AsyncIterator<AggregateProsAndCons>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = BoxSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = BoxPreviousValuesSubscription>() => T;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PageInfo {
@@ -1808,38 +2877,152 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BlockPreviousValues {
+export interface ProsEdge {
+  node: Pros;
+  cursor: String;
+}
+
+export interface ProsEdgePromise extends Promise<ProsEdge>, Fragmentable {
+  node: <T = ProsPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ProsEdgeSubscription
+  extends Promise<AsyncIterator<ProsEdge>>,
+    Fragmentable {
+  node: <T = ProsSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PageSubscriptionPayload {
+  mutation: MutationType;
+  node: Page;
+  updatedFields: String[];
+  previousValues: PagePreviousValues;
+}
+
+export interface PageSubscriptionPayloadPromise
+  extends Promise<PageSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PagePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PagePreviousValuesPromise>() => T;
+}
+
+export interface PageSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PageSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PageSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PagePreviousValuesSubscription>() => T;
+}
+
+export interface PageConnection {
+  pageInfo: PageInfo;
+  edges: PageEdge[];
+}
+
+export interface PageConnectionPromise
+  extends Promise<PageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PageEdge>>() => T;
+  aggregate: <T = AggregatePagePromise>() => T;
+}
+
+export interface PageConnectionSubscription
+  extends Promise<AsyncIterator<PageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePageSubscription>() => T;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ProsPreviousValues {
   id: ID_Output;
-  title?: String;
-  image?: String;
-  video?: String;
-  style?: String;
   content?: String;
   order?: Int;
 }
 
-export interface BlockPreviousValuesPromise
-  extends Promise<BlockPreviousValues>,
+export interface ProsPreviousValuesPromise
+  extends Promise<ProsPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  image: () => Promise<String>;
-  video: () => Promise<String>;
-  style: () => Promise<String>;
   content: () => Promise<String>;
   order: () => Promise<Int>;
 }
 
-export interface BlockPreviousValuesSubscription
-  extends Promise<AsyncIterator<BlockPreviousValues>>,
+export interface ProsPreviousValuesSubscription
+  extends Promise<AsyncIterator<ProsPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  video: () => Promise<AsyncIterator<String>>;
-  style: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   order: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProsSubscriptionPayload {
+  mutation: MutationType;
+  node: Pros;
+  updatedFields: String[];
+  previousValues: ProsPreviousValues;
+}
+
+export interface ProsSubscriptionPayloadPromise
+  extends Promise<ProsSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ProsPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ProsPreviousValuesPromise>() => T;
+}
+
+export interface ProsSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ProsSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ProsSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ProsPreviousValuesSubscription>() => T;
+}
+
+export interface BlockConnection {
+  pageInfo: PageInfo;
+  edges: BlockEdge[];
+}
+
+export interface BlockConnectionPromise
+  extends Promise<BlockConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BlockEdge>>() => T;
+  aggregate: <T = AggregateBlockPromise>() => T;
+}
+
+export interface BlockConnectionSubscription
+  extends Promise<AsyncIterator<BlockConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BlockEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBlockSubscription>() => T;
 }
 
 export interface PagePreviousValues {
@@ -1873,42 +3056,92 @@ export interface PagePreviousValuesSubscription
   vertical: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserEdge {
-  node: User;
-  cursor: String;
+export interface ProsAndConsPreviousValues {
+  id: ID_Output;
+  title?: String;
+  order?: Int;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface ProsAndConsPreviousValuesPromise
+  extends Promise<ProsAndConsPreviousValues>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  order: () => Promise<Int>;
 }
 
-export interface PageConnection {
-  pageInfo: PageInfo;
-  edges: PageEdge[];
-}
-
-export interface PageConnectionPromise
-  extends Promise<PageConnection>,
+export interface ProsAndConsPreviousValuesSubscription
+  extends Promise<AsyncIterator<ProsAndConsPreviousValues>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PageEdge>>() => T;
-  aggregate: <T = AggregatePagePromise>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface PageConnectionSubscription
-  extends Promise<AsyncIterator<PageConnection>>,
+export interface ProsAndCons {
+  id: ID_Output;
+  title?: String;
+  order?: Int;
+}
+
+export interface ProsAndConsPromise extends Promise<ProsAndCons>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  page: <T = PagePromise>() => T;
+  title: () => Promise<String>;
+  order: () => Promise<Int>;
+  pros: <T = FragmentableArray<Pros>>(
+    args?: {
+      where?: ProsWhereInput;
+      orderBy?: ProsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  cons: <T = FragmentableArray<Cons>>(
+    args?: {
+      where?: ConsWhereInput;
+      orderBy?: ConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface ProsAndConsSubscription
+  extends Promise<AsyncIterator<ProsAndCons>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PageEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePageSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  page: <T = PageSubscription>() => T;
+  title: () => Promise<AsyncIterator<String>>;
+  order: () => Promise<AsyncIterator<Int>>;
+  pros: <T = Promise<AsyncIterator<ProsSubscription>>>(
+    args?: {
+      where?: ProsWhereInput;
+      orderBy?: ProsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  cons: <T = Promise<AsyncIterator<ConsSubscription>>>(
+    args?: {
+      where?: ConsWhereInput;
+      orderBy?: ConsOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
 }
 
 export interface AggregatePage {
@@ -1925,6 +3158,27 @@ export interface AggregatePageSubscription
   extends Promise<AsyncIterator<AggregatePage>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProsAndConsConnection {
+  pageInfo: PageInfo;
+  edges: ProsAndConsEdge[];
+}
+
+export interface ProsAndConsConnectionPromise
+  extends Promise<ProsAndConsConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProsAndConsEdge>>() => T;
+  aggregate: <T = AggregateProsAndConsPromise>() => T;
+}
+
+export interface ProsAndConsConnectionSubscription
+  extends Promise<AsyncIterator<ProsAndConsConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProsAndConsEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProsAndConsSubscription>() => T;
 }
 
 /*
@@ -1982,6 +3236,18 @@ export const models: Model[] = [
   },
   {
     name: "Box",
+    embedded: false
+  },
+  {
+    name: "ProsAndCons",
+    embedded: false
+  },
+  {
+    name: "Pros",
+    embedded: false
+  },
+  {
+    name: "Cons",
     embedded: false
   }
 ];

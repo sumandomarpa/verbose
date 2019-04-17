@@ -36,7 +36,7 @@ cache.writeData({
       __typename: 'Page',
     },
     pageItems: [
-      { type: 'block', itemId: blockId, pageId, __typename: 'PageItem' },
+      { type: 'Block', itemId: blockId, pageId, __typename: 'PageItem' },
     ],
     blocks: [
       {
@@ -50,6 +50,7 @@ cache.writeData({
       },
     ],
     boxes: [],
+    prosAndCons: [],
   },
 })
 

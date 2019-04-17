@@ -73,6 +73,40 @@ export const GET_BOX = gql`
   }
 `
 
+export const GET_PROS_AND_CONS = gql`
+  query GetProsAndCons {
+    prosAndCons @client {
+      id
+      title
+      pros {
+        id
+        content
+      }
+      cons {
+        id
+        content
+      }
+    }
+  }
+`
+
+export const GET_PROS_AND_CONS_BY_ID = gql`
+  query GetProsAndConsById($itemId: String) {
+    prosAndConsById(itemId: $itemId) @client {
+      id
+      title
+      pros {
+        id
+        content
+      }
+      cons {
+        id
+        content
+      }
+    }
+  }
+`
+
 export const GET_PAGE_DB = gql`
   query getPage($id: ID) {
     page(id: $id) {
@@ -99,6 +133,19 @@ export const GET_PAGE_DB = gql`
         style
         content
         order
+      }
+      prosAndCons {
+        id
+        title
+        order
+        pros {
+          id
+          content
+        }
+        cons {
+          id
+          content
+        }
       }
     }
   }

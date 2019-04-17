@@ -18,6 +18,36 @@ export const UPDATE_BOX = gql`
   }
 `
 
+export const UPDATE_PROS_AND_CONS = gql`
+  mutation UpdateProsAndCons(
+    $name: String
+    $value: String
+    $itemId: String
+    $prosId: ID
+    $consId: ID
+  ) {
+    updateProsAndCons(
+      name: $name
+      value: $value
+      itemId: $itemId
+      prosId: $prosId
+      consId: $consId
+    ) @client
+  }
+`
+
+export const ADD_PROS_OR_CONS = gql`
+  mutation AddProsOrCons($itemId: String, $prosOrCons: String) {
+    addProsOrCons(itemId: $itemId, prosOrCons: $prosOrCons) @client
+  }
+`
+
+export const REMOVE_PROS_OR_CONS = gql`
+  mutation RemoveProsOrCons($itemId: String, $prosOrConsId: Id) {
+    removeProsOrCons(itemId: $itemId, prosOrConsId: $prosOrConsId) @client
+  }
+`
+
 export const ADD_PAGE_ITEM = gql`
   mutation AddPageItem($type: String!, $pageId: String!) {
     addPageItem(type: $type, pageId: $pageId) @client
@@ -44,6 +74,7 @@ export const SAVE_PAGE_TO_DB = gql`
     $vertical: String
     $blocks: [BlockInput]
     $boxes: [BoxInput]
+    $prosAndCons: [ProsAndConsInput]
   ) {
     addPage(
       title: $title
@@ -52,6 +83,7 @@ export const SAVE_PAGE_TO_DB = gql`
       vertical: $vertical
       blocks: $blocks
       boxes: $boxes
+      prosAndCons: $prosAndCons
     ) {
       id
       title
@@ -89,6 +121,7 @@ export const UPDATE_PAGE_TO_DB = gql`
     $vertical: String
     $blocks: [BlockInput]
     $boxes: [BoxInput]
+    $prosAndCons: [ProsAndConsInput]
   ) {
     updatePage(
       id: $id
@@ -98,6 +131,7 @@ export const UPDATE_PAGE_TO_DB = gql`
       vertical: $vertical
       blocks: $blocks
       boxes: $boxes
+      prosAndCons: $prosAndCons
     ) {
       id
       title
@@ -121,6 +155,19 @@ export const UPDATE_PAGE_TO_DB = gql`
         style
         content
         order
+      }
+      prosAndCons {
+        id
+        title
+        order
+        pros {
+          id
+          content
+        }
+        cons {
+          id
+          content
+        }
       }
     }
   }

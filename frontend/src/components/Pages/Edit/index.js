@@ -6,7 +6,6 @@ import omit from 'lodash/omit'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
 import assign from 'lodash/assign'
-import { lowerCase } from 'change-case'
 
 import Layout from '../../Layout'
 import PageForm from '../Add/PageForm'
@@ -18,6 +17,7 @@ import {
   GET_PAGE,
   GET_BLOCKS,
   GET_BOXES,
+  GET_PROS_AND_CONS,
   GET_PAGE_ITEMS,
 } from '../queries'
 import { UPDATE_PAGE_TO_DB } from '../mutaitons'
@@ -55,6 +55,18 @@ class EditPage extends Component {
       })
     )
 
+    const { prosAndCons } = client.readQuery({
+      query: GET_PROS_AND_CONS,
+    })
+    const trimProsAndCons = prosAndCons.map(elem => {
+      const data = assign(omit(elem, ['__typename']), {
+        order: findIndex(pageItems, pageItem => pageItem.itemId === elem.id),
+      })
+      data.pros = data.pros.map(elem => omit(elem, ['__typename']))
+      data.cons = data.cons.map(elem => omit(elem, ['__typename']))
+      return data
+    })
+
     try {
       const {
         data: { updatePage },
@@ -68,6 +80,7 @@ class EditPage extends Component {
           vertical: page.vertical,
           blocks: trimBlocks,
           boxes: trimBoxes,
+          prosAndCons: trimProsAndCons,
         },
       })
       if (updatePage.id) {
@@ -96,13 +109,15 @@ class EditPage extends Component {
     const pageData = omit(page, ['blocks'])
     const { blocks } = page
     const { boxes } = page
+    const { prosAndCons } = page
+
     const pageItems = []
 
-    const pageItemsMerge = [...blocks, ...boxes]
+    const pageItemsMerge = [...blocks, ...boxes, ...prosAndCons]
 
     sortBy(pageItemsMerge, ['order']).forEach(item => {
       const pageItem = {
-        type: lowerCase(item.__typename),
+        type: item.__typename,
         itemId: item.id,
         pageId: page.id,
         __typename: 'PageItem',
@@ -116,6 +131,7 @@ class EditPage extends Component {
         pageItems,
         blocks,
         boxes,
+        prosAndCons,
       },
     })
   }

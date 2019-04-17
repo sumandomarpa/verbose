@@ -11,7 +11,13 @@ import PageForm from './PageForm'
 import SortableList from './SortableList'
 import PageItem from './PageItem'
 import { ActionButtonsWrapper, AddNewPageWrapper } from './styles'
-import { GET_PAGE, GET_BLOCKS, GET_PAGE_ITEMS, GET_BOXES } from '../queries'
+import {
+  GET_PAGE,
+  GET_BLOCKS,
+  GET_PAGE_ITEMS,
+  GET_BOXES,
+  GET_PROS_AND_CONS,
+} from '../queries'
 import { SAVE_PAGE_TO_DB } from '../mutaitons'
 
 class AddPage extends Component {
@@ -45,6 +51,19 @@ class AddPage extends Component {
       })
     )
 
+    const { prosAndCons } = client.readQuery({
+      query: GET_PROS_AND_CONS,
+    })
+
+    const trimProsAndCons = prosAndCons.map(box => {
+      const data = assign(omit(box, ['id', '__typename']), {
+        order: findIndex(pageItems, pageItem => pageItem.itemId === box.id),
+      })
+      data.pros = data.pros.map(elem => omit(elem, ['id', '__typename']))
+      data.cons = data.cons.map(elem => omit(elem, ['id', '__typename']))
+      return data
+    })
+
     const {
       data: { addPage },
     } = await client.mutate({
@@ -56,6 +75,7 @@ class AddPage extends Component {
         vertical: page.vertical,
         blocks: trimBlocks,
         boxes: trimBoxes,
+        prosAndCons: trimProsAndCons,
       },
     })
 
