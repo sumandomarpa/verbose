@@ -1,11 +1,13 @@
 import shortid from 'shortid'
 import gql from 'graphql-tag'
 import remove from 'lodash/remove'
+import { sentenceCase } from 'change-case'
 
 import {
   GET_PAGE_ITEMS,
   GET_BLOCKS,
   GET_BOXES,
+  GET_PROS_AND_CONS,
 } from './components/Pages/queries'
 
 export const resolvers = {
@@ -27,6 +29,14 @@ export const resolvers = {
       const box = boxes.filter(item => item.id === itemId)[0]
 
       return box
+    },
+    prosAndConsById: (_root, variables, { cache }) => {
+      const { itemId } = variables
+
+      const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
+      const prosAndConsDoc = prosAndCons.filter(item => item.id === itemId)[0]
+
+      return prosAndConsDoc
     },
   },
   Mutation: {
@@ -79,7 +89,7 @@ export const resolvers = {
       cache.writeQuery({ query: GET_PAGE_ITEMS, data })
 
       // blocks
-      if (type === 'block') {
+      if (type === 'Block') {
         const { blocks } = cache.readQuery({ query: GET_BLOCKS })
         const newBlock = {
           id: newPageItem.itemId,
@@ -94,7 +104,7 @@ export const resolvers = {
           blocks: [...blocks, newBlock],
         }
         cache.writeQuery({ query: GET_BLOCKS, data })
-      } else if (type === 'box') {
+      } else if (type === 'Box') {
         const { boxes } = cache.readQuery({ query: GET_BOXES })
         const newBox = {
           id: newPageItem.itemId,
@@ -109,6 +119,31 @@ export const resolvers = {
           boxes: [...boxes, newBox],
         }
         cache.writeQuery({ query: GET_BOXES, data })
+      } else if (type === 'ProsAndCons') {
+        const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
+        const newProsAndCons = {
+          id: newPageItem.itemId,
+          title: '',
+          pros: [
+            {
+              id: shortid.generate(),
+              content: '',
+              __typename: 'Pros',
+            },
+          ],
+          cons: [
+            {
+              id: shortid.generate(),
+              content: '',
+              __typename: 'Cons',
+            },
+          ],
+          __typename: 'ProsAndCons',
+        }
+        data = {
+          prosAndCons: [...prosAndCons, newProsAndCons],
+        }
+        cache.writeQuery({ query: GET_PROS_AND_CONS, data })
       }
 
       return data
@@ -125,20 +160,27 @@ export const resolvers = {
 
       cache.writeQuery({ query: GET_PAGE_ITEMS, data })
 
-      if (type === 'block') {
+      if (type === 'Block') {
         const { blocks } = cache.readQuery({ query: GET_BLOCKS })
         remove(blocks, block => block.id === itemId)
         data = {
           blocks,
         }
         cache.writeQuery({ query: GET_BLOCKS, data })
-      } else if (type === 'box') {
+      } else if (type === 'Box') {
         const { boxes } = cache.readQuery({ query: GET_BOXES })
         remove(boxes, box => box.id === itemId)
         data = {
           boxes,
         }
         cache.writeQuery({ query: GET_BLOCKS, data })
+      } else if (type === 'ProsAndCons') {
+        const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
+        remove(prosAndCons, elem => elem.id === itemId)
+        data = {
+          prosAndCons,
+        }
+        cache.writeQuery({ query: GET_PROS_AND_CONS, data })
       }
 
       return data
@@ -170,6 +212,71 @@ export const resolvers = {
 
       const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
+    },
+    updateProsAndCons: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId, prosId, consId } = variables
+
+      if (!prosId && !consId) {
+        const id = getCacheKey({ __typename: 'ProsAndCons', id: itemId })
+        const fragment = gql`
+          fragment updateProsAndCons on ProsAndCons {
+            ${name}
+          }
+        `
+        const previous = cache.readFragment({ fragment, id })
+        const data = { ...previous, [`${name}`]: value }
+        cache.writeData({ id, data })
+      } else if (prosId) {
+        const id = getCacheKey({ __typename: 'Pros', id: prosId })
+        const fragment = gql`
+          fragment updatePros on Pros {
+            ${name}
+          }
+        `
+        const previous = cache.readFragment({ fragment, id })
+        const data = { ...previous, [`${name}`]: value }
+        cache.writeData({ id, data })
+      } else if (consId) {
+        const id = getCacheKey({ __typename: 'Cons', id: consId })
+        const fragment = gql`
+          fragment updateCons on Cons {
+            ${name}
+          }
+        `
+        const previous = cache.readFragment({ fragment, id })
+        const data = { ...previous, [`${name}`]: value }
+        cache.writeData({ id, data })
+      }
+    },
+    addProsOrCons: (_root, variables, { cache }) => {
+      const { itemId, prosOrCons } = variables
+
+      const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
+
+      const prosAndConsDoc = prosAndCons.filter(item => item.id === itemId)[0]
+      prosAndConsDoc[prosOrCons].push({
+        id: shortid.generate(),
+        content: '',
+        __typename: sentenceCase(prosOrCons),
+      })
+
+      const data = {
+        prosAndCons: prosAndCons.map(elem => {
+          if (elem.id === itemId) return prosAndConsDoc
+          return elem
+        }),
+      }
+
+      cache.writeQuery({ query: GET_PAGE_ITEMS, data })
+    },
+    removeProsOrCons: (_root, variables, { cache }) => {
+      const { itemId, prosOrConsId } = variables
+      const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
+      const prosAndConsDoc = prosAndCons.filter(item => item.id === itemId)[0]
+      if (prosAndConsDoc.pros.length > 1)
+        remove(prosAndConsDoc.pros, pros => pros.id === prosOrConsId)
+      if (prosAndConsDoc.cons.length > 1)
+        remove(prosAndConsDoc.cons, cons => cons.id === prosOrConsId)
     },
   },
 }

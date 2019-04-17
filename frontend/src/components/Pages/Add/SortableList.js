@@ -9,7 +9,7 @@ import { sentenceCase } from 'change-case'
 
 import Block from './Sections/Block'
 import Box from './Sections/Box'
-import ProsCons from './Sections/ProsCons'
+import ProsAndCons from './Sections/ProsAndCons'
 import Faq from './Sections/Faq'
 import FaqAccordion from './Sections/FaqAccordion'
 import Grid from './Sections/Grid'
@@ -37,17 +37,17 @@ class SortableList extends Component {
 
   renderSection = (type, props) => {
     switch (type) {
-      case 'block':
+      case 'Block':
         return <Block {...props} />
-      case 'box':
+      case 'Box':
         return <Box {...props} />
-      case 'pros-cons':
-        return <ProsCons {...props} />
-      case 'faq':
+      case 'ProsAndCons':
+        return <ProsAndCons {...props} />
+      case 'Faq':
         return <Faq {...props} />
-      case 'faq-accordion':
+      case 'FaqAccordion':
         return <FaqAccordion {...props} />
-      case 'grid':
+      case 'Grid':
         return <Grid {...props} />
       default:
         return null

@@ -11,7 +11,7 @@ const { Option } = Select
 
 class PageItem extends Component {
   state = {
-    addSectionType: 'block',
+    addSectionType: 'Block',
   }
 
   handleAddPageItem = pageId => {
@@ -45,15 +45,15 @@ class PageItem extends Component {
                 defaultValue={addSectionType}
                 onChange={addSectionType => this.setState({ addSectionType })}
               >
-                <Option value="block">Block</Option>
-                <Option value="box">Box</Option>
-                <Option value="alert-box">Alert Box</Option>
-                <Option value="pros-cons">Pros and Cons</Option>
-                <Option value="faq">Faq</Option>
-                <Option value="faq-accordion">Faq Accordion</Option>
-                <Option value="quick-tip">Quick Tip</Option>
-                <Option value="grid">Grid</Option>
-                <Option value="case-studies">Case Studies</Option>
+                <Option value="Block">Block</Option>
+                <Option value="Box">Box</Option>
+                <Option value="AlertBox">Alert Box</Option>
+                <Option value="ProsAndCons">Pros and Cons</Option>
+                <Option value="Faq">Faq</Option>
+                <Option value="FaqAccordion">Faq Accordion</Option>
+                <Option value="QuickTip">Quick Tip</Option>
+                <Option value="Grid">Grid</Option>
+                <Option value="CaseStudies">Case Studies</Option>
               </Select>
               <Button type="default" onClick={() => this.handleAddPageItem(id)}>
                 Add Section

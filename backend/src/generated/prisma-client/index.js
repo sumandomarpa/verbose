@@ -27,6 +27,18 @@ var models = [
   {
     name: "Box",
     embedded: false
+  },
+  {
+    name: "ProsAndCons",
+    embedded: false
+  },
+  {
+    name: "Pros",
+    embedded: false
+  },
+  {
+    name: "Cons",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

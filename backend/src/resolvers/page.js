@@ -1,6 +1,7 @@
 import differenceBy from 'lodash/differenceBy'
 import intersectionBy from 'lodash/intersectionBy'
 import omit from 'lodash/omit'
+import findIndex from 'lodash/findIndex'
 
 export default {
   Query: {
@@ -21,8 +22,19 @@ export default {
   },
   Mutation: {
     async addPage (parent, args, ctx, info) {
-      const { title, slug, image, type, vertical, blocks, boxes } = args
-
+      const { title, slug, image, type, vertical, blocks, boxes, prosAndCons } = args
+      const prosConsQuery = prosAndCons.map((elem) => {
+        return {
+          title: elem.title,
+          order: elem.order,
+          pros: {
+            create: elem.pros
+          },
+          cons: {
+            create: elem.cons
+          }
+        }
+      })
       const page = await ctx.prisma.createPage({
         title,
         image,
@@ -34,13 +46,16 @@ export default {
         },
         boxes: {
           create: boxes
+        },
+        prosAndCons: {
+          create: prosConsQuery
         }
       }, info)
 
       return page
     },
     async updatePage (parent, args, ctx, info) {
-      const { id, title, slug, image, type, vertical, blocks, boxes } = args
+      const { id, title, slug, image, type, vertical, blocks, boxes, prosAndCons } = args
 
       /** get all the existing blocks */
       const existingBlocks = await ctx.prisma.page({ id }).blocks()
@@ -102,6 +117,66 @@ export default {
         delete: boxesDelete
       }
 
+      /** get all the existing pros and cons */
+      const existingProsAndCons = await ctx.prisma.page({ id }).prosAndCons()
+
+      let prosAndConsQuery = {};
+      let prosAndConsUpdate = []
+      let prosAndConsCreate = []
+      let prosAndConsDelete = []
+
+      // preparing the query
+      const prosAndConsToCreate = differenceBy(prosAndCons, existingProsAndCons, 'id')
+      const prosAndConsToDelete = differenceBy(existingProsAndCons, prosAndCons, 'id')
+      const prosAndConsToUpdate = intersectionBy(prosAndCons, existingProsAndCons, 'id')
+
+      const existingPros = await ctx.prisma.page({ id }).prosAndCons().pros()
+      const existingCons = await ctx.prisma.page({ id }).prosAndCons().cons()
+      
+
+      prosAndConsCreate = prosAndConsToCreate.map(prosAndCons => { 
+        const data = omit(prosAndCons, ['id', 'pros', 'cons'])
+        data.pros = {
+          create: prosAndCons.pros.map(elem => omit(elem, ['id']))
+        }
+        data.cons = {
+          create: prosAndCons.cons.map(elem => omit(elem, ['id']))
+        }
+        return data
+      })
+
+      prosAndConsDelete = prosAndConsToDelete.map(prosAndCons => {
+        return { id: prosAndCons.id } 
+      })
+
+      prosAndConsUpdate = prosAndConsToUpdate.map(prosAndCons => {
+        const existingProsAndConsIndex = findIndex(existingProsAndCons, elem => elem.id === prosAndCons.id)
+        const prosToDelete = existingPros[existingProsAndConsIndex].pros.map(elem => { return { id: elem.id } })
+        const consToDelete = existingCons[existingProsAndConsIndex].cons.map(elem => { return { id: elem.id } })
+
+        const data = omit(prosAndCons, ['id', 'pros', 'cons'])
+        data.pros = {
+          delete: prosToDelete,
+          create: prosAndCons.pros.map(elem => omit(elem, ['id']))
+        }
+        data.cons = {
+          delete: consToDelete,
+          create: prosAndCons.cons.map(elem => omit(elem, ['id']))
+        }
+        return {
+          where: {
+            id: prosAndCons.id
+          },
+          data: data
+        }
+      })
+      
+      prosAndConsQuery = {
+        update: prosAndConsUpdate,
+        create: prosAndConsCreate,
+        delete: prosAndConsDelete,
+      }
+
       /** Executing the query */
       const page = await ctx.prisma.updatePage({
         data: {
@@ -111,7 +186,8 @@ export default {
           type,
           vertical,
           blocks: blocksQuery,
-          boxes: boxesQuery
+          boxes: boxesQuery,
+          prosAndCons: prosAndConsQuery
         },
         where: { id }
       }, info)
@@ -147,6 +223,23 @@ export default {
       return ctx.prisma.page({
         id: parent.id
       }).boxes()
+    },
+    prosAndCons: (parent, args, ctx, info) => {
+      return ctx.prisma.page({
+        id: parent.id
+      }).prosAndCons()
+    }
+  },
+  ProsAndCons: {
+    pros: (parent, args, ctx, info) => {
+      return ctx.prisma.prosAndCons({
+        id: parent.id
+      }).pros()
+    },
+    cons: (parent, args, ctx, info) => {
+      return ctx.prisma.prosAndCons({
+        id: parent.id
+      }).cons()
     }
   }
 }

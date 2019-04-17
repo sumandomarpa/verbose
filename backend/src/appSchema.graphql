@@ -27,6 +27,20 @@ input BoxInput {
   order: Int
 }
 
+input ProConInput {
+  id: ID
+  content: String
+  order: Int
+}
+
+input ProsAndConsInput {
+  id: ID
+  title: String
+  pros: [ProConInput]
+  cons: [ProConInput]
+  order: Int
+}
+
 type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   login(email: String!, password: String!): User!
@@ -44,6 +58,7 @@ type Mutation {
     vertical: String
     blocks: [BlockInput]
     boxes: [BoxInput]
+    prosAndCons: [ProsAndConsInput]
   ): Page!
   updatePage(
     id: ID!
@@ -54,6 +69,7 @@ type Mutation {
     vertical: String
     blocks: [BlockInput]
     boxes: [BoxInput]
+    prosAndCons: [ProsAndConsInput]
   ): Page!
 
   addBlock(
