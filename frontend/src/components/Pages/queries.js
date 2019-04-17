@@ -107,6 +107,19 @@ export const GET_PROS_AND_CONS_BY_ID = gql`
   }
 `
 
+export const GET_PAGES_DB = gql`
+  query getPages {
+    pages {
+      id
+      title
+      image
+      slug
+      type
+      vertical
+    }
+  }
+`
+
 export const GET_PAGE_DB = gql`
   query getPage($id: ID) {
     page(id: $id) {
