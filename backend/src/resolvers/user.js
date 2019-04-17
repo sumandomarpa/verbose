@@ -44,7 +44,6 @@ export default {
       const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
       // We set the jwt as a cookie on the response
       ctx.res.cookie('token', token, {
-        httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
       });
       // Finalllllly we return the user to the browser
@@ -65,7 +64,6 @@ export default {
       const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
       // 4. Set the cookie with the token
       ctx.res.cookie('token', token, {
-        httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365,
       });
       // 5. Return the user
@@ -106,7 +104,6 @@ export default {
       const token = jwt.sign({ userId: updatedUser.id }, process.env.APP_SECRET);
       // 7. Set the JWT cookie
       ctx.res.cookie('token', token, {
-        httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 365,
       });
       // 8. return the new user
