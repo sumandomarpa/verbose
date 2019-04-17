@@ -991,8 +991,6 @@ type Faq {
   variant: [String!]!
   tag: [String!]!
   pubDate: DateTime
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 type FaqCategory {
@@ -1319,8 +1317,6 @@ type FaqPreviousValues {
   variant: [String!]!
   tag: [String!]!
   pubDate: DateTime
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 type FaqSubscriptionPayload {
@@ -1501,22 +1497,6 @@ input FaqWhereInput {
   pubDate_lte: DateTime
   pubDate_gt: DateTime
   pubDate_gte: DateTime
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   AND: [FaqWhereInput!]
   OR: [FaqWhereInput!]
   NOT: [FaqWhereInput!]

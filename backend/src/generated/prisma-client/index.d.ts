@@ -2038,22 +2038,6 @@ export interface FaqWhereInput {
   pubDate_lte?: DateTimeInput;
   pubDate_gt?: DateTimeInput;
   pubDate_gte?: DateTimeInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
   AND?: FaqWhereInput[] | FaqWhereInput;
   OR?: FaqWhereInput[] | FaqWhereInput;
   NOT?: FaqWhereInput[] | FaqWhereInput;
@@ -3530,8 +3514,6 @@ export interface FaqPreviousValues {
   variant: String[];
   tag: String[];
   pubDate?: DateTimeOutput;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
 }
 
 export interface FaqPreviousValuesPromise
@@ -3549,8 +3531,6 @@ export interface FaqPreviousValuesPromise
   variant: () => Promise<String[]>;
   tag: () => Promise<String[]>;
   pubDate: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface FaqPreviousValuesSubscription
@@ -3568,8 +3548,6 @@ export interface FaqPreviousValuesSubscription
   variant: () => Promise<AsyncIterator<String[]>>;
   tag: () => Promise<AsyncIterator<String[]>>;
   pubDate: () => Promise<AsyncIterator<DateTimeOutput>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -3722,8 +3700,6 @@ export interface Faq {
   variant: String[];
   tag: String[];
   pubDate?: DateTimeOutput;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
 }
 
 export interface FaqPromise extends Promise<Faq>, Fragmentable {
@@ -3751,8 +3727,6 @@ export interface FaqPromise extends Promise<Faq>, Fragmentable {
   variant: () => Promise<String[]>;
   tag: () => Promise<String[]>;
   pubDate: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface FaqSubscription
@@ -3782,8 +3756,6 @@ export interface FaqSubscription
   variant: () => Promise<AsyncIterator<String[]>>;
   tag: () => Promise<AsyncIterator<String[]>>;
   pubDate: () => Promise<AsyncIterator<DateTimeOutput>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface BlockConnection {

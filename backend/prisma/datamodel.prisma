@@ -96,8 +96,6 @@ type Faq {
   variant: [String]
   tag: [String]
   pubDate: DateTime
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 type FaqCategory {
