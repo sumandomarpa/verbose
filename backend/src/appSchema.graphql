@@ -5,6 +5,7 @@ type Query {
   users: [User]!
   pages: [Page]
   page(id: ID): Page
+  mediaFiles: [Media]
 }
 
 input BlockInput {
@@ -92,4 +93,11 @@ type User {
   email: String!
   password: String!
   permissions: [Permission!]!
+}
+
+type Media {
+  id: ID!
+  url: String!
+  title: String
+  altText: String
 }

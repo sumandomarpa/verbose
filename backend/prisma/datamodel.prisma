@@ -75,3 +75,10 @@ type Cons {
   content: String
   order: Int
 }
+
+type Media {
+  id: ID! @unique
+  url: String!
+  title: String
+  altText: String
+}
