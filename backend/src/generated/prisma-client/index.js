@@ -39,6 +39,10 @@ var models = [
   {
     name: "Cons",
     embedded: false
+  },
+  {
+    name: "Media",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
