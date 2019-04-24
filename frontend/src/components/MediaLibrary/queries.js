@@ -10,3 +10,13 @@ export const GET_MEDIA_FILES = gql`
     }
   }
 `
+export const GET_MEDIA_FILE = gql`
+  query getMediaFile($id: ID) {
+    mediaFile(id: $id) {
+      id
+      url
+      title
+      altText
+    }
+  }
+`
