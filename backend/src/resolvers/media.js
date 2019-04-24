@@ -1,12 +1,21 @@
 import AWS from 'aws-sdk'
 import moment from 'moment'
 import shortid from 'shortid'
+import changeCase from 'change-case'
 
 
 export default {
   Query: {
-    mediaFiles: () => {
-      
+    mediaFiles: (parent, args, ctx, info) => {
+      // 1. Check if they are logged in
+      if (!ctx.req.userId) {
+        throw new Error('You must be logged in!');
+      }
+      // 2. Check if the user has the permissions to query all the users
+      // hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
+
+      // 2. if they do, query all the users!
+      return ctx.prisma.medias({ orderBy: 'createdAt_DESC' }, info)
     }
   },
   Mutation: {
@@ -25,7 +34,7 @@ export default {
         });
 
         const date = moment().format('YYYYMMDD')
-        const fileName = filename.substr(0, filename.lastIndexOf('.'))
+        const fileName = changeCase.paramCase(filename.substr(0, filename.lastIndexOf('.')))
         const fileExtension = filename.substr(filename.lastIndexOf('.') + 1)
         const s3URL = `${date}/${fileName}-${shortid.generate()}.${fileExtension}`
 
@@ -36,7 +45,7 @@ export default {
           const result = await s3.upload(params).promise()
           if(result.ETag) {
             const media = await ctx.prisma.createMedia({
-              url: s3URL,
+              url: `//${process.env.AWS_S3_BUCKET}/${s3URL}`,
             }, info)
             return media
           }

@@ -4,6 +4,7 @@ import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 
 import { UPLOAD_MEDIA } from '../mutations'
+import { GET_MEDIA_FILES } from '../queries'
 
 class AddMedia extends Component {
   uploadMedia = async variables => {
@@ -13,6 +14,11 @@ class AddMedia extends Component {
     } = await client.mutate({
       mutation: UPLOAD_MEDIA,
       variables,
+      refetchQueries: [
+        {
+          query: GET_MEDIA_FILES,
+        },
+      ],
     })
 
     if (uploadMedia.url) message.success('Media Uploaded Successfully.')
