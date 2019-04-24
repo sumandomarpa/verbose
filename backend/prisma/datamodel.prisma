@@ -9,11 +9,6 @@ enum PageType {
   ARTICLE
 }
 
-enum FaqType {
-  FAQ
-  TOOLTIP
-}
-
 type User {
   id: ID! @unique
   name: String!
@@ -88,7 +83,6 @@ type Faq {
   short_description: String
   creator: User!
   slug: String!
-  type: FaqType!
   vertical: String
   category: [FaqCategory!]!
   readingTime: Int
@@ -103,4 +97,5 @@ type FaqCategory {
   name: String!
   slug: String!
   description: String!
+  faqs: [FAQ!]!
 }
