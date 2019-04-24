@@ -14,7 +14,7 @@ export default {
       // hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
 
       // 2. if they do, query all the users!
-      return ctx.prisma.pages({}, info);
+      return ctx.prisma.pages({ orderBy: 'createdAt_DESC' }, info);
     },
     async page(parent, args, ctx, info) {
       return ctx.prisma.page(args, info);
