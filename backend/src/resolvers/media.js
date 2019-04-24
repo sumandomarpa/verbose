@@ -14,8 +14,10 @@ export default {
       // 2. Check if the user has the permissions to query all the users
       // hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
 
-      // 2. if they do, query all the users!
       return ctx.prisma.medias({ orderBy: 'createdAt_DESC' }, info)
+    },
+    mediaFile: (parent, args, ctx, info) => {
+      return ctx.prisma.media(args, info)
     }
   },
   Mutation: {
@@ -53,6 +55,18 @@ export default {
           return null
         }
       }
+    },
+    async updateMedia(parent, args, ctx, info) {
+      const {id, title, altText} = args
+      const media = await ctx.prisma.updateMedia({
+        data: {
+          title,
+          altText
+        },
+        where: { id }
+      }, info)
+
+      return media
     }
   }
 }

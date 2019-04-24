@@ -7,3 +7,13 @@ export const UPLOAD_MEDIA = gql`
     }
   }
 `
+
+export const UPDATE_MEDIA = gql`
+  mutation updateMedia($id: ID!, $title: String, $altText: String) {
+    updateMedia(id: $id, title: $title, altText: $altText) {
+      id
+      title
+      altText
+    }
+  }
+`

@@ -1,14 +1,29 @@
 import React, { Component } from 'react'
-import { Card, Table, Input, Button, Icon } from 'antd'
+import { Card, Table, Input, Button, Icon, Row, Col } from 'antd'
 import Highlighter from 'react-highlight-words'
 import { Query } from 'react-apollo'
+import head from 'lodash/head'
 
+import EditMedia from '../Edit'
 import { MediaImage } from './styles'
 import { GET_MEDIA_FILES } from '../queries'
 
 class ListMedia extends Component {
   state = {
     searchText: '',
+    selectedRowKeys: [],
+  }
+
+  selectRow = record => {
+    this.setState({ selectedRowKeys: [] }, () => {
+      this.setState({ selectedRowKeys: [record.id] })
+    })
+  }
+
+  onSelectedRowKeysChange = selectedRowKeys => {
+    this.setState({ selectedRowKeys: [] }, () => {
+      this.setState({ selectedRowKeys })
+    })
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -87,6 +102,14 @@ class ListMedia extends Component {
   }
 
   render() {
+    const { selectedRowKeys } = this.state
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectedRowKeysChange,
+      type: 'radio',
+    }
+
     const columns = [
       {
         title: 'Image',
@@ -112,14 +135,36 @@ class ListMedia extends Component {
         ...this.getColumnSearchProps('altText'),
       },
     ]
+
     return (
       <Query query={GET_MEDIA_FILES}>
         {({ data: { mediaFiles }, loading }) => {
           if (loading) return null
+          const renderEditMedia =
+            selectedRowKeys.length > 0 ? (
+              <Col md={10}>
+                <EditMedia mediaId={head(selectedRowKeys)} />
+              </Col>
+            ) : null
           return (
-            <Card title="Media List">
-              <Table rowKey="id" columns={columns} dataSource={mediaFiles} />
-            </Card>
+            <Row>
+              <Col md={selectedRowKeys.length > 0 ? 14 : 24}>
+                <Card title="Media List">
+                  <Table
+                    rowSelection={rowSelection}
+                    onRow={record => ({
+                      onClick: () => {
+                        this.selectRow(record)
+                      },
+                    })}
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={mediaFiles}
+                  />
+                </Card>
+              </Col>
+              {renderEditMedia}
+            </Row>
           )
         }}
       </Query>

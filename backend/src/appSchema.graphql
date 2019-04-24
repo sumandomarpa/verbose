@@ -6,6 +6,7 @@ type Query {
   pages: [Page]
   page(id: ID): Page
   mediaFiles: [Media]
+  mediaFile(id: ID): Media
 }
 
 input BlockInput {
@@ -72,6 +73,7 @@ type Mutation {
     boxes: [BoxInput]
     prosAndCons: [ProsAndConsInput]
   ): Page!
+  updateMedia(id: ID!, title: String, altText: String): Media
 
   addBlock(
     title: String!
