@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { createUploadLink } from 'apollo-upload-client'
 
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
 import shortid from 'shortid'
 import App from './components/App'
@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker'
 import { resolvers } from './resolvers'
 
 const cache = new InMemoryCache()
-const link = new HttpLink({
+const link = createUploadLink({
   uri: 'http://localhost:4400/',
   credentials: 'include',
 })

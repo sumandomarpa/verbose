@@ -13,10 +13,6 @@ var models = [
     embedded: false
   },
   {
-    name: "FaqType",
-    embedded: false
-  },
-  {
     name: "User",
     embedded: false
   },
@@ -50,6 +46,10 @@ var models = [
   },
   {
     name: "FaqCategory",
+    embedded: false
+  },
+  {
+    name: "Media",
     embedded: false
   }
 ];

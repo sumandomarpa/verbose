@@ -1,15 +1,29 @@
 import React, { Component } from 'react'
-import { Table, Input, Button, Icon } from 'antd'
+import { Card, Table, Input, Button, Icon, Row, Col } from 'antd'
 import Highlighter from 'react-highlight-words'
 import { Query } from 'react-apollo'
-import { Link } from 'react-router-dom'
+import head from 'lodash/head'
 
-import Layout from '../../Layout'
-import { GET_PAGES_DB } from '../queries'
+import EditMedia from '../Edit'
+import { MediaImage } from './styles'
+import { GET_MEDIA_FILES } from '../queries'
 
-export default class PagesList extends Component {
+class ListMedia extends Component {
   state = {
     searchText: '',
+    selectedRowKeys: [],
+  }
+
+  selectRow = record => {
+    this.setState({ selectedRowKeys: [] }, () => {
+      this.setState({ selectedRowKeys: [record.id] })
+    })
+  }
+
+  onSelectedRowKeysChange = selectedRowKeys => {
+    this.setState({ selectedRowKeys: [] }, () => {
+      this.setState({ selectedRowKeys })
+    })
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -54,6 +68,7 @@ export default class PagesList extends Component {
       <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) =>
+      record[dataIndex] &&
       record[dataIndex]
         .toString()
         .toLowerCase()
@@ -70,7 +85,7 @@ export default class PagesList extends Component {
           highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text.toString()}
+          textToHighlight={(text && text.toString()) || ''}
         />
       )
     },
@@ -87,7 +102,24 @@ export default class PagesList extends Component {
   }
 
   render() {
+    const { selectedRowKeys } = this.state
+
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectedRowKeysChange,
+      type: 'radio',
+    }
+
     const columns = [
+      {
+        title: 'Image',
+        key: 'image',
+        render: (text, record) => (
+          <span>
+            <MediaImage src={record.url} alt={record.altText} />
+          </span>
+        ),
+      },
       {
         title: 'Title',
         dataIndex: 'title',
@@ -96,50 +128,48 @@ export default class PagesList extends Component {
         ...this.getColumnSearchProps('title'),
       },
       {
-        title: 'Slug',
-        dataIndex: 'slug',
-        key: 'slug',
+        title: 'Alt Text',
+        dataIndex: 'altText',
+        key: 'altText',
         width: '30%',
-        ...this.getColumnSearchProps('slug'),
-      },
-      {
-        title: 'Type',
-        dataIndex: 'type',
-        key: 'type',
-        width: '30%',
-        ...this.getColumnSearchProps('type'),
-      },
-      {
-        title: 'Vertical',
-        dataIndex: 'vertical',
-        key: 'vertical',
-        width: '30%',
-        ...this.getColumnSearchProps('vertical'),
-      },
-      {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <span>
-            <Link to={`/dashboard/pages/edit/${record.id}`}>
-              Edit {record.name}
-            </Link>
-          </span>
-        ),
+        ...this.getColumnSearchProps('altText'),
       },
     ]
 
     return (
-      <Query query={GET_PAGES_DB}>
-        {({ data: { pages }, loading }) => {
+      <Query query={GET_MEDIA_FILES}>
+        {({ data: { mediaFiles }, loading }) => {
           if (loading) return null
+          const renderEditMedia =
+            selectedRowKeys.length > 0 ? (
+              <Col md={10}>
+                <EditMedia mediaId={head(selectedRowKeys)} />
+              </Col>
+            ) : null
           return (
-            <Layout>
-              <Table columns={columns} dataSource={pages} />
-            </Layout>
+            <Row>
+              <Col md={selectedRowKeys.length > 0 ? 14 : 24}>
+                <Card title="Media List">
+                  <Table
+                    rowSelection={rowSelection}
+                    onRow={record => ({
+                      onClick: () => {
+                        this.selectRow(record)
+                      },
+                    })}
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={mediaFiles}
+                  />
+                </Card>
+              </Col>
+              {renderEditMedia}
+            </Row>
           )
         }}
       </Query>
     )
   }
 }
+
+export default ListMedia

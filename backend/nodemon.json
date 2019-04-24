@@ -4,6 +4,7 @@
   },
   "env": {
     "NODE_ENV": "development",
-    "NODE_PATH": "./src"
+    "NODE_PATH": "./src",
+    "APP_SECRET": "verbose"
   }
 }

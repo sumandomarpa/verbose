@@ -97,5 +97,12 @@ type FaqCategory {
   name: String!
   slug: String!
   description: String!
-  faqs: [FAQ!]!
+  faqs: [Faq!]!
+}
+
+type Media {
+  id: ID! @unique
+  url: String!
+  title: String
+  altText: String
 }
