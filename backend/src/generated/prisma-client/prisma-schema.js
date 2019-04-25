@@ -983,9 +983,9 @@ scalar DateTime
 type Faq {
   id: ID!
   title: String!
-  description: String!
+  description: String
   short_description: String
-  creator: User!
+  authors(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   slug: String!
   vertical: String
   category(where: FaqCategoryWhereInput, orderBy: FaqCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FaqCategory!]
@@ -1265,9 +1265,9 @@ type FaqConnection {
 
 input FaqCreateInput {
   title: String!
-  description: String!
+  description: String
   short_description: String
-  creator: UserCreateOneInput!
+  authors: UserCreateManyInput
   slug: String!
   vertical: String
   category: FaqCategoryCreateManyWithoutFaqsInput
@@ -1293,9 +1293,9 @@ input FaqCreatevariantInput {
 
 input FaqCreateWithoutCategoryInput {
   title: String!
-  description: String!
+  description: String
   short_description: String
-  creator: UserCreateOneInput!
+  authors: UserCreateManyInput
   slug: String!
   vertical: String
   readingTime: Int
@@ -1338,7 +1338,7 @@ enum FaqOrderByInput {
 type FaqPreviousValues {
   id: ID!
   title: String!
-  description: String!
+  description: String
   short_description: String
   slug: String!
   vertical: String
@@ -1485,7 +1485,7 @@ input FaqUpdateInput {
   title: String
   description: String
   short_description: String
-  creator: UserUpdateOneRequiredInput
+  authors: UserUpdateManyInput
   slug: String
   vertical: String
   category: FaqCategoryUpdateManyWithoutFaqsInput
@@ -1551,7 +1551,7 @@ input FaqUpdateWithoutCategoryDataInput {
   title: String
   description: String
   short_description: String
-  creator: UserUpdateOneRequiredInput
+  authors: UserUpdateManyInput
   slug: String
   vertical: String
   readingTime: Int
@@ -1629,7 +1629,9 @@ input FaqWhereInput {
   short_description_not_starts_with: String
   short_description_ends_with: String
   short_description_not_ends_with: String
-  creator: UserWhereInput
+  authors_every: UserWhereInput
+  authors_some: UserWhereInput
+  authors_none: UserWhereInput
   slug: String
   slug_not: String
   slug_in: [String!]
@@ -2800,9 +2802,9 @@ input UserCreateInput {
   permissions: UserCreatepermissionsInput
 }
 
-input UserCreateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
+input UserCreateManyInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input UserCreatepermissionsInput {
@@ -2843,6 +2845,90 @@ type UserPreviousValues {
   permissions: [Permission!]!
 }
 
+input UserScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  resetToken: String
+  resetToken_not: String
+  resetToken_in: [String!]
+  resetToken_not_in: [String!]
+  resetToken_lt: String
+  resetToken_lte: String
+  resetToken_gt: String
+  resetToken_gte: String
+  resetToken_contains: String
+  resetToken_not_contains: String
+  resetToken_starts_with: String
+  resetToken_not_starts_with: String
+  resetToken_ends_with: String
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+  resetTokenExpiry_not: Float
+  resetTokenExpiry_in: [Float!]
+  resetTokenExpiry_not_in: [Float!]
+  resetTokenExpiry_lt: Float
+  resetTokenExpiry_lte: Float
+  resetTokenExpiry_gt: Float
+  resetTokenExpiry_gte: Float
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+}
+
 type UserSubscriptionPayload {
   mutation: MutationType!
   node: User
@@ -2879,6 +2965,27 @@ input UserUpdateInput {
   permissions: UserUpdatepermissionsInput
 }
 
+input UserUpdateManyDataInput {
+  name: String
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+}
+
+input UserUpdateManyInput {
+  create: [UserCreateInput!]
+  update: [UserUpdateWithWhereUniqueNestedInput!]
+  upsert: [UserUpsertWithWhereUniqueNestedInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
 input UserUpdateManyMutationInput {
   name: String
   email: String
@@ -2888,18 +2995,22 @@ input UserUpdateManyMutationInput {
   permissions: UserUpdatepermissionsInput
 }
 
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-  connect: UserWhereUniqueInput
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
 }
 
 input UserUpdatepermissionsInput {
   set: [Permission!]
 }
 
-input UserUpsertNestedInput {
+input UserUpdateWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateDataInput!
+}
+
+input UserUpsertWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput!
   update: UserUpdateDataInput!
   create: UserCreateInput!
 }
