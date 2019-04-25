@@ -18,14 +18,16 @@ export default {
 
     Mutation: {
         async addFaq (parent, args, ctx, info) {
-            const { title, description, short_description, slug, vertical, category, readingTime, order, variant, tag, authors } = args
+            const { title, description, short_description, slug, vertical, category = [], readingTime, order, variant, tag, authors } = args
             const faq = await ctx.prisma.createFaq({
               title,
               description,
               short_description,
               slug,
               vertical,
-              category,
+              category: {
+                connect: category.map((categoryId) => {return {id: categoryId}})
+              },
               readingTime,
               order,
               variant,
@@ -37,6 +39,34 @@ export default {
             }, info)
       
             return faq
-        }
+        },
+        async updateFaq (parent, args, ctx, info) {
+            const { id, title, description, short_description, slug, vertical, category = [], readingTime, order, variant, tag, authors } = args
+      
+            /** Executing the query */
+            const faq = await ctx.prisma.updateFaq({
+              data: {
+                title,
+                description,
+                short_description,
+                slug,
+                vertical,
+                category: {
+                    connect: category.map((categoryId) => {return {id: categoryId}})
+                },
+                readingTime,
+                order,
+                variant,
+                tag,
+                authors: {
+                  connect: authors.map((authorId) => {return {id: authorId}})
+                },
+              },
+              where: { id }
+            }, info)
+      
+            return faq
+          },
+
     }
 }

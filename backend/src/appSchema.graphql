@@ -84,7 +84,8 @@ type Mutation {
     style: String
     content: String
     pageId: String
-  ): Block!  
+  ): Block!
+
   addFaq(
     title: String!
     description: String
@@ -97,8 +98,22 @@ type Mutation {
     order: Int
     variant: [String]
     tag: [String]
-  ): Page!
+  ): Faq!
   
+  updateFaq(
+    id: ID!
+    title: String!
+    description: String
+    short_description: String
+    slug: String
+    vertical: String
+    category: [ID]
+    authors: [ID!]!
+    readingTime: Int
+    order: Int
+    variant: [String]
+    tag: [String]
+  ): Faq!
 }
 
 type SuccessMessage {
