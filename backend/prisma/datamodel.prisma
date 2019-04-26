@@ -76,6 +76,30 @@ type Cons {
   order: Int
 }
 
+type Faq {
+  id: ID! @unique
+  title: String!
+  description: String
+  short_description: String
+  authors: [User!]!
+  slug: String!
+  vertical: String
+  category: [FaqCategory!]!
+  readingTime: Int
+  order: Int
+  variant: [String]
+  tag: [String]
+  pubDate: DateTime
+}
+
+type FaqCategory {
+  id: ID! @unique
+  name: String!
+  slug: String!
+  description: String!
+  faqs: [Faq!]!
+}
+
 type Media {
   id: ID! @unique
   url: String!

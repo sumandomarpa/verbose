@@ -41,6 +41,14 @@ var models = [
     embedded: false
   },
   {
+    name: "Faq",
+    embedded: false
+  },
+  {
+    name: "FaqCategory",
+    embedded: false
+  },
+  {
     name: "Media",
     embedded: false
   }

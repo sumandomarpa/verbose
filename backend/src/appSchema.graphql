@@ -7,6 +7,8 @@ type Query {
   page(id: ID): Page
   mediaFiles: [Media]
   mediaFile(id: ID): Media
+  faqs: [Faq]
+  faq(id: ID): Faq
 }
 
 input BlockInput {
@@ -83,6 +85,35 @@ type Mutation {
     content: String
     pageId: String
   ): Block!
+
+  addFaq(
+    title: String!
+    description: String
+    short_description: String
+    slug: String
+    vertical: String
+    category: [ID]
+    authors: [ID!]!
+    readingTime: Int
+    order: Int
+    variant: [String]
+    tag: [String]
+  ): Faq!
+  
+  updateFaq(
+    id: ID!
+    title: String!
+    description: String
+    short_description: String
+    slug: String
+    vertical: String
+    category: [ID]
+    authors: [ID!]!
+    readingTime: Int
+    order: Int
+    variant: [String]
+    tag: [String]
+  ): Faq!
 }
 
 type SuccessMessage {
