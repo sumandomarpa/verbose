@@ -278,5 +278,18 @@ export const resolvers = {
       if (prosAndConsDoc.cons.length > 1)
         remove(prosAndConsDoc.cons, cons => cons.id === prosOrConsId)
     },
+    updateFaq: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, faqId } = variables
+
+      const id = getCacheKey({ __typename: 'Faq', id: faqId })
+      const fragment = gql`
+        fragment updateFaq on Faq {
+          ${name}
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+      const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
+    },
   },
 }

@@ -24,6 +24,7 @@ const client = new ApolloClient({
 
 const blockId = shortid.generate()
 const pageId = shortid.generate()
+const faqId = shortid.generate()
 cache.writeData({
   data: {
     page: {
@@ -51,10 +52,21 @@ cache.writeData({
     ],
     boxes: [],
     prosAndCons: [],
+    faq: {
+      id: faqId,
+      title: '',
+      slug: '',
+      description: '',
+      short_description: '',
+      order: '',
+      vertical: 'home-loans',
+      __typename: 'Faq',
+    },
   },
 })
 
 client.replaceStore = data => cache.writeData(data)
+client.onResetStore = data => cache.writeData(data)
 
 ReactDOM.render(
   <ApolloProvider client={client}>
