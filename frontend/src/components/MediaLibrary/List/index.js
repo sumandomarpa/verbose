@@ -3,6 +3,7 @@ import { Card, Table, Input, Button, Icon, Row, Col } from 'antd'
 import Highlighter from 'react-highlight-words'
 import { Query } from 'react-apollo'
 import head from 'lodash/head'
+import PropTypes from 'prop-types'
 
 import EditMedia from '../Edit'
 import { MediaImage } from './styles'
@@ -15,15 +16,12 @@ class ListMedia extends Component {
   }
 
   selectRow = record => {
+    const { onMediaSelect } = this.props
     this.setState({ selectedRowKeys: [] }, () => {
       this.setState({ selectedRowKeys: [record.id] })
     })
-  }
 
-  onSelectedRowKeysChange = selectedRowKeys => {
-    this.setState({ selectedRowKeys: [] }, () => {
-      this.setState({ selectedRowKeys })
-    })
+    if (onMediaSelect) onMediaSelect(record)
   }
 
   getColumnSearchProps = dataIndex => ({
@@ -106,7 +104,7 @@ class ListMedia extends Component {
 
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectedRowKeysChange,
+      onSelect: this.selectRow,
       type: 'radio',
     }
 
@@ -160,6 +158,7 @@ class ListMedia extends Component {
                     rowKey="id"
                     columns={columns}
                     dataSource={mediaFiles}
+                    pagination={{ pageSize: 5 }}
                   />
                 </Card>
               </Col>
@@ -170,6 +169,10 @@ class ListMedia extends Component {
       </Query>
     )
   }
+}
+
+ListMedia.propTypes = {
+  onMediaSelect: PropTypes.func,
 }
 
 export default ListMedia
