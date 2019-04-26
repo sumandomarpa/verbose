@@ -9,6 +9,8 @@ type Query {
   mediaFile(id: ID): Media
   faqs: [Faq]
   faq(id: ID): Faq
+  faqCategories: [FaqCategory]
+  faqCategory(id: ID): FaqCategory
 }
 
 input BlockInput {
@@ -99,7 +101,7 @@ type Mutation {
     variant: [String]
     tag: [String]
   ): Faq!
-  
+
   updateFaq(
     id: ID!
     title: String!
@@ -114,6 +116,21 @@ type Mutation {
     variant: [String]
     tag: [String]
   ): Faq!
+
+  addFaqCategory(
+    name: String!
+    slug: String
+    description: String
+    faqs: [ID]
+  ): FaqCategory!
+
+  updateFaqCategory(
+    id: ID!
+    name: String!
+    slug: String
+    description: String
+    faqs: [ID]
+  ): FaqCategory!
 }
 
 type SuccessMessage {
