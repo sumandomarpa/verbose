@@ -35,6 +35,7 @@ export const SAVE_FAQ_TO_DB = gql`
 
 export const UPDATE_FAQ_TO_DB = gql`
   mutation UPDATE_FAQ(
+    $id: ID!
     $title: String!
     $slug: String!
     $description: String
@@ -44,6 +45,7 @@ export const UPDATE_FAQ_TO_DB = gql`
     $authors: [ID!]!
   ) {
     updateFaq(
+      id: $id
       title: $title
       slug: $slug
       description: $description

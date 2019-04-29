@@ -1,41 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import { GET_FAQ } from './queries'
 import { UPDATE_FAQ } from './mutations'
-import TinyMCEditor from '../TinyMCEditor'
-
-const { Option } = Select
+import InputBox from '../Generic/InputBox'
+import EditorBox from '../Generic/EditorBox'
+import SelectBox from '../Generic/SelectBox'
+import { VERTICAL_OPTIONS } from '../../constants/common'
 
 class FaqForm extends Component {
-  // componentDidMount () {
-  //   this.resetForm()
-  // }
-
-  // resetForm = () => {
-  //   const { client } = this.props
-  //   let data = {
-  //     faq: {
-  //       id: faqId,
-  //       title: '',
-  //       slug: '',
-  //       description: '',
-  //       short_description: '',
-  //       order: '',
-  //       vertical: 'home-loans',
-  //       __typename: 'Faq',
-  //     }
-  //   }
-  //   client.writeData({data})
-  // }
-
   handleInputChange = (faqId, e, name, value) => {
     const { client } = this.props
     client.mutate({
       mutation: UPDATE_FAQ,
-      variables: {
+      variables: {  
         name: name || e.target.name,
         value: value || e.target.value,
         faqId,
@@ -53,72 +32,24 @@ class FaqForm extends Component {
             title,
             description,
             short_description,
-            vertical="home-loans",
+            vertical,
             slug,
             order
           } = faq
           return (
             <Fragment>
-              <Form.Item label="Title">
-                <Input
-                  name="title"
-                  value={title}
-                  id={id}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
-              <Form.Item label="Description">
-                <TinyMCEditor
-                  id={`${id}-editor`}
-                  onEditorChange={description =>
-                    this.handleInputChange(
-                      id,
-                      null,
-                      'description',
-                      description || '<p></p>'
-                    )
-                  }
-                  content={description}
-                />
-              </Form.Item>
-              <Form.Item label="Short Description">
-                <Input.TextArea
-                  name="short_description"
-                  value={short_description}
-                  rows={4}
-                  id={id}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
-              <Form.Item label="Slug">
-                <Input
-                  name="slug"
-                  type="text"
-                  placeholder="Slug"
-                  value={slug}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
-              <Form.Item label="Vertical">
-                <Select
-                  defaultValue={vertical}
-                  onChange={value =>
-                    this.handleInputChange(id, null, 'vertical', value)
-                  }
-                >
-                  <Option value="home-loans">Home Loans</Option>
-                  <Option value="car-loans">Car Loans</Option>
-                  <Option value="personal-loans">Personal Loans</Option>
-                </Select>
-              </Form.Item>
-              <Form.Item label="Order">
-                <Input
-                  name="order"
-                  type="number"
-                  value={order}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
+              <InputBox name="title" value={title} label="Title" id={id}
+                onChange={this.handleInputChange} />
+              <EditorBox name="description" value={description} label="Description" id={id}
+                onChange={this.handleInputChange} />
+              <InputBox type="textarea" name="short_description" value={short_description} 
+                label="Short Description" id={id} onChange={this.handleInputChange} />
+              <InputBox name="slug" value={slug} label="Slug" id={id}
+                placeholder="Slug" onChange={this.handleInputChange} />
+              <SelectBox name="vertical" value={vertical} label="Vertical" id={id}
+                onChange={this.handleInputChange} options={VERTICAL_OPTIONS} />
+              <InputBox type="number" name="order" value={order} label="Order" id={id}
+                onChange={this.handleInputChange} />
             </Fragment>
           )
         }}

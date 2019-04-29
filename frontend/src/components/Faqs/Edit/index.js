@@ -19,6 +19,9 @@ const CURRENT_USER = gql`
 `
 
 class EditFaq extends Component {
+  state = {
+    isDataLoaded : false
+  }
   componentDidMount () {
     this.fetchFromDBtoCache()
   }
@@ -52,18 +55,19 @@ class EditFaq extends Component {
       query:GET_FAQ_DB,
       variables: {id}
     })
-    client.replaceStore({
+    await client.replaceStore({
       data: {
-        faq,
+        faq
       },
     })
+    this.setState({isDataLoaded: true})
   }
 
   render() {
     return (
       <Layout>
         <Card title="Edit FAQ">
-          <FaqForm />
+          {this.state.isDataLoaded && <FaqForm />}
           <PublishButton onClick={this.handleSubmit} />
         </Card>
       </Layout>

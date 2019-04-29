@@ -66,7 +66,6 @@ cache.writeData({
 })
 
 client.replaceStore = data => cache.writeData(data)
-client.onResetStore = data => cache.writeData(data)
 
 ReactDOM.render(
   <ApolloProvider client={client}>
