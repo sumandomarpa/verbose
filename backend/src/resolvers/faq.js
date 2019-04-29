@@ -66,7 +66,20 @@ export default {
             }, info)
       
             return faq
-          },
+        },
+        async deleteFaq (parent, args, ctx, info) {
+          const { id } = args
+    
+          /** Executing the query */
+          const faq = await ctx.prisma.deleteFaq(
+            {
+             id
+            },
+              info
+            );
+    
+          return faq
+      },
 
     }
 }

@@ -117,6 +117,10 @@ type Mutation {
     tag: [String]
   ): Faq!
 
+  deleteFaq(
+    id: ID!
+  ): Faq!
+
   addFaqCategory(
     name: String!
     slug: String
@@ -130,6 +134,10 @@ type Mutation {
     slug: String
     description: String
     faqs: [ID]
+  ): FaqCategory!
+
+  deleteFaqCategory(
+    id: ID!
   ): FaqCategory!
 }
 
