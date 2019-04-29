@@ -10,7 +10,8 @@ import Layout from '../../Layout'
 import PageForm from './PageForm'
 import SortableList from './SortableList'
 import PageItem from './PageItem'
-import { ActionButtonsWrapper, AddNewPageWrapper } from './styles'
+import { AddNewPageWrapper } from './styles'
+import PublishButton from '../../Generic/PublishButton'
 import {
   GET_PAGE,
   GET_BLOCKS,
@@ -19,6 +20,7 @@ import {
   GET_PROS_AND_CONS,
 } from '../queries'
 import { SAVE_PAGE_TO_DB } from '../mutaitons'
+
 
 class AddPage extends Component {
   handleSubmit = async () => {
@@ -90,11 +92,7 @@ class AddPage extends Component {
             <PageForm />
             <SortableList />
             <PageItem />
-            <ActionButtonsWrapper>
-              <Button type="primary" onClick={this.handleSubmit}>
-                Publish
-              </Button>
-            </ActionButtonsWrapper>
+            <PublishButton onClick={this.handleSubmit} />
           </Card>
         </AddNewPageWrapper>
       </Layout>
