@@ -45,5 +45,16 @@ export default {
       
             return faqCategory
         },
+        async deleteFaqCategory (parent, args, ctx, info) {
+          const { id } = args
+    
+          /** Executing the query */
+          const faqCategory = await ctx.prisma.deleteFaqCategory(
+            {
+              id
+            }, info)
+    
+          return faqCategory
+      },
     }
 }
