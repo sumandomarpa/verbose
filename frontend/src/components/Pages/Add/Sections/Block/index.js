@@ -5,12 +5,13 @@ import { Query, withApollo } from 'react-apollo'
 
 import MediaLibrary from '../../../../MediaLibrary'
 import TinyMCEditor from '../../../../TinyMCEditor'
-import { GET_BLOCK, GET_PAGE, GET_PAGE_ITEMS } from '../../../queries'
+import { GET_BLOCK, GET_PAGE } from '../../../queries'
 import {
   UPDATE_BLOCK,
   UPSERT_BLOCK_TO_DB,
   DELETE_BLOCK_TO_DB,
   REPLACE_PAGE_ITEMS_ID,
+  UPDATE_BLOCK_MEDIA,
 } from '../../../mutaitons'
 import { MediaImage, BlockSaveButtonWrapper } from './styles'
 
@@ -18,7 +19,7 @@ const { Option } = Select
 const { confirm } = Modal
 
 class Block extends Component {
-  state = { visible: false, media: {} }
+  state = { visible: false, selectedMedia: {} }
 
   handleInputChange = (e, name, value) => {
     const { client, itemId } = this.props
@@ -37,22 +38,31 @@ class Block extends Component {
     this.setState({ visible: true })
   }
 
-  handleOk = e => {
-    const { media } = this.state
+  handleOk = async () => {
+    const { client, itemId } = this.props
+    const { selectedMedia } = this.state
     this.setState({
       visible: false,
     })
-  }
 
-  handleCancel = e => {
-    this.setState({
-      visible: false,
-      media: {},
+    await client.mutate({
+      mutation: UPDATE_BLOCK_MEDIA,
+      variables: {
+        itemId,
+        media: selectedMedia,
+      },
     })
   }
 
-  onMediaSelect = media => {
-    this.setState({ media })
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+      selectedMedia: {},
+    })
+  }
+
+  onMediaSelect = selectedMedia => {
+    this.setState({ selectedMedia })
   }
 
   upsertBlock = async () => {
@@ -76,6 +86,7 @@ class Block extends Component {
       variables: {
         id: block.id,
         page: page.id,
+        media: block.media.id,
         title: block.title,
         image: block.image,
         video: block.video,
@@ -85,6 +96,7 @@ class Block extends Component {
       },
     })
 
+    /** Replace the DB Id in local state, if its just created */
     if (upsertBlock.id !== block.id) {
       client.mutate({
         mutation: UPDATE_BLOCK,
@@ -106,11 +118,6 @@ class Block extends Component {
             itemId: block.id,
             newItemId: upsertBlock.id,
           },
-          refetchQueries: [
-            {
-              query: GET_PAGE_ITEMS,
-            },
-          ],
         })
         .then(() => {
           rerenderSortable()
@@ -153,15 +160,31 @@ class Block extends Component {
   render() {
     const { itemId } = this.props
     const { visible } = this.state
+
+    const renderMediaLibrary = visible ? (
+      <Modal
+        title="Select an Image"
+        visible={visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+        width={1400}
+        style={{ top: 10 }}
+        okText="Insert Image"
+      >
+        <MediaLibrary
+          includeLayout={false}
+          onMediaSelect={this.onMediaSelect}
+        />
+      </Modal>
+    ) : null
+
     return (
       <Query query={GET_BLOCK} variables={{ itemId }}>
         {({ data: { block }, loading }) => {
           if (loading) return null
-          const { title, image, video, style, content } = block
+          const { title, image, video, style, content, media } = block
 
-          const {
-            media: { url },
-          } = this.state
+          const { url } = media
           const renderMedia = url ? <MediaImage src={url} /> : null
           return (
             <Fragment>
@@ -186,22 +209,7 @@ class Block extends Component {
                 {renderMedia}
                 <Button onClick={this.selectImage}>Select Image</Button>
               </Form.Item>
-
-              <Modal
-                title="Select an Image"
-                visible={visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
-                width={1400}
-                style={{ top: 10 }}
-                okText="Insert Image"
-              >
-                <MediaLibrary
-                  includeLayout={false}
-                  onMediaSelect={this.onMediaSelect}
-                />
-              </Modal>
-
+              {renderMediaLibrary}
               <Form.Item label="Video">
                 <Input
                   name="video"

@@ -88,6 +88,7 @@ type Mutation {
   upsertBlock(
     id: ID!
     page: ID!
+    media: ID
     title: String!
     image: String
     video: String
@@ -137,9 +138,7 @@ type Mutation {
     tag: [String]
   ): Faq!
 
-  deleteFaq(
-    id: ID!
-  ): Faq!
+  deleteFaq(id: ID!): Faq!
 
   addFaqCategory(
     name: String!
@@ -156,9 +155,7 @@ type Mutation {
     faqs: [ID]
   ): FaqCategory!
 
-  deleteFaqCategory(
-    id: ID!
-  ): FaqCategory!
+  deleteFaqCategory(id: ID!): FaqCategory!
 }
 
 type SuccessMessage {

@@ -32,6 +32,10 @@ export const GET_BLOCKS = gql`
       video
       style
       content
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -45,6 +49,10 @@ export const GET_BLOCK = gql`
       video
       image
       style
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -138,6 +146,10 @@ export const GET_PAGE_DB = gql`
         style
         content
         order
+        media {
+          id
+          url
+        }
       }
       boxes {
         id

@@ -47,6 +47,11 @@ const data = {
       image: '',
       video: '',
       style: 'full-width',
+      media: {
+        id: null,
+        url: null,
+        __typename: 'Media',
+      },
       __typename: 'Block',
     },
   ],
