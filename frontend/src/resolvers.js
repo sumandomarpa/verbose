@@ -213,6 +213,23 @@ export const resolvers = {
       const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
     },
+    updateBlockMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { media, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'Block', id: itemId })
+      const fragment = gql`
+        fragment updateBlock on Block {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, media }
+      cache.writeData({ id, data })
+    },
     updateBox: (_root, variables, { cache, getCacheKey }) => {
       const { name, value, itemId } = variables
 

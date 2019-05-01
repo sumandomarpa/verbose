@@ -253,7 +253,7 @@ export default {
       return ctx.prisma.page({
         id: parent.id
       }).prosAndCons()
-    }
+    },
   },
   ProsAndCons: {
     pros: (parent, args, ctx, info) => {
@@ -266,5 +266,5 @@ export default {
         id: parent.id
       }).cons()
     }
-  }
+  },
 }

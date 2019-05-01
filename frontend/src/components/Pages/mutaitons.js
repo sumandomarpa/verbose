@@ -12,6 +12,12 @@ export const UPDATE_BLOCK = gql`
   }
 `
 
+export const UPDATE_BLOCK_MEDIA = gql`
+  mutation UpdateBlockMedia($media: Media, $itemId: String) {
+    updateBlockMedia(media: $media, itemId: $itemId) @client
+  }
+`
+
 export const UPDATE_BOX = gql`
   mutation UpdateBox($name: String, $value: String, $itemId: String) {
     updateBox(name: $name, value: $value, itemId: $itemId) @client
@@ -207,6 +213,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
   mutation UPSERT_BLOCK(
     $id: ID!
     $page: ID!
+    $media: ID
     $title: String!
     $image: String
     $video: String
@@ -217,6 +224,7 @@ export const UPSERT_BLOCK_TO_DB = gql`
     upsertBlock(
       id: $id
       page: $page
+      media: $media
       title: $title
       image: $image
       video: $video
