@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Button } from 'antd'
+import { Card, Button, message } from 'antd'
 import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
@@ -10,7 +10,7 @@ import assign from 'lodash/assign'
 import Layout from '../../Layout'
 import PageForm from '../Add/PageForm'
 import SortableList from '../Add/SortableList'
-import PageItem from '../Add/PageItem'
+import PageItem from '../Add/AddPageItem'
 import { ActionButtonsWrapper, AddNewPageWrapper } from '../Add/styles'
 import {
   GET_PAGE_DB,
@@ -20,11 +20,37 @@ import {
   GET_PROS_AND_CONS,
   GET_PAGE_ITEMS,
 } from '../queries'
-import { UPDATE_PAGE_TO_DB } from '../mutaitons'
+import { UPDATE_PAGE_TO_DB, UPSERT_PAGE_TO_DB } from '../mutaitons'
 
 class EditPage extends Component {
+  state = { loading: false }
+
   componentDidMount() {
     this.fetchFromDBtoCache()
+  }
+
+  upsertPage = async () => {
+    const { client } = this.props
+    const { page } = client.readQuery({
+      query: GET_PAGE,
+    })
+
+    const {
+      data: { upsertPage },
+    } = await client.mutate({
+      mutation: UPSERT_PAGE_TO_DB,
+      variables: {
+        id: page.id,
+        title: page.title,
+        slug: page.slug,
+        type: page.type,
+        vertical: page.vertical,
+      },
+    })
+
+    if (upsertPage.id) {
+      message.success('Page updated successfully')
+    } else message.error('Error! Page update failed')
   }
 
   handleSubmit = async () => {
@@ -93,6 +119,7 @@ class EditPage extends Component {
   }
 
   async fetchFromDBtoCache() {
+    this.setState({ loading: true })
     const {
       match: { params },
       client,
@@ -106,7 +133,7 @@ class EditPage extends Component {
       variables: { id },
     })
 
-    const pageData = omit(page, ['blocks'])
+    const pageData = omit(page, ['blocks', 'boxes', 'prosAndCons'])
     const { blocks } = page
     const { boxes } = page
     const { prosAndCons } = page
@@ -134,25 +161,30 @@ class EditPage extends Component {
         prosAndCons,
       },
     })
+
+    if (page) {
+      this.setState({ loading: false })
+    }
   }
 
   render() {
-    return (
+    const { loading } = this.state
+    return !loading ? (
       <Layout>
         <AddNewPageWrapper>
           <Card title="Edit Page">
-            <PageForm />
+            <PageForm upsertPage={this.upsertPage} />
             <SortableList />
             <PageItem />
             <ActionButtonsWrapper>
-              <Button type="primary" onClick={this.handleSubmit}>
+              <Button type="primary" onClick={this.upsertPage}>
                 Publish
               </Button>
             </ActionButtonsWrapper>
           </Card>
         </AddNewPageWrapper>
       </Layout>
-    )
+    ) : null
   }
 }
 

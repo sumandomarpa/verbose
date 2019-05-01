@@ -18,3 +18,7 @@ export const AddNewPageWrapper = styled.div`
     margin-bottom: 0px;
   }
 `
+
+export const PageFormWrapper = styled.div`
+  margin-bottom: 20px;
+`

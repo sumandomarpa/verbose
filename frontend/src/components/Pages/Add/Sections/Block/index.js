@@ -1,15 +1,21 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Select, Button, Modal } from 'antd'
+import { Form, Input, Select, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import MediaLibrary from '../../../../MediaLibrary'
 import TinyMCEditor from '../../../../TinyMCEditor'
-import { GET_BLOCK } from '../../../queries'
-import { UPDATE_BLOCK } from '../../../mutaitons'
-import { MediaImage } from './styles'
+import { GET_BLOCK, GET_PAGE, GET_PAGE_ITEMS } from '../../../queries'
+import {
+  UPDATE_BLOCK,
+  UPSERT_BLOCK_TO_DB,
+  DELETE_BLOCK_TO_DB,
+  REPLACE_PAGE_ITEMS_ID,
+} from '../../../mutaitons'
+import { MediaImage, BlockSaveButtonWrapper } from './styles'
 
 const { Option } = Select
+const { confirm } = Modal
 
 class Block extends Component {
   state = { visible: false, media: {} }
@@ -28,7 +34,6 @@ class Block extends Component {
   }
 
   selectImage = () => {
-    console.log('select image')
     this.setState({ visible: true })
   }
 
@@ -48,6 +53,101 @@ class Block extends Component {
 
   onMediaSelect = media => {
     this.setState({ media })
+  }
+
+  upsertBlock = async () => {
+    const { client, itemId, rerenderSortable } = this.props
+
+    const { page } = client.readQuery({
+      query: GET_PAGE,
+    })
+
+    const { block } = client.readQuery({
+      query: GET_BLOCK,
+      variables: {
+        itemId,
+      },
+    })
+
+    const {
+      data: { upsertBlock },
+    } = await client.mutate({
+      mutation: UPSERT_BLOCK_TO_DB,
+      variables: {
+        id: block.id,
+        page: page.id,
+        title: block.title,
+        image: block.image,
+        video: block.video,
+        style: block.style,
+        content: block.content,
+        order: 1,
+      },
+    })
+
+    if (upsertBlock.id !== block.id) {
+      client.mutate({
+        mutation: UPDATE_BLOCK,
+        variables: {
+          name: 'id',
+          value: upsertBlock.id,
+          itemId: block.id,
+        },
+        refetchQueries: [
+          {
+            query: GET_BLOCK,
+          },
+        ],
+      })
+      client
+        .mutate({
+          mutation: REPLACE_PAGE_ITEMS_ID,
+          variables: {
+            itemId: block.id,
+            newItemId: upsertBlock.id,
+          },
+          refetchQueries: [
+            {
+              query: GET_PAGE_ITEMS,
+            },
+          ],
+        })
+        .then(() => {
+          rerenderSortable()
+        })
+    }
+
+    if (upsertBlock.id) {
+      message.success('Block updated successfully')
+    } else message.error('Error! Block update failed')
+  }
+
+  deleteBlock = () => {
+    const { removeItem, itemId, client } = this.props
+    confirm({
+      title: 'Are you sure wan to delte this Block?',
+      content: "Once deleted, it can't be undone!!",
+      async onOk() {
+        try {
+          const {
+            data: { deleteBlock },
+          } = await client.mutate({
+            mutation: DELETE_BLOCK_TO_DB,
+            variables: {
+              id: itemId,
+            },
+          })
+          if (deleteBlock.id) {
+            message.success('Block deleted successfully')
+            removeItem(itemId, 'Block')
+          } else message.error('Error! Block delete failed')
+        } catch (e) {
+          removeItem(itemId, 'Block')
+          message.success('Block deleted successfully')
+        }
+      },
+      onCancel() {},
+    })
   }
 
   render() {
@@ -142,6 +242,14 @@ class Block extends Component {
                   content={content}
                 />
               </Form.Item>
+              <BlockSaveButtonWrapper>
+                <Button type="danger" onClick={this.deleteBlock}>
+                  Delete
+                </Button>
+                <Button type="default" onClick={this.upsertBlock}>
+                  Save
+                </Button>
+              </BlockSaveButtonWrapper>
             </Fragment>
           )
         }}
@@ -153,6 +261,8 @@ class Block extends Component {
 Block.propTypes = {
   client: PropTypes.object.isRequired,
   itemId: PropTypes.string.isRequired,
+  removeItem: PropTypes.func.isRequired,
+  rerenderSortable: PropTypes.func.isRequired,
 }
 
 export default withApollo(Block)

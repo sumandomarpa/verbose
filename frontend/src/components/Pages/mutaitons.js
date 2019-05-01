@@ -66,6 +66,12 @@ export const ORDER_PAGE_ITEMS = gql`
   }
 `
 
+export const REPLACE_PAGE_ITEMS_ID = gql`
+  mutation ReplacePageItemsId($itemId: String!, $newItemId: String!) {
+    replacePageItemsId(itemId: $itemId, newItemId: $newItemId) @client
+  }
+`
+
 export const SAVE_PAGE_TO_DB = gql`
   mutation ADD_PAGE(
     $title: String!
@@ -169,6 +175,70 @@ export const UPDATE_PAGE_TO_DB = gql`
           content
         }
       }
+    }
+  }
+`
+
+export const UPSERT_PAGE_TO_DB = gql`
+  mutation UPSERT_PAGE(
+    $id: ID!
+    $title: String!
+    $slug: String!
+    $type: PageType!
+    $vertical: String
+  ) {
+    upsertPage(
+      id: $id
+      title: $title
+      slug: $slug
+      type: $type
+      vertical: $vertical
+    ) {
+      id
+      title
+      slug
+      type
+      vertical
+    }
+  }
+`
+
+export const UPSERT_BLOCK_TO_DB = gql`
+  mutation UPSERT_BLOCK(
+    $id: ID!
+    $page: ID!
+    $title: String!
+    $image: String
+    $video: String
+    $style: String
+    $content: String
+    $order: Int
+  ) {
+    upsertBlock(
+      id: $id
+      page: $page
+      title: $title
+      image: $image
+      video: $video
+      style: $style
+      content: $content
+      order: $order
+    ) {
+      id
+      title
+      image
+      video
+      style
+      content
+      order
+    }
+  }
+`
+
+export const DELETE_BLOCK_TO_DB = gql`
+  mutation DELETE_BLOCK($id: ID!) {
+    deleteBlock(id: $id) {
+      id
     }
   }
 `

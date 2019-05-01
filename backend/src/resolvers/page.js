@@ -54,6 +54,31 @@ export default {
 
       return page
     },
+    async upsertPage (parent, args, ctx, info) {
+      const { id, title, slug, image, type, vertical } = args
+
+      const page = await ctx.prisma.upsertPage({
+        where: {
+          id
+        },
+        update: {
+          title,
+          slug,
+          image,
+          type,
+          vertical,
+        },
+        create: {
+          title,
+          slug,
+          image,
+          type,
+          vertical,
+        }
+      })
+
+      return page
+    },
     async updatePage (parent, args, ctx, info) {
       const { id, title, slug, image, type, vertical, blocks, boxes, prosAndCons } = args
 
