@@ -77,6 +77,26 @@ type Mutation {
     boxes: [BoxInput]
     prosAndCons: [ProsAndConsInput]
   ): Page!
+  upsertPage(
+    id: ID!
+    title: String!
+    slug: String!
+    image: String
+    type: PageType!
+    vertical: String
+  ): Page!
+  upsertBlock(
+    id: ID!
+    page: ID!
+    title: String!
+    image: String
+    video: String
+    style: String
+    content: String
+    order: Int
+  ): Block
+  deleteBlock(id: ID!): Block
+
   updateMedia(id: ID!, title: String, altText: String): Media
 
   addBlock(

@@ -39,6 +39,7 @@ export const GET_BLOCKS = gql`
 export const GET_BLOCK = gql`
   query GetBlock($itemId: String) {
     block(itemId: $itemId) @client {
+      id
       title
       content
       video

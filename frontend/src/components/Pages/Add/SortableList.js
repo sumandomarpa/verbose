@@ -38,7 +38,13 @@ class SortableList extends Component {
   renderSection = (type, props) => {
     switch (type) {
       case 'Block':
-        return <Block {...props} />
+        return (
+          <Block
+            {...props}
+            removeItem={this.removeItem}
+            rerenderSortable={this.rerenderSortable}
+          />
+        )
       case 'Box':
         return <Box {...props} />
       case 'ProsAndCons':
@@ -84,6 +90,12 @@ class SortableList extends Component {
       .then(() => {
         this.setState({ loading: false })
       })
+  }
+
+  rerenderSortable = () => {
+    this.setState({ loading: true }, () => {
+      this.setState({ loading: false })
+    })
   }
 
   render() {

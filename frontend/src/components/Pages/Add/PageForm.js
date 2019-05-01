@@ -1,10 +1,11 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import { GET_PAGE } from '../queries'
 import { UPDATE_PAGE } from '../mutaitons'
+import { PageFormWrapper } from './styles'
 
 const { Option } = Select
 
@@ -27,14 +28,17 @@ class PageForm extends Component {
         {({ data: { page }, loading }) => {
           if (loading) return null
           const { id, title, slug, image, vertical, type } = page
+          const { upsertPage } = this.props
+
           return (
-            <Fragment>
+            <PageFormWrapper>
               <Form.Item label="Title">
                 <Input
                   name="title"
                   type="text"
                   value={title}
                   onChange={e => this.handleInputChange(id, e)}
+                  onBlur={upsertPage}
                 />
               </Form.Item>
               <Form.Item label="Image">
@@ -49,9 +53,9 @@ class PageForm extends Component {
               <Form.Item label="Type">
                 <Select
                   defaultValue={type}
-                  onChange={value =>
+                  onChange={value => {
                     this.handleInputChange(id, null, 'type', value)
-                  }
+                  }}
                 >
                   <Option value="PAGE">Page</Option>
                   <Option value="NEWS">News</Option>
@@ -70,16 +74,16 @@ class PageForm extends Component {
               <Form.Item label="Vertical">
                 <Select
                   defaultValue={vertical}
-                  onChange={value =>
+                  onChange={value => {
                     this.handleInputChange(id, null, 'vertical', value)
-                  }
+                  }}
                 >
                   <Option value="home-loans">Home Loans</Option>
                   <Option value="car-loans">Car Loans</Option>
                   <Option value="personal-loans">Personal Loans</Option>
                 </Select>
               </Form.Item>
-            </Fragment>
+            </PageFormWrapper>
           )
         }}
       </Query>
@@ -89,6 +93,7 @@ class PageForm extends Component {
 
 PageForm.propTypes = {
   client: PropTypes.object.isRequired,
+  upsertPage: PropTypes.func.isRequired,
 }
 
 export default withApollo(PageForm)
