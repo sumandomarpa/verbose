@@ -10,99 +10,101 @@ import Layout from '../../Layout'
 import PageForm from './PageForm'
 import SortableList from './SortableList'
 import PageItem from './PageItem'
-import { AddNewPageWrapper } from './styles'
-import PublishButton from '../../Generic/PublishButton'
+import { ActionButtonsWrapper, AddNewPageWrapper } from './styles'
 import {
-  GET_PAGE,
-  GET_BLOCKS,
-  GET_PAGE_ITEMS,
-  GET_BOXES,
-  GET_PROS_AND_CONS,
+ GET_PAGE,
+ GET_BLOCKS,
+ GET_PAGE_ITEMS,
+ GET_BOXES,
+ GET_PROS_AND_CONS,
 } from '../queries'
 import { SAVE_PAGE_TO_DB } from '../mutaitons'
 
-
 class AddPage extends Component {
-  handleSubmit = async () => {
-    const { client, history } = this.props
-    const { page } = client.readQuery({
-      query: GET_PAGE,
-    })
+ handleSubmit = async () => {
+   const { client, history } = this.props
+   const { page } = client.readQuery({
+     query: GET_PAGE,
+   })
 
-    const { pageItems } = client.readQuery({
-      query: GET_PAGE_ITEMS,
-    })
+   const { pageItems } = client.readQuery({
+     query: GET_PAGE_ITEMS,
+   })
 
-    const { blocks } = client.readQuery({
-      query: GET_BLOCKS,
-    })
+   const { blocks } = client.readQuery({
+     query: GET_BLOCKS,
+   })
 
-    const trimBlocks = blocks.map(block =>
-      assign(omit(block, ['id', '__typename']), {
-        order: findIndex(pageItems, pageItem => pageItem.itemId === block.id),
-      })
-    )
+   const trimBlocks = blocks.map(block =>
+     assign(omit(block, ['id', '__typename']), {
+       order: findIndex(pageItems, pageItem => pageItem.itemId === block.id),
+     })
+   )
 
-    const { boxes } = client.readQuery({
-      query: GET_BOXES,
-    })
+   const { boxes } = client.readQuery({
+     query: GET_BOXES,
+   })
 
-    const trimBoxes = boxes.map(box =>
-      assign(omit(box, ['id', '__typename']), {
-        order: findIndex(pageItems, pageItem => pageItem.itemId === box.id),
-      })
-    )
+   const trimBoxes = boxes.map(box =>
+     assign(omit(box, ['id', '__typename']), {
+       order: findIndex(pageItems, pageItem => pageItem.itemId === box.id),
+     })
+   )
 
-    const { prosAndCons } = client.readQuery({
-      query: GET_PROS_AND_CONS,
-    })
+   const { prosAndCons } = client.readQuery({
+     query: GET_PROS_AND_CONS,
+   })
 
-    const trimProsAndCons = prosAndCons.map(box => {
-      const data = assign(omit(box, ['id', '__typename']), {
-        order: findIndex(pageItems, pageItem => pageItem.itemId === box.id),
-      })
-      data.pros = data.pros.map(elem => omit(elem, ['id', '__typename']))
-      data.cons = data.cons.map(elem => omit(elem, ['id', '__typename']))
-      return data
-    })
+   const trimProsAndCons = prosAndCons.map(box => {
+     const data = assign(omit(box, ['id', '__typename']), {
+       order: findIndex(pageItems, pageItem => pageItem.itemId === box.id),
+     })
+     data.pros = data.pros.map(elem => omit(elem, ['id', '__typename']))
+     data.cons = data.cons.map(elem => omit(elem, ['id', '__typename']))
+     return data
+   })
 
-    const {
-      data: { addPage },
-    } = await client.mutate({
-      mutation: SAVE_PAGE_TO_DB,
-      variables: {
-        title: page.title,
-        slug: page.slug,
-        type: page.type,
-        vertical: page.vertical,
-        blocks: trimBlocks,
-        boxes: trimBoxes,
-        prosAndCons: trimProsAndCons,
-      },
-    })
+   const {
+     data: { addPage },
+   } = await client.mutate({
+     mutation: SAVE_PAGE_TO_DB,
+     variables: {
+       title: page.title,
+       slug: page.slug,
+       type: page.type,
+       vertical: page.vertical,
+       blocks: trimBlocks,
+       boxes: trimBoxes,
+       prosAndCons: trimProsAndCons,
+     },
+   })
 
-    history.push(`/dashboard/pages/edit/${addPage.id}`)
-  }
+   history.push(`/dashboard/pages/edit/${addPage.id}`)
+ }
 
-  render() {
-    return (
-      <Layout>
-        <AddNewPageWrapper>
-          <Card title="Add New Page">
-            <PageForm />
-            <SortableList />
-            <PageItem />
-            <PublishButton onClick={this.handleSubmit} />
-          </Card>
-        </AddNewPageWrapper>
-      </Layout>
-    )
-  }
+ render() {
+   return (
+     <Layout>
+       <AddNewPageWrapper>
+         <Card title="Add New Page">
+           <PageForm />
+           <SortableList />
+           <PageItem />
+           <ActionButtonsWrapper>
+             <Button type="primary" onClick={this.handleSubmit}>
+               Publish
+             </Button>
+           </ActionButtonsWrapper>
+         </Card>
+       </AddNewPageWrapper>
+     </Layout>
+   )
+ }
 }
 
 AddPage.propTypes = {
-  client: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+ client: PropTypes.object.isRequired,
+ history: PropTypes.object.isRequired,
 }
 
 export default withApollo(AddPage)

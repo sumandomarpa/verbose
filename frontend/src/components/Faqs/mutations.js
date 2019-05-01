@@ -1,11 +1,5 @@
 import gql from 'graphql-tag'
 
-export const UPDATE_FAQ = gql`
-    mutation updateFaq($name: String, $value: String, $faqId: String) {
-        updateFaq(name: $name, value: $value, faqId: $faqId) @client
-    }
-`
-
 export const SAVE_FAQ_TO_DB = gql`
   mutation ADD_FAQ(
     $title: String!

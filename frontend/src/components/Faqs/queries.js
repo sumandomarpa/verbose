@@ -1,17 +1,11 @@
 import gql from 'graphql-tag'
 
-export const GET_FAQ = gql`
-    {
-        faq @client {
-            id
-            title
-            description
-            short_description
-            vertical
-            slug
-            order
-        }
+export const CURRENT_USER = gql`
+  query {
+    me @client {
+      id
     }
+  }
 `
 
 export const GET_FAQ_DB = gql`
@@ -22,6 +16,9 @@ export const GET_FAQ_DB = gql`
             description
             short_description
             vertical
+            authors {
+                id
+            }
             slug
             order
         }

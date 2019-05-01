@@ -10,7 +10,6 @@ export default function EditorBox(props) {
           id={`${id}-editor`}
           onEditorChange={value =>
             onChange(
-              id,
               null,
               name,
               value || '<p></p>'
