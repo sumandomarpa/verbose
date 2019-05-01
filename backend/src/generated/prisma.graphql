@@ -47,6 +47,7 @@ type Block {
   page: Page!
   title: String
   image: String
+  media: Media
   video: String
   style: String
   content: String
@@ -63,6 +64,7 @@ input BlockCreateInput {
   page: PageCreateOneWithoutBlocksInput!
   title: String
   image: String
+  media: MediaCreateOneInput
   video: String
   style: String
   content: String
@@ -77,6 +79,7 @@ input BlockCreateManyWithoutPageInput {
 input BlockCreateWithoutPageInput {
   title: String
   image: String
+  media: MediaCreateOneInput
   video: String
   style: String
   content: String
@@ -239,6 +242,7 @@ input BlockUpdateInput {
   page: PageUpdateOneRequiredWithoutBlocksInput
   title: String
   image: String
+  media: MediaUpdateOneInput
   video: String
   style: String
   content: String
@@ -283,6 +287,7 @@ input BlockUpdateManyWithWhereNestedInput {
 input BlockUpdateWithoutPageDataInput {
   title: String
   image: String
+  media: MediaUpdateOneInput
   video: String
   style: String
   content: String
@@ -344,6 +349,7 @@ input BlockWhereInput {
   image_not_starts_with: String
   image_ends_with: String
   image_not_ends_with: String
+  media: MediaWhereInput
   video: String
   video_not: String
   video_in: [String!]
@@ -1712,6 +1718,11 @@ input MediaCreateInput {
   altText: String
 }
 
+input MediaCreateOneInput {
+  create: MediaCreateInput
+  connect: MediaWhereUniqueInput
+}
+
 type MediaEdge {
   node: Media!
   cursor: String!
@@ -1757,6 +1768,12 @@ input MediaSubscriptionWhereInput {
   NOT: [MediaSubscriptionWhereInput!]
 }
 
+input MediaUpdateDataInput {
+  url: String
+  title: String
+  altText: String
+}
+
 input MediaUpdateInput {
   url: String
   title: String
@@ -1767,6 +1784,20 @@ input MediaUpdateManyMutationInput {
   url: String
   title: String
   altText: String
+}
+
+input MediaUpdateOneInput {
+  create: MediaCreateInput
+  update: MediaUpdateDataInput
+  upsert: MediaUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: MediaWhereUniqueInput
+}
+
+input MediaUpsertNestedInput {
+  update: MediaUpdateDataInput!
+  create: MediaCreateInput!
 }
 
 input MediaWhereInput {

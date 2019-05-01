@@ -36,6 +36,7 @@ type Block {
   page: Page!
   title: String
   image: String
+  media: Media
   video: String
   style: String
   content: String

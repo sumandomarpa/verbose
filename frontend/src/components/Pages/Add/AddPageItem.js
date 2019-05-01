@@ -9,7 +9,7 @@ import { GET_PAGE_ITEMS, GET_PAGE } from '../queries'
 
 const { Option } = Select
 
-class PageItem extends Component {
+class AddPageItem extends Component {
   state = {
     addSectionType: 'Block',
   }
@@ -66,8 +66,8 @@ class PageItem extends Component {
   }
 }
 
-PageItem.propTypes = {
+AddPageItem.propTypes = {
   client: PropTypes.object.isRequired,
 }
 
-export default withApollo(PageItem)
+export default withApollo(AddPageItem)

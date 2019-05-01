@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Button } from 'antd'
+import { Card, Button, message } from 'antd'
 import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 import findIndex from 'lodash/findIndex'
@@ -9,7 +9,7 @@ import assign from 'lodash/assign'
 import Layout from '../../Layout'
 import PageForm from './PageForm'
 import SortableList from './SortableList'
-import PageItem from './PageItem'
+import AddPageItem from './AddPageItem'
 import { ActionButtonsWrapper, AddNewPageWrapper } from './styles'
 import {
  GET_PAGE,
@@ -18,7 +18,7 @@ import {
  GET_BOXES,
  GET_PROS_AND_CONS,
 } from '../queries'
-import { SAVE_PAGE_TO_DB } from '../mutaitons'
+import { SAVE_PAGE_TO_DB, UPSERT_PAGE_TO_DB } from '../mutaitons'
 
 class AddPage extends Component {
  handleSubmit = async () => {
@@ -82,24 +82,49 @@ class AddPage extends Component {
    history.push(`/dashboard/pages/edit/${addPage.id}`)
  }
 
- render() {
-   return (
-     <Layout>
-       <AddNewPageWrapper>
-         <Card title="Add New Page">
-           <PageForm />
-           <SortableList />
-           <PageItem />
-           <ActionButtonsWrapper>
-             <Button type="primary" onClick={this.handleSubmit}>
-               Publish
-             </Button>
-           </ActionButtonsWrapper>
-         </Card>
-       </AddNewPageWrapper>
-     </Layout>
-   )
- }
+  upsertPage = async () => {
+    const { client, history } = this.props
+    const { page } = client.readQuery({
+      query: GET_PAGE,
+    })
+
+    const {
+      data: { upsertPage },
+    } = await client.mutate({
+      mutation: UPSERT_PAGE_TO_DB,
+      variables: {
+        id: page.id,
+        title: page.title,
+        slug: page.slug,
+        type: page.type,
+        vertical: page.vertical,
+      },
+    })
+
+    if (upsertPage.id) {
+      message.success('Page Created Successfully')
+      history.push(`/dashboard/pages/edit/${upsertPage.id}`)
+    } else message.error('Error: Failed to create a page')
+  }
+
+  render() {
+    return (
+      <Layout>
+        <AddNewPageWrapper>
+          <Card title="Add New Page">
+            <PageForm upsertPage={this.upsertPage} />
+            <SortableList />
+            <AddPageItem />
+            <ActionButtonsWrapper>
+              <Button type="primary" onClick={this.upsertPage}>
+                Publish
+              </Button>
+            </ActionButtonsWrapper>
+          </Card>
+        </AddNewPageWrapper>
+      </Layout>
+    )
+  }
 }
 
 AddPage.propTypes = {

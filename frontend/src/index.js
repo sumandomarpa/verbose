@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createUploadLink } from 'apollo-upload-client'
-
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from 'react-apollo'
 import shortid from 'shortid'
+
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 import { resolvers } from './resolvers'
@@ -24,37 +24,46 @@ const client = new ApolloClient({
 
 const blockId = shortid.generate()
 const pageId = shortid.generate()
+
+const data = {
+  page: {
+    id: pageId,
+    title: '',
+    slug: '',
+    image: '',
+    vertical: 'home-loans',
+    type: 'NEWS',
+    __typename: 'Page',
+  },
+  // TODO: GET RID OF pageId in pageItems
+  pageItems: [
+    { type: 'Block', itemId: blockId, pageId, __typename: 'PageItem' },
+  ],
+  blocks: [
+    {
+      id: blockId,
+      title: '',
+      content: '<p></p>',
+      image: '',
+      video: '',
+      style: 'full-width',
+      media: {
+        id: null,
+        url: null,
+        __typename: 'Media',
+      },
+      __typename: 'Block',
+    },
+  ],
+  boxes: [],
+  prosAndCons: [],
+}
 cache.writeData({
- data: {
-   page: {
-     id: pageId,
-     title: '',
-     slug: '',
-     image: '',
-     vertical: 'home-loans',
-     type: 'NEWS',
-     __typename: 'Page',
-   },
-   pageItems: [
-     { type: 'Block', itemId: blockId, pageId, __typename: 'PageItem' },
-   ],
-   blocks: [
-     {
-       id: blockId,
-       title: '',
-       content: '<p></p>',
-       image: '',
-       video: '',
-       style: 'full-width',
-       __typename: 'Block',
-     },
-   ],
-   boxes: [],
-   prosAndCons: [],
- },
+  data,
 })
 
 client.replaceStore = data => cache.writeData(data)
+client.onResetStore(() => cache.writeData({ data }))
 
 ReactDOM.render(
  <ApolloProvider client={client}>

@@ -77,6 +77,27 @@ type Mutation {
     boxes: [BoxInput]
     prosAndCons: [ProsAndConsInput]
   ): Page!
+  upsertPage(
+    id: ID!
+    title: String!
+    slug: String!
+    image: String
+    type: PageType!
+    vertical: String
+  ): Page!
+  upsertBlock(
+    id: ID!
+    page: ID!
+    media: ID
+    title: String!
+    image: String
+    video: String
+    style: String
+    content: String
+    order: Int
+  ): Block
+  deleteBlock(id: ID!): Block
+
   updateMedia(id: ID!, title: String, altText: String): Media
 
   addBlock(
@@ -117,6 +138,8 @@ type Mutation {
     tag: [String]
   ): Faq!
 
+  deleteFaq(id: ID!): Faq!
+
   addFaqCategory(
     name: String!
     slug: String
@@ -131,6 +154,8 @@ type Mutation {
     description: String
     faqs: [ID]
   ): FaqCategory!
+
+  deleteFaqCategory(id: ID!): FaqCategory!
 }
 
 type SuccessMessage {

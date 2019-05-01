@@ -1,18 +1,25 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Select, Button, Modal } from 'antd'
+import { Form, Input, Select, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import MediaLibrary from '../../../../MediaLibrary'
 import TinyMCEditor from '../../../../TinyMCEditor'
-import { GET_BLOCK } from '../../../queries'
-import { UPDATE_BLOCK } from '../../../mutaitons'
-import { MediaImage } from './styles'
+import { GET_BLOCK, GET_PAGE } from '../../../queries'
+import {
+  UPDATE_BLOCK,
+  UPSERT_BLOCK_TO_DB,
+  DELETE_BLOCK_TO_DB,
+  REPLACE_PAGE_ITEMS_ID,
+  UPDATE_BLOCK_MEDIA,
+} from '../../../mutaitons'
+import { MediaImage, BlockSaveButtonWrapper } from './styles'
 
 const { Option } = Select
+const { confirm } = Modal
 
 class Block extends Component {
-  state = { visible: false, media: {} }
+  state = { visible: false, selectedMedia: {} }
 
   handleInputChange = (e, name, value) => {
     const { client, itemId } = this.props
@@ -28,40 +35,156 @@ class Block extends Component {
   }
 
   selectImage = () => {
-    console.log('select image')
     this.setState({ visible: true })
   }
 
-  handleOk = e => {
-    const { media } = this.state
+  handleOk = async () => {
+    const { client, itemId } = this.props
+    const { selectedMedia } = this.state
     this.setState({
       visible: false,
     })
-  }
 
-  handleCancel = e => {
-    this.setState({
-      visible: false,
-      media: {},
+    await client.mutate({
+      mutation: UPDATE_BLOCK_MEDIA,
+      variables: {
+        itemId,
+        media: selectedMedia,
+      },
     })
   }
 
-  onMediaSelect = media => {
-    this.setState({ media })
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+      selectedMedia: {},
+    })
+  }
+
+  onMediaSelect = selectedMedia => {
+    this.setState({ selectedMedia })
+  }
+
+  upsertBlock = async () => {
+    const { client, itemId, rerenderSortable } = this.props
+
+    const { page } = client.readQuery({
+      query: GET_PAGE,
+    })
+
+    const { block } = client.readQuery({
+      query: GET_BLOCK,
+      variables: {
+        itemId,
+      },
+    })
+
+    const {
+      data: { upsertBlock },
+    } = await client.mutate({
+      mutation: UPSERT_BLOCK_TO_DB,
+      variables: {
+        id: block.id,
+        page: page.id,
+        media: block.media.id,
+        title: block.title,
+        image: block.image,
+        video: block.video,
+        style: block.style,
+        content: block.content,
+        order: 1,
+      },
+    })
+
+    /** Replace the DB Id in local state, if its just created */
+    if (upsertBlock.id !== block.id) {
+      client.mutate({
+        mutation: UPDATE_BLOCK,
+        variables: {
+          name: 'id',
+          value: upsertBlock.id,
+          itemId: block.id,
+        },
+        refetchQueries: [
+          {
+            query: GET_BLOCK,
+          },
+        ],
+      })
+      client
+        .mutate({
+          mutation: REPLACE_PAGE_ITEMS_ID,
+          variables: {
+            itemId: block.id,
+            newItemId: upsertBlock.id,
+          },
+        })
+        .then(() => {
+          rerenderSortable()
+        })
+    }
+
+    if (upsertBlock.id) {
+      message.success('Block updated successfully')
+    } else message.error('Error! Block update failed')
+  }
+
+  deleteBlock = () => {
+    const { removeItem, itemId, client } = this.props
+    confirm({
+      title: 'Are you sure wan to delte this Block?',
+      content: "Once deleted, it can't be undone!!",
+      async onOk() {
+        try {
+          const {
+            data: { deleteBlock },
+          } = await client.mutate({
+            mutation: DELETE_BLOCK_TO_DB,
+            variables: {
+              id: itemId,
+            },
+          })
+          if (deleteBlock.id) {
+            message.success('Block deleted successfully')
+            removeItem(itemId, 'Block')
+          } else message.error('Error! Block delete failed')
+        } catch (e) {
+          removeItem(itemId, 'Block')
+          message.success('Block deleted successfully')
+        }
+      },
+      onCancel() {},
+    })
   }
 
   render() {
     const { itemId } = this.props
     const { visible } = this.state
+
+    const renderMediaLibrary = visible ? (
+      <Modal
+        title="Select an Image"
+        visible={visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+        width={1400}
+        style={{ top: 10 }}
+        okText="Insert Image"
+      >
+        <MediaLibrary
+          includeLayout={false}
+          onMediaSelect={this.onMediaSelect}
+        />
+      </Modal>
+    ) : null
+
     return (
       <Query query={GET_BLOCK} variables={{ itemId }}>
         {({ data: { block }, loading }) => {
           if (loading) return null
-          const { title, image, video, style, content } = block
+          const { title, image, video, style, content, media } = block
 
-          const {
-            media: { url },
-          } = this.state
+          const { url } = media
           const renderMedia = url ? <MediaImage src={url} /> : null
           return (
             <Fragment>
@@ -86,22 +209,7 @@ class Block extends Component {
                 {renderMedia}
                 <Button onClick={this.selectImage}>Select Image</Button>
               </Form.Item>
-
-              <Modal
-                title="Select an Image"
-                visible={visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
-                width={1400}
-                style={{ top: 10 }}
-                okText="Insert Image"
-              >
-                <MediaLibrary
-                  includeLayout={false}
-                  onMediaSelect={this.onMediaSelect}
-                />
-              </Modal>
-
+              {renderMediaLibrary}
               <Form.Item label="Video">
                 <Input
                   name="video"
@@ -142,6 +250,14 @@ class Block extends Component {
                   content={content}
                 />
               </Form.Item>
+              <BlockSaveButtonWrapper>
+                <Button type="danger" onClick={this.deleteBlock}>
+                  Delete
+                </Button>
+                <Button type="default" onClick={this.upsertBlock}>
+                  Save
+                </Button>
+              </BlockSaveButtonWrapper>
             </Fragment>
           )
         }}
@@ -153,6 +269,8 @@ class Block extends Component {
 Block.propTypes = {
   client: PropTypes.object.isRequired,
   itemId: PropTypes.string.isRequired,
+  removeItem: PropTypes.func.isRequired,
+  rerenderSortable: PropTypes.func.isRequired,
 }
 
 export default withApollo(Block)

@@ -32,6 +32,10 @@ export const GET_BLOCKS = gql`
       video
       style
       content
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -39,11 +43,16 @@ export const GET_BLOCKS = gql`
 export const GET_BLOCK = gql`
   query GetBlock($itemId: String) {
     block(itemId: $itemId) @client {
+      id
       title
       content
       video
       image
       style
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -137,6 +146,10 @@ export const GET_PAGE_DB = gql`
         style
         content
         order
+        media {
+          id
+          url
+        }
       }
       boxes {
         id

@@ -69,7 +69,7 @@ export default class DashboardLayout extends Component {
                       <Link to="/dashboard/pages">All Pages</Link>
                     </Menu.Item>
                     <Menu.Item key="3">
-                      <Link to="/dashboard/pages/add">Add New Page</Link>
+                      <a href="/dashboard/pages/add">Add New Page</a>
                     </Menu.Item>
                   </SubMenu>
                   <SubMenu
