@@ -1880,6 +1880,7 @@ type Page {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
   blocks(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Block!]
   boxes(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Box!]
@@ -1897,6 +1898,7 @@ input PageCreateInput {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
@@ -1923,6 +1925,7 @@ input PageCreateWithoutBlocksInput {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
@@ -1933,6 +1936,7 @@ input PageCreateWithoutBoxesInput {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
@@ -1943,6 +1947,7 @@ input PageCreateWithoutProsAndConsInput {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
@@ -1971,6 +1976,8 @@ enum PageOrderByInput {
   slug_DESC
   type_ASC
   type_DESC
+  status_ASC
+  status_DESC
   vertical_ASC
   vertical_DESC
   createdAt_ASC
@@ -1985,7 +1992,13 @@ type PagePreviousValues {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
+}
+
+enum PageStatus {
+  DRAFT
+  PUBLISHED
 }
 
 type PageSubscriptionPayload {
@@ -2017,6 +2030,7 @@ input PageUpdateInput {
   image: String
   slug: String
   type: PageType
+  status: PageStatus
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
@@ -2028,6 +2042,7 @@ input PageUpdateManyMutationInput {
   image: String
   slug: String
   type: PageType
+  status: PageStatus
   vertical: String
 }
 
@@ -2057,6 +2072,7 @@ input PageUpdateWithoutBlocksDataInput {
   image: String
   slug: String
   type: PageType
+  status: PageStatus
   vertical: String
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
@@ -2067,6 +2083,7 @@ input PageUpdateWithoutBoxesDataInput {
   image: String
   slug: String
   type: PageType
+  status: PageStatus
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
@@ -2077,6 +2094,7 @@ input PageUpdateWithoutProsAndConsDataInput {
   image: String
   slug: String
   type: PageType
+  status: PageStatus
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
@@ -2158,6 +2176,10 @@ input PageWhereInput {
   type_not: PageType
   type_in: [PageType!]
   type_not_in: [PageType!]
+  status: PageStatus
+  status_not: PageStatus
+  status_in: [PageStatus!]
+  status_not_in: [PageStatus!]
   vertical: String
   vertical_not: String
   vertical_in: [String!]

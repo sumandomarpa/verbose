@@ -9,6 +9,12 @@ enum PageType {
   ARTICLE
 }
 
+enum PageStatus {
+  DRAFT
+  PUBLISHED
+  DELETED
+}
+
 type User {
   id: ID! @unique
   name: String!
@@ -25,6 +31,7 @@ type Page {
   image: String
   slug: String!
   type: PageType!
+  status: PageStatus!
   vertical: String
   blocks: [Block]!
   boxes: [Box]!

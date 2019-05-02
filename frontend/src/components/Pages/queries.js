@@ -9,6 +9,7 @@ export const GET_PAGE = gql`
       vertical
       type
       slug
+      status
     }
   }
 `
@@ -142,6 +143,7 @@ export const GET_PAGE_DB = gql`
       slug
       type
       vertical
+      status
       blocks {
         id
         title
