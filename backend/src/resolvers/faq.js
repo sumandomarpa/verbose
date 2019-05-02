@@ -1,3 +1,6 @@
+import differenceBy from 'lodash/differenceBy'
+import map from 'lodash/map'
+
 export default {
     Query: {
         async faqs(parent, args, ctx, info) {
@@ -12,7 +15,7 @@ export default {
           return ctx.prisma.faqs({ orderBy: 'createdAt_DESC' }, info);
         },
         async faq(parent, args, ctx, info) {
-          return ctx.prisma.faq(args, info);
+          return ctx.prisma.faq(args, info)
         },
       },
 
@@ -42,7 +45,17 @@ export default {
         },
         async updateFaq (parent, args, ctx, info) {
             const { id, title, description, short_description, slug, vertical, category = [], readingTime, order, variant, tag, authors } = args
-      
+            /** get all the existing authors */
+            const existingAuthors = await ctx.prisma.faq({ id }).authors()
+            let authorsQuery = {};
+
+            // preparing the query
+            const authorsToConnect = differenceBy(authors, map(existingAuthors, 'id'))
+            const authorsToDelete = differenceBy(map(existingAuthors, 'id'), authors)
+            authorsQuery = {
+              connect: authorsToConnect.map((authorId) => {return {id: authorId}}),
+              disconnect: authorsToDelete.map((authorId) => {return {id: authorId}})
+            }
             /** Executing the query */
             const faq = await ctx.prisma.updateFaq({
               data: {
@@ -58,9 +71,7 @@ export default {
                 order,
                 variant,
                 tag,
-                authors: {
-                  connect: authors.map((authorId) => {return {id: authorId}})
-                },
+                authors: authorsQuery
               },
               where: { id }
             }, info)
@@ -81,5 +92,13 @@ export default {
           return faq
       },
 
-    }
+    },
+
+    Faq: {
+      authors: (parent, args, ctx, info) => {
+        return ctx.prisma.faq({
+          id: parent.id
+        }).authors()
+      }
+    },
 }
