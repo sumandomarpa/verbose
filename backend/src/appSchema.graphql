@@ -62,27 +62,6 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
-  addPage(
-    title: String!
-    slug: String!
-    image: String
-    type: PageType!
-    vertical: String
-    blocks: [BlockInput]
-    boxes: [BoxInput]
-    prosAndCons: [ProsAndConsInput]
-  ): Page!
-  updatePage(
-    id: ID!
-    title: String!
-    slug: String!
-    image: String
-    type: PageType!
-    vertical: String
-    blocks: [BlockInput]
-    boxes: [BoxInput]
-    prosAndCons: [ProsAndConsInput]
-  ): Page!
   upsertPage(
     id: ID!
     title: String!
@@ -127,15 +106,6 @@ type Mutation {
   updateSectionsOrder(sectionsOrder: [SectionsOrder]): Block
 
   updateMedia(id: ID!, title: String, altText: String): Media
-
-  addBlock(
-    title: String!
-    image: String
-    video: String
-    style: String
-    content: String
-    pageId: String
-  ): Block!
 
   addFaq(
     title: String!
