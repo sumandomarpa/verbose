@@ -507,8 +507,6 @@ export type BlockOrderByInput =
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "image_ASC"
-  | "image_DESC"
   | "video_ASC"
   | "video_DESC"
   | "style_ASC"
@@ -563,8 +561,6 @@ export type BoxOrderByInput =
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
-  | "image_ASC"
-  | "image_DESC"
   | "video_ASC"
   | "video_DESC"
   | "style_ASC"
@@ -895,20 +891,6 @@ export interface BoxScalarWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
   video?: String;
   video_not?: String;
   video_in?: String[] | String;
@@ -993,7 +975,6 @@ export interface FaqSubscriptionWhereInput {
 
 export interface BoxUpdateManyDataInput {
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -1578,7 +1559,6 @@ export interface FaqCreateWithoutCategoryInput {
 
 export interface BlockUpdateManyMutationInput {
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -1679,7 +1659,6 @@ export interface FaqUpdatevariantInput {
 export interface BoxCreateInput {
   page: PageCreateOneWithoutBoxesInput;
   title?: String;
-  image?: String;
   media?: MediaCreateOneInput;
   video?: String;
   style?: String;
@@ -1690,7 +1669,6 @@ export interface BoxCreateInput {
 export interface BlockCreateInput {
   page: PageCreateOneWithoutBlocksInput;
   title?: String;
-  image?: String;
   media?: MediaCreateOneInput;
   video?: String;
   style?: String;
@@ -1759,7 +1737,6 @@ export interface ProsWhereInput {
 
 export interface BoxCreateWithoutPageInput {
   title?: String;
-  image?: String;
   media?: MediaCreateOneInput;
   video?: String;
   style?: String;
@@ -1780,7 +1757,6 @@ export interface MediaCreateInput {
 
 export interface BlockCreateWithoutPageInput {
   title?: String;
-  image?: String;
   media?: MediaCreateOneInput;
   video?: String;
   style?: String;
@@ -1798,7 +1774,6 @@ export interface ProsAndConsCreateWithoutPageInput {
 export interface BoxUpdateInput {
   page?: PageUpdateOneRequiredWithoutBoxesInput;
   title?: String;
-  image?: String;
   media?: MediaUpdateOneInput;
   video?: String;
   style?: String;
@@ -1883,7 +1858,6 @@ export interface BlockUpdateWithWhereUniqueWithoutPageInput {
 
 export interface BoxUpdateWithoutPageDataInput {
   title?: String;
-  image?: String;
   media?: MediaUpdateOneInput;
   video?: String;
   style?: String;
@@ -1893,7 +1867,6 @@ export interface BoxUpdateWithoutPageDataInput {
 
 export interface BlockUpdateWithoutPageDataInput {
   title?: String;
-  image?: String;
   media?: MediaUpdateOneInput;
   video?: String;
   style?: String;
@@ -1958,20 +1931,6 @@ export interface BlockScalarWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
   video?: String;
   video_not?: String;
   video_in?: String[] | String;
@@ -2042,7 +2001,6 @@ export type ConsWhereUniqueInput = AtLeastOne<{
 
 export interface BlockUpdateManyDataInput {
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -2122,7 +2080,6 @@ export interface MediaWhereInput {
 
 export interface BoxUpdateManyMutationInput {
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -2285,20 +2242,6 @@ export interface BlockWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
   media?: MediaWhereInput;
   video?: String;
   video_not?: String;
@@ -2503,7 +2446,6 @@ export interface ProsAndConsUpsertWithoutConsInput {
 export interface BlockUpdateInput {
   page?: PageUpdateOneRequiredWithoutBlocksInput;
   title?: String;
-  image?: String;
   media?: MediaUpdateOneInput;
   video?: String;
   style?: String;
@@ -2884,20 +2826,6 @@ export interface BoxWhereInput {
   title_not_starts_with?: String;
   title_ends_with?: String;
   title_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
   media?: MediaWhereInput;
   video?: String;
   video_not?: String;
@@ -3248,7 +3176,6 @@ export interface AggregateBoxSubscription
 export interface Box {
   id: ID_Output;
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -3259,7 +3186,6 @@ export interface BoxPromise extends Promise<Box>, Fragmentable {
   id: () => Promise<ID_Output>;
   page: <T = PagePromise>() => T;
   title: () => Promise<String>;
-  image: () => Promise<String>;
   media: <T = MediaPromise>() => T;
   video: () => Promise<String>;
   style: () => Promise<String>;
@@ -3273,7 +3199,6 @@ export interface BoxSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   page: <T = PageSubscription>() => T;
   title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
   media: <T = MediaSubscription>() => T;
   video: () => Promise<AsyncIterator<String>>;
   style: () => Promise<AsyncIterator<String>>;
@@ -3354,7 +3279,6 @@ export interface AggregateUserSubscription
 export interface Block {
   id: ID_Output;
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -3365,7 +3289,6 @@ export interface BlockPromise extends Promise<Block>, Fragmentable {
   id: () => Promise<ID_Output>;
   page: <T = PagePromise>() => T;
   title: () => Promise<String>;
-  image: () => Promise<String>;
   media: <T = MediaPromise>() => T;
   video: () => Promise<String>;
   style: () => Promise<String>;
@@ -3379,7 +3302,6 @@ export interface BlockSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   page: <T = PageSubscription>() => T;
   title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
   media: <T = MediaSubscription>() => T;
   video: () => Promise<AsyncIterator<String>>;
   style: () => Promise<AsyncIterator<String>>;
@@ -3455,7 +3377,6 @@ export interface ProsAndConsEdgeSubscription
 export interface BlockPreviousValues {
   id: ID_Output;
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -3467,7 +3388,6 @@ export interface BlockPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
-  image: () => Promise<String>;
   video: () => Promise<String>;
   style: () => Promise<String>;
   content: () => Promise<String>;
@@ -3479,7 +3399,6 @@ export interface BlockPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
   video: () => Promise<AsyncIterator<String>>;
   style: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
@@ -3584,7 +3503,6 @@ export interface PageEdgeSubscription
 export interface BoxPreviousValues {
   id: ID_Output;
   title?: String;
-  image?: String;
   video?: String;
   style?: String;
   content?: String;
@@ -3596,7 +3514,6 @@ export interface BoxPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
-  image: () => Promise<String>;
   video: () => Promise<String>;
   style: () => Promise<String>;
   content: () => Promise<String>;
@@ -3608,7 +3525,6 @@ export interface BoxPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
   video: () => Promise<AsyncIterator<String>>;
   style: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;

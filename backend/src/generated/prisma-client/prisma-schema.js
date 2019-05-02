@@ -51,7 +51,6 @@ type Block {
   id: ID!
   page: Page!
   title: String
-  image: String
   media: Media
   video: String
   style: String
@@ -68,7 +67,6 @@ type BlockConnection {
 input BlockCreateInput {
   page: PageCreateOneWithoutBlocksInput!
   title: String
-  image: String
   media: MediaCreateOneInput
   video: String
   style: String
@@ -83,7 +81,6 @@ input BlockCreateManyWithoutPageInput {
 
 input BlockCreateWithoutPageInput {
   title: String
-  image: String
   media: MediaCreateOneInput
   video: String
   style: String
@@ -101,8 +98,6 @@ enum BlockOrderByInput {
   id_DESC
   title_ASC
   title_DESC
-  image_ASC
-  image_DESC
   video_ASC
   video_DESC
   style_ASC
@@ -120,7 +115,6 @@ enum BlockOrderByInput {
 type BlockPreviousValues {
   id: ID!
   title: String
-  image: String
   video: String
   style: String
   content: String
@@ -156,20 +150,6 @@ input BlockScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
   video: String
   video_not: String
   video_in: [String!]
@@ -246,7 +226,6 @@ input BlockSubscriptionWhereInput {
 input BlockUpdateInput {
   page: PageUpdateOneRequiredWithoutBlocksInput
   title: String
-  image: String
   media: MediaUpdateOneInput
   video: String
   style: String
@@ -256,7 +235,6 @@ input BlockUpdateInput {
 
 input BlockUpdateManyDataInput {
   title: String
-  image: String
   video: String
   style: String
   content: String
@@ -265,7 +243,6 @@ input BlockUpdateManyDataInput {
 
 input BlockUpdateManyMutationInput {
   title: String
-  image: String
   video: String
   style: String
   content: String
@@ -291,7 +268,6 @@ input BlockUpdateManyWithWhereNestedInput {
 
 input BlockUpdateWithoutPageDataInput {
   title: String
-  image: String
   media: MediaUpdateOneInput
   video: String
   style: String
@@ -340,20 +316,6 @@ input BlockWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
   media: MediaWhereInput
   video: String
   video_not: String
@@ -418,7 +380,6 @@ type Box {
   id: ID!
   page: Page!
   title: String
-  image: String
   media: Media
   video: String
   style: String
@@ -435,7 +396,6 @@ type BoxConnection {
 input BoxCreateInput {
   page: PageCreateOneWithoutBoxesInput!
   title: String
-  image: String
   media: MediaCreateOneInput
   video: String
   style: String
@@ -450,7 +410,6 @@ input BoxCreateManyWithoutPageInput {
 
 input BoxCreateWithoutPageInput {
   title: String
-  image: String
   media: MediaCreateOneInput
   video: String
   style: String
@@ -468,8 +427,6 @@ enum BoxOrderByInput {
   id_DESC
   title_ASC
   title_DESC
-  image_ASC
-  image_DESC
   video_ASC
   video_DESC
   style_ASC
@@ -487,7 +444,6 @@ enum BoxOrderByInput {
 type BoxPreviousValues {
   id: ID!
   title: String
-  image: String
   video: String
   style: String
   content: String
@@ -523,20 +479,6 @@ input BoxScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
   video: String
   video_not: String
   video_in: [String!]
@@ -613,7 +555,6 @@ input BoxSubscriptionWhereInput {
 input BoxUpdateInput {
   page: PageUpdateOneRequiredWithoutBoxesInput
   title: String
-  image: String
   media: MediaUpdateOneInput
   video: String
   style: String
@@ -623,7 +564,6 @@ input BoxUpdateInput {
 
 input BoxUpdateManyDataInput {
   title: String
-  image: String
   video: String
   style: String
   content: String
@@ -632,7 +572,6 @@ input BoxUpdateManyDataInput {
 
 input BoxUpdateManyMutationInput {
   title: String
-  image: String
   video: String
   style: String
   content: String
@@ -658,7 +597,6 @@ input BoxUpdateManyWithWhereNestedInput {
 
 input BoxUpdateWithoutPageDataInput {
   title: String
-  image: String
   media: MediaUpdateOneInput
   video: String
   style: String
@@ -707,20 +645,6 @@ input BoxWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
   media: MediaWhereInput
   video: String
   video_not: String

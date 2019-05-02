@@ -27,7 +27,6 @@ export const GET_BLOCKS = gql`
     blocks @client {
       id
       title
-      image
       video
       style
       content
@@ -46,7 +45,6 @@ export const GET_BLOCK = gql`
       title
       content
       video
-      image
       style
       media {
         id
@@ -61,7 +59,6 @@ export const GET_BOXES = gql`
     boxes @client {
       id
       title
-      image
       video
       style
       content
@@ -80,7 +77,6 @@ export const GET_BOX = gql`
       title
       content
       video
-      image
       style
       media {
         id
@@ -149,7 +145,6 @@ export const GET_PAGE_DB = gql`
       blocks {
         id
         title
-        image
         video
         style
         content
@@ -162,7 +157,6 @@ export const GET_PAGE_DB = gql`
       boxes {
         id
         title
-        image
         video
         style
         content

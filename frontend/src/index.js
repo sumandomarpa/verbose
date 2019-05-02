@@ -41,7 +41,6 @@ const data = {
       id: blockId,
       title: '',
       content: '<p></p>',
-      image: '',
       video: '',
       style: 'full-width',
       order: 0,

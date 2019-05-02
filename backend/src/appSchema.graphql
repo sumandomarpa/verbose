@@ -13,26 +13,6 @@ type Query {
   faqCategory(id: ID): FaqCategory
 }
 
-input BlockInput {
-  id: ID
-  title: String
-  image: String
-  video: String
-  style: String
-  content: String
-  order: Int
-}
-
-input BoxInput {
-  id: ID
-  title: String
-  image: String
-  video: String
-  style: String
-  content: String
-  order: Int
-}
-
 input ProConInput {
   id: ID
   content: String
@@ -75,7 +55,6 @@ type Mutation {
     page: ID!
     media: ID
     title: String!
-    image: String
     video: String
     style: String
     content: String
@@ -87,7 +66,6 @@ type Mutation {
     page: ID!
     media: ID
     title: String!
-    image: String
     video: String
     style: String
     content: String

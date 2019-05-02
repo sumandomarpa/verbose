@@ -114,7 +114,6 @@ export const UPSERT_BLOCK_TO_DB = gql`
     $page: ID!
     $media: ID
     $title: String!
-    $image: String
     $video: String
     $style: String
     $content: String
@@ -125,7 +124,6 @@ export const UPSERT_BLOCK_TO_DB = gql`
       page: $page
       media: $media
       title: $title
-      image: $image
       video: $video
       style: $style
       content: $content
@@ -133,7 +131,6 @@ export const UPSERT_BLOCK_TO_DB = gql`
     ) {
       id
       title
-      image
       video
       style
       content
@@ -156,7 +153,6 @@ export const UPSERT_BOX_TO_DB = gql`
     $page: ID!
     $media: ID
     $title: String!
-    $image: String
     $video: String
     $style: String
     $content: String
@@ -167,7 +163,6 @@ export const UPSERT_BOX_TO_DB = gql`
       page: $page
       media: $media
       title: $title
-      image: $image
       video: $video
       style: $style
       content: $content
@@ -175,7 +170,6 @@ export const UPSERT_BOX_TO_DB = gql`
     ) {
       id
       title
-      image
       video
       style
       content
