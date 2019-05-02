@@ -46,13 +46,15 @@ class Box extends Component {
       visible: false,
     })
 
-    await client.mutate({
-      mutation: UPDATE_BOX_MEDIA,
-      variables: {
-        itemId,
-        media: selectedMedia,
-      },
-    })
+    if (selectedMedia.id) {
+      await client.mutate({
+        mutation: UPDATE_BOX_MEDIA,
+        variables: {
+          itemId,
+          media: selectedMedia,
+        },
+      })
+    }
   }
 
   handleCancel = () => {
