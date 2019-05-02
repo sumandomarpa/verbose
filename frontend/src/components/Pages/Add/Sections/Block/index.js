@@ -93,7 +93,7 @@ class Block extends Component {
         video: block.video,
         style: block.style,
         content: block.content,
-        order: 1,
+        order: block.order,
       },
     })
 

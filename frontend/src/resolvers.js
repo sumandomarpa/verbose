@@ -88,6 +88,8 @@ export const resolvers = {
       }
       cache.writeQuery({ query: GET_PAGE_ITEMS, data })
 
+      const order = pageItems.length
+
       // blocks
       if (type === 'Block') {
         const { blocks } = cache.readQuery({ query: GET_BLOCKS })
@@ -98,6 +100,7 @@ export const resolvers = {
           image: '',
           video: '',
           style: 'full-width',
+          order,
           media: {
             id: null,
             url: null,
@@ -118,6 +121,7 @@ export const resolvers = {
           image: '',
           video: '',
           style: 'white',
+          order,
           media: {
             id: null,
             url: null,
@@ -148,6 +152,7 @@ export const resolvers = {
               __typename: 'Cons',
             },
           ],
+          order,
           __typename: 'ProsAndCons',
         }
         data = {

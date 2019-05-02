@@ -47,6 +47,7 @@ const data = {
       image: '',
       video: '',
       style: 'full-width',
+      order: 0,
       media: {
         id: null,
         url: null,

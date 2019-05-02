@@ -102,7 +102,7 @@ class ProsAndCons extends Component {
         title: prosAndConsById.title,
         pros,
         cons,
-        order: 1,
+        order: prosAndConsById.order,
       },
     })
 
