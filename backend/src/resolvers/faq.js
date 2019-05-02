@@ -45,17 +45,34 @@ export default {
         },
         async updateFaq (parent, args, ctx, info) {
             const { id, title, description, short_description, slug, vertical, category = [], readingTime, order, variant, tag, authors } = args
+            
             /** get all the existing authors */
             const existingAuthors = await ctx.prisma.faq({ id }).authors()
             let authorsQuery = {};
 
-            // preparing the query
+            // preparing the query to update authours
             const authorsToConnect = differenceBy(authors, map(existingAuthors, 'id'))
             const authorsToDelete = differenceBy(map(existingAuthors, 'id'), authors)
             authorsQuery = {
               connect: authorsToConnect.map((authorId) => {return {id: authorId}}),
               disconnect: authorsToDelete.map((authorId) => {return {id: authorId}})
+            }    
+            
+            /** get all the existing faq categories */
+            const existingCategory = await ctx.prisma.faq({ id }).category()
+            let categoryQuery = {};
+
+            // preparing the query to update authours
+            const categoryToConnect = differenceBy(category, map(existingCategory, 'id'))
+            const categoryToDelete = differenceBy(map(existingCategory, 'id'), category)
+            categoryQuery = {
+              connect: categoryToConnect.map((categoryId) => {return {id: categoryId}}),
+              disconnect: categoryToDelete.map((categoryId) => {return {id: categoryId}})
             }
+
+            
+
+            
             /** Executing the query */
             const faq = await ctx.prisma.updateFaq({
               data: {
@@ -64,9 +81,7 @@ export default {
                 short_description,
                 slug,
                 vertical,
-                category: {
-                    connect: category.map((categoryId) => {return {id: categoryId}})
-                },
+                category: categoryQuery,
                 readingTime,
                 order,
                 variant,
@@ -99,6 +114,12 @@ export default {
         return ctx.prisma.faq({
           id: parent.id
         }).authors()
+      },
+      category: (parent, args, ctx, info) => {
+        return ctx.prisma.faq({
+          id: parent.id
+        }).category()
       }
     },
+    
 }

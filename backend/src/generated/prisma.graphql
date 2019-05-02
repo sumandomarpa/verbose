@@ -1994,6 +1994,7 @@ type PagePreviousValues {
 enum PageStatus {
   DRAFT
   PUBLISHED
+  DELETED
 }
 
 type PageSubscriptionPayload {

@@ -56,5 +56,12 @@ export default {
     
           return faqCategory
       },
+    },
+    FaqCategory: {
+      faqs: (parent, args, ctx, info) => {
+        return ctx.prisma.faqCategory({
+          id: parent.id
+        }).faqs()
+      },
     }
 }
