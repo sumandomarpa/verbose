@@ -61,8 +61,8 @@ export const REMOVE_PROS_OR_CONS = gql`
 `
 
 export const ADD_PAGE_ITEM = gql`
-  mutation AddPageItem($type: String!, $pageId: String!) {
-    addPageItem(type: $type, pageId: $pageId) @client
+  mutation AddPageItem($type: String!) {
+    addPageItem(type: $type) @client
   }
 `
 

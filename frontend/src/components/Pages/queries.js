@@ -17,7 +17,6 @@ export const GET_PAGE_ITEMS = gql`
   query GetPageItems {
     pageItems @client {
       itemId
-      pageId
       type
     }
   }

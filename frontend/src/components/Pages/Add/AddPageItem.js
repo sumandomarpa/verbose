@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Select } from 'antd'
-import { Query, withApollo } from 'react-apollo'
+import { withApollo } from 'react-apollo'
 
 import { SortableActionButtonsWrapper } from './styles'
 import { ADD_PAGE_ITEM } from '../mutaitons'
-import { GET_PAGE_ITEMS, GET_PAGE } from '../queries'
+import { GET_PAGE_ITEMS } from '../queries'
 
 const { Option } = Select
 
@@ -14,7 +14,7 @@ class AddPageItem extends Component {
     addSectionType: 'Block',
   }
 
-  handleAddPageItem = pageId => {
+  handleAddPageItem = () => {
     const { client } = this.props
     const { addSectionType } = this.state
 
@@ -22,7 +22,6 @@ class AddPageItem extends Component {
       mutation: ADD_PAGE_ITEM,
       variables: {
         type: addSectionType,
-        pageId,
       },
       refetchQueries: [
         {
@@ -35,33 +34,25 @@ class AddPageItem extends Component {
   render() {
     const { addSectionType } = this.state
     return (
-      <Query query={GET_PAGE}>
-        {({ data: { page }, loading }) => {
-          if (loading) return null
-          const { id } = page
-          return (
-            <SortableActionButtonsWrapper>
-              <Select
-                defaultValue={addSectionType}
-                onChange={addSectionType => this.setState({ addSectionType })}
-              >
-                <Option value="Block">Block</Option>
-                <Option value="Box">Box</Option>
-                <Option value="AlertBox">Alert Box</Option>
-                <Option value="ProsAndCons">Pros and Cons</Option>
-                <Option value="Faq">Faq</Option>
-                <Option value="FaqAccordion">Faq Accordion</Option>
-                <Option value="QuickTip">Quick Tip</Option>
-                <Option value="Grid">Grid</Option>
-                <Option value="CaseStudies">Case Studies</Option>
-              </Select>
-              <Button type="default" onClick={() => this.handleAddPageItem(id)}>
-                Add Section
-              </Button>
-            </SortableActionButtonsWrapper>
-          )
-        }}
-      </Query>
+      <SortableActionButtonsWrapper>
+        <Select
+          defaultValue={addSectionType}
+          onChange={addSectionType => this.setState({ addSectionType })}
+        >
+          <Option value="Block">Block</Option>
+          <Option value="Box">Box</Option>
+          <Option value="AlertBox">Alert Box</Option>
+          <Option value="ProsAndCons">Pros and Cons</Option>
+          <Option value="Faq">Faq</Option>
+          <Option value="FaqAccordion">Faq Accordion</Option>
+          <Option value="QuickTip">Quick Tip</Option>
+          <Option value="Grid">Grid</Option>
+          <Option value="CaseStudies">Case Studies</Option>
+        </Select>
+        <Button type="default" onClick={() => this.handleAddPageItem()}>
+          Add Section
+        </Button>
+      </SortableActionButtonsWrapper>
     )
   }
 }
