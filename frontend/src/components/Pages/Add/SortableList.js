@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import Sortable from 'react-sortablejs'
-import { Row, Col } from 'antd'
+import { Row, Col, message } from 'antd'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import uniqueId from 'lodash/uniqueId'
 import { Query, withApollo } from 'react-apollo'
 import { sentenceCase } from 'change-case'
 import assign from 'lodash/assign'
+import get from 'lodash/get'
+import map from 'lodash/map'
 
 import Block from './Sections/Block'
 import Box from './Sections/Box'
@@ -15,7 +17,11 @@ import Faq from './Sections/Faq'
 import FaqAccordion from './Sections/FaqAccordion'
 import Grid from './Sections/Grid'
 import { GET_PAGE_ITEMS } from '../queries'
-import { ORDER_PAGE_ITEMS, REMOVE_PAGE_ITEM } from '../mutaitons'
+import {
+  ORDER_PAGE_ITEMS,
+  REMOVE_PAGE_ITEM,
+  UPDATE_SECTIONS_ORDER_TO_DB,
+} from '../mutaitons'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -62,17 +68,41 @@ class SortableList extends Component {
   handleSortChange = itemIds => {
     const { client } = this.props
 
-    client.mutate({
-      mutation: ORDER_PAGE_ITEMS,
-      variables: {
-        itemIds,
-      },
-      refetchQueries: [
-        {
-          query: GET_PAGE_ITEMS,
+    client
+      .mutate({
+        mutation: ORDER_PAGE_ITEMS,
+        variables: {
+          itemIds,
         },
-      ],
-    })
+        refetchQueries: [
+          {
+            query: GET_PAGE_ITEMS,
+          },
+        ],
+      })
+      .then(data => {
+        // saving the order to the db
+        let pageItems = get(data, 'data.orderPageItems.pageItems')
+        pageItems = map(pageItems, (elem, idx) => ({
+          id: elem.itemId,
+          type: elem.type,
+          order: idx,
+        }))
+
+        client
+          .mutate({
+            mutation: UPDATE_SECTIONS_ORDER_TO_DB,
+            variables: {
+              sectionsOrder: pageItems,
+            },
+          })
+          .then(data => {
+            const id = get(data, 'data.updateSectionsOrder.id')
+            if (id) {
+              message.success('Sections order updated successfully')
+            } else message.error('Error! Section order update failed')
+          })
+      })
   }
 
   removeItem = (itemId, type) => {

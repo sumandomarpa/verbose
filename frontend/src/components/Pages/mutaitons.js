@@ -330,3 +330,11 @@ export const DELETE_PROS_AND_CONS_TO_DB = gql`
     }
   }
 `
+
+export const UPDATE_SECTIONS_ORDER_TO_DB = gql`
+  mutation UPDATE_SECTIONS_ORDER($sectionsOrder: [SectionsOrder]!) {
+    updateSectionsOrder(sectionsOrder: $sectionsOrder) {
+      id
+    }
+  }
+`

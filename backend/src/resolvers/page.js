@@ -236,6 +236,37 @@ export default {
       }, info)
 
       return block
+    },
+    async updateSectionsOrder (parent, args, ctx, info) {
+
+      const { sectionsOrder } = args
+
+      const sectionsOrderData = sectionsOrder.map(async section => {
+        const query = {
+          where: {
+            id: section.id
+          },
+          data: {
+            order: section.order
+          }
+        }
+
+        try {
+          if(section.type == 'Block') {
+            return await ctx.prisma.updateBlock(query)
+          }
+          else if(section.type == 'Box') {
+            return await ctx.prisma.updateBox(query)
+          }
+          else if(section.type == 'ProsAndCons') {
+            return await ctx.prisma.updateProsAndCons(query)
+          }
+        } catch(e) {
+          return section
+        }
+      })
+
+      return sectionsOrderData[0].then((data) => ({ id: data.id }))
     }
   },
   Page: {

@@ -47,6 +47,12 @@ input ProsAndConsInput {
   order: Int
 }
 
+input SectionsOrder {
+  id: ID!
+  type: String!
+  order: Int!
+}
+
 type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   login(email: String!, password: String!): User!
@@ -118,6 +124,7 @@ type Mutation {
     order: Int
   ): ProsAndCons
   deleteProsAndCons(id: ID!): ProsAndCons
+  updateSectionsOrder(sectionsOrder: [SectionsOrder]): Block
 
   updateMedia(id: ID!, title: String, altText: String): Media
 

@@ -93,7 +93,7 @@ class Box extends Component {
         video: box.video,
         style: box.style,
         content: box.content,
-        order: 1,
+        order: box.order,
       },
     })
 
