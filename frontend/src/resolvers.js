@@ -73,13 +73,12 @@ export const resolvers = {
       return data
     },
     addPageItem: (_root, variables, { cache }) => {
-      const { type, pageId } = variables
+      const { type } = variables
       const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
 
       const newPageItem = {
         type,
         itemId: shortid.generate(),
-        pageId,
         __typename: 'PageItem',
       }
 
