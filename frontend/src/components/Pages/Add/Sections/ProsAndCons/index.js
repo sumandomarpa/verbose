@@ -1,14 +1,21 @@
 import React, { Component, Fragment } from 'react'
-import { Form, Input, Row, Col, Button, Icon } from 'antd'
+import { Form, Input, Row, Col, Button, Icon, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
+import omit from 'lodash/omit'
 
-import { GET_PROS_AND_CONS_BY_ID } from '../../../queries'
+import { ProsAndConsSaveButtonWrapper } from './styles'
+import { GET_PAGE, GET_PROS_AND_CONS_BY_ID } from '../../../queries'
 import {
   UPDATE_PROS_AND_CONS,
   ADD_PROS_OR_CONS,
   REMOVE_PROS_OR_CONS,
+  UPSERT_PROS_AND_CONS_TO_DB,
+  REPLACE_PAGE_ITEMS_ID,
+  DELETE_PROS_AND_CONS_TO_DB,
 } from '../../../mutaitons'
+
+const { confirm } = Modal
 
 class ProsAndCons extends Component {
   handleInputChange = (e, name, value, prosId, consId) => {
@@ -61,6 +68,97 @@ class ProsAndCons extends Component {
           },
         },
       ],
+    })
+  }
+
+  upsertProsAndCons = async () => {
+    const { client, itemId, rerenderSortable } = this.props
+
+    const { page } = client.readQuery({
+      query: GET_PAGE,
+    })
+
+    const { prosAndConsById } = client.readQuery({
+      query: GET_PROS_AND_CONS_BY_ID,
+      variables: {
+        itemId,
+      },
+    })
+
+    const pros = prosAndConsById.pros.map(elem =>
+      omit(elem, ['__typename', 'id'])
+    )
+    const cons = prosAndConsById.cons.map(elem =>
+      omit(elem, ['__typename', 'id'])
+    )
+
+    const {
+      data: { upsertProsAndCons },
+    } = await client.mutate({
+      mutation: UPSERT_PROS_AND_CONS_TO_DB,
+      variables: {
+        id: prosAndConsById.id,
+        page: page.id,
+        title: prosAndConsById.title,
+        pros,
+        cons,
+        order: 1,
+      },
+    })
+
+    /** Replace the DB Id in local state, if its just created */
+    if (upsertProsAndCons.id !== prosAndConsById.id) {
+      client.mutate({
+        mutation: UPDATE_PROS_AND_CONS,
+        variables: {
+          name: 'id',
+          value: upsertProsAndCons.id,
+          itemId: prosAndConsById.id,
+        },
+      })
+      client
+        .mutate({
+          mutation: REPLACE_PAGE_ITEMS_ID,
+          variables: {
+            itemId: prosAndConsById.id,
+            newItemId: upsertProsAndCons.id,
+          },
+        })
+        .then(() => {
+          rerenderSortable()
+        })
+    }
+
+    if (upsertProsAndCons.id) {
+      message.success('Pros and Cons updated successfully')
+    } else message.error('Error! Pros and Cons update failed')
+  }
+
+  deleteProsAndCons = () => {
+    const { removeItem, itemId, client } = this.props
+    confirm({
+      title: 'Are you sure wan to delete this Pros And Cons?',
+      content: "Once deleted, it can't be undone!!",
+      async onOk() {
+        try {
+          const {
+            data: { deleteProsAndCons },
+          } = await client.mutate({
+            mutation: DELETE_PROS_AND_CONS_TO_DB,
+            variables: {
+              id: itemId,
+            },
+          })
+          if (deleteProsAndCons.id) {
+            message.success('Pros and Cons deleted successfully')
+            removeItem(itemId, 'ProsAndCons')
+          } else message.error('Error! Pros and Cons delete failed')
+        } catch (e) {
+          removeItem(itemId, 'ProsAndCons')
+          message.success('Block Pros and Cons successfully')
+        }
+      },
+      onCancel() {},
     })
   }
 
@@ -153,6 +251,14 @@ class ProsAndCons extends Component {
                   </Form.Item>
                 </Col>
               </Row>
+              <ProsAndConsSaveButtonWrapper>
+                <Button type="danger" onClick={this.deleteProsAndCons}>
+                  Delete
+                </Button>
+                <Button type="default" onClick={this.upsertProsAndCons}>
+                  Save
+                </Button>
+              </ProsAndConsSaveButtonWrapper>
             </Fragment>
           )
         }}
@@ -164,6 +270,8 @@ class ProsAndCons extends Component {
 ProsAndCons.propTypes = {
   client: PropTypes.object.isRequired,
   itemId: PropTypes.string.isRequired,
+  removeItem: PropTypes.func.isRequired,
+  rerenderSortable: PropTypes.func.isRequired,
 }
 
 export default withApollo(ProsAndCons)
