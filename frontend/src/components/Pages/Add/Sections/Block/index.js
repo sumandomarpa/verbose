@@ -46,13 +46,15 @@ class Block extends Component {
       visible: false,
     })
 
-    await client.mutate({
-      mutation: UPDATE_BLOCK_MEDIA,
-      variables: {
-        itemId,
-        media: selectedMedia,
-      },
-    })
+    if (selectedMedia.id) {
+      await client.mutate({
+        mutation: UPDATE_BLOCK_MEDIA,
+        variables: {
+          itemId,
+          media: selectedMedia,
+        },
+      })
+    }
   }
 
   handleCancel = () => {
