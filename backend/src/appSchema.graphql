@@ -109,6 +109,15 @@ type Mutation {
     order: Int
   ): Box
   deleteBox(id: ID!): Box
+  upsertProsAndCons(
+    id: ID!
+    page: ID!
+    title: String
+    pros: [ProConInput]
+    cons: [ProConInput]
+    order: Int
+  ): ProsAndCons
+  deleteProsAndCons(id: ID!): ProsAndCons
 
   updateMedia(id: ID!, title: String, altText: String): Media
 

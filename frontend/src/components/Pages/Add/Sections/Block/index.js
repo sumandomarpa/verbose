@@ -133,7 +133,7 @@ class Block extends Component {
   deleteBlock = () => {
     const { removeItem, itemId, client } = this.props
     confirm({
-      title: 'Are you sure wan to delte this Block?',
+      title: 'Are you sure wan to delete this Block?',
       content: "Once deleted, it can't be undone!!",
       async onOk() {
         try {

@@ -133,7 +133,7 @@ class Box extends Component {
   deleteBox = () => {
     const { removeItem, itemId, client } = this.props
     confirm({
-      title: 'Are you sure wan to delte this Box?',
+      title: 'Are you sure wan to delete this Box?',
       content: "Once deleted, it can't be undone!!",
       async onOk() {
         try {

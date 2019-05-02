@@ -298,3 +298,35 @@ export const DELETE_BOX_TO_DB = gql`
     }
   }
 `
+
+export const UPSERT_PROS_AND_CONS_TO_DB = gql`
+  mutation UPSERT_PROS_AND_CONS(
+    $id: ID!
+    $page: ID!
+    $title: String
+    $pros: [ProConInput]
+    $cons: [ProConInput]
+    $order: Int
+  ) {
+    upsertProsAndCons(
+      id: $id
+      page: $page
+      title: $title
+      pros: $pros
+      cons: $cons
+      order: $order
+    ) {
+      id
+      title
+      order
+    }
+  }
+`
+
+export const DELETE_PROS_AND_CONS_TO_DB = gql`
+  mutation DELETE_PROS_AND_CONS($id: ID!) {
+    deleteProsAndCons(id: $id) {
+      id
+    }
+  }
+`

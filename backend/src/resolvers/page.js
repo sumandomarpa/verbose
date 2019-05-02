@@ -255,16 +255,4 @@ export default {
       }).prosAndCons()
     },
   },
-  ProsAndCons: {
-    pros: (parent, args, ctx, info) => {
-      return ctx.prisma.prosAndCons({
-        id: parent.id
-      }).pros()
-    },
-    cons: (parent, args, ctx, info) => {
-      return ctx.prisma.prosAndCons({
-        id: parent.id
-      }).cons()
-    }
-  },
 }
