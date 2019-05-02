@@ -66,6 +66,10 @@ export const GET_BOXES = gql`
       video
       style
       content
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -73,11 +77,16 @@ export const GET_BOXES = gql`
 export const GET_BOX = gql`
   query GetBox($itemId: String) {
     box(itemId: $itemId) @client {
+      id
       title
       content
       video
       image
       style
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -159,6 +168,10 @@ export const GET_PAGE_DB = gql`
         style
         content
         order
+        media {
+          id
+          url
+        }
       }
       prosAndCons {
         id
