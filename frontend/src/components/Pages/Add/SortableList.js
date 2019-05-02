@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import Sortable from 'react-sortablejs'
-import { Row, Col, Button, Icon } from 'antd'
+import { Row, Col } from 'antd'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import uniqueId from 'lodash/uniqueId'
 import { Query, withApollo } from 'react-apollo'
 import { sentenceCase } from 'change-case'
+import assign from 'lodash/assign'
 
 import Block from './Sections/Block'
 import Box from './Sections/Box'
@@ -35,16 +36,14 @@ class SortableList extends Component {
 
   state = { loading: false }
 
-  renderSection = (type, props) => {
+  renderSection = (type, item) => {
+    const props = assign(item, {
+      removeItem: this.removeItem,
+      rerenderSortable: this.rerenderSortable,
+    })
     switch (type) {
       case 'Block':
-        return (
-          <Block
-            {...props}
-            removeItem={this.removeItem}
-            rerenderSortable={this.rerenderSortable}
-          />
-        )
+        return <Block {...props} />
       case 'Box':
         return <Box {...props} />
       case 'ProsAndCons':
@@ -118,15 +117,6 @@ class SortableList extends Component {
               <Row className="subsection-header" style={{ cursor: 'move' }}>
                 <Col xs={12}>
                   {sentenceCase(item.type)} #{idx + 1}
-                </Col>
-                <Col xs={12} style={{ textAlign: 'right' }}>
-                  <Button
-                    type="danger"
-                    size="small"
-                    onClick={() => this.removeItem(item.itemId, item.type)}
-                  >
-                    <Icon type="close" />
-                  </Button>
                 </Col>
               </Row>
               {this.renderSection(item.type, item)}

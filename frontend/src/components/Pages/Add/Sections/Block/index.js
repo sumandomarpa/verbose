@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Select, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 
 import MediaLibrary from '../../../../MediaLibrary'
 import TinyMCEditor from '../../../../TinyMCEditor'
@@ -86,7 +87,7 @@ class Block extends Component {
       variables: {
         id: block.id,
         page: page.id,
-        media: block.media.id,
+        media: block.media && block.media.id,
         title: block.title,
         image: block.image,
         video: block.video,
@@ -184,7 +185,7 @@ class Block extends Component {
           if (loading) return null
           const { title, image, video, style, content, media } = block
 
-          const { url } = media
+          const url = get(media, 'url')
           const renderMedia = url ? <MediaImage src={url} /> : null
           return (
             <Fragment>

@@ -2,12 +2,12 @@ export default {
   Query: {
   },
   Mutation: {
-    async upsertBlock (parent, args, ctx, info) {
+    async upsertBox (parent, args, ctx, info) {
       const { id, page, media, title, image, video, style, content, order } = args
 
       const mediaQuery = media ? { connect: { id: media } } : null
 
-      const block = await ctx.prisma.upsertBlock({
+      const box = await ctx.prisma.upsertBox({
         where: {
           id
         },
@@ -38,10 +38,10 @@ export default {
       })
 
       // disconnecting the media if not provied
-      if (block.id && block.media && !media) {
-        await ctx.prisma.updateBlock({
+      if (box.id && box.media && !media) {
+        await ctx.prisma.updateBox({
           where: {
-            id: block.id
+            id
           },
           data: {
             media:
@@ -52,21 +52,21 @@ export default {
         })
       }
 
-      return block
+      return box
     },
-    async deleteBlock (parent, args, ctx, info) {
+    async deleteBox (parent, args, ctx, info) {
       const { id } = args
 
-      const block = await ctx.prisma.deleteBlock({
+      const box = await ctx.prisma.deleteBox({
         id
       }, info)
 
-      return block
+      return box
     },
   },
-  Block: {
+  Box: {
     media: (parent, args, ctx, info) => {
-      return ctx.prisma.block({
+      return ctx.prisma.box({
         id: parent.id
       }, info).media()
     }

@@ -98,6 +98,11 @@ export const resolvers = {
           image: '',
           video: '',
           style: 'full-width',
+          media: {
+            id: null,
+            url: null,
+            __typename: 'Media',
+          },
           __typename: 'Block',
         }
         data = {
@@ -113,6 +118,11 @@ export const resolvers = {
           image: '',
           video: '',
           style: 'white',
+          media: {
+            id: null,
+            url: null,
+            __typename: 'Media',
+          },
           __typename: 'Box',
         }
         data = {
@@ -242,6 +252,23 @@ export const resolvers = {
       const previous = cache.readFragment({ fragment, id })
 
       const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
+    },
+    updateBoxMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { media, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'Box', id: itemId })
+      const fragment = gql`
+        fragment updateBox on Box {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, media }
       cache.writeData({ id, data })
     },
     updateProsAndCons: (_root, variables, { cache, getCacheKey }) => {

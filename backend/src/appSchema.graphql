@@ -97,6 +97,18 @@ type Mutation {
     order: Int
   ): Block
   deleteBlock(id: ID!): Block
+  upsertBox(
+    id: ID!
+    page: ID!
+    media: ID
+    title: String!
+    image: String
+    video: String
+    style: String
+    content: String
+    order: Int
+  ): Box
+  deleteBox(id: ID!): Box
 
   updateMedia(id: ID!, title: String, altText: String): Media
 

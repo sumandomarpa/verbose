@@ -24,6 +24,12 @@ export const UPDATE_BOX = gql`
   }
 `
 
+export const UPDATE_BOX_MEDIA = gql`
+  mutation UpdateBoxMedia($media: Media, $itemId: String) {
+    updateBoxMedia(media: $media, itemId: $itemId) @client
+  }
+`
+
 export const UPDATE_PROS_AND_CONS = gql`
   mutation UpdateProsAndCons(
     $name: String
@@ -246,6 +252,48 @@ export const UPSERT_BLOCK_TO_DB = gql`
 export const DELETE_BLOCK_TO_DB = gql`
   mutation DELETE_BLOCK($id: ID!) {
     deleteBlock(id: $id) {
+      id
+    }
+  }
+`
+
+export const UPSERT_BOX_TO_DB = gql`
+  mutation UPSERT_BOX(
+    $id: ID!
+    $page: ID!
+    $media: ID
+    $title: String!
+    $image: String
+    $video: String
+    $style: String
+    $content: String
+    $order: Int
+  ) {
+    upsertBox(
+      id: $id
+      page: $page
+      media: $media
+      title: $title
+      image: $image
+      video: $video
+      style: $style
+      content: $content
+      order: $order
+    ) {
+      id
+      title
+      image
+      video
+      style
+      content
+      order
+    }
+  }
+`
+
+export const DELETE_BOX_TO_DB = gql`
+  mutation DELETE_BOX($id: ID!) {
+    deleteBox(id: $id) {
       id
     }
   }

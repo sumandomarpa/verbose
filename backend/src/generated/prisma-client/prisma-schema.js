@@ -419,6 +419,7 @@ type Box {
   page: Page!
   title: String
   image: String
+  media: Media
   video: String
   style: String
   content: String
@@ -435,6 +436,7 @@ input BoxCreateInput {
   page: PageCreateOneWithoutBoxesInput!
   title: String
   image: String
+  media: MediaCreateOneInput
   video: String
   style: String
   content: String
@@ -449,6 +451,7 @@ input BoxCreateManyWithoutPageInput {
 input BoxCreateWithoutPageInput {
   title: String
   image: String
+  media: MediaCreateOneInput
   video: String
   style: String
   content: String
@@ -611,6 +614,7 @@ input BoxUpdateInput {
   page: PageUpdateOneRequiredWithoutBoxesInput
   title: String
   image: String
+  media: MediaUpdateOneInput
   video: String
   style: String
   content: String
@@ -655,6 +659,7 @@ input BoxUpdateManyWithWhereNestedInput {
 input BoxUpdateWithoutPageDataInput {
   title: String
   image: String
+  media: MediaUpdateOneInput
   video: String
   style: String
   content: String
@@ -716,6 +721,7 @@ input BoxWhereInput {
   image_not_starts_with: String
   image_ends_with: String
   image_not_ends_with: String
+  media: MediaWhereInput
   video: String
   video_not: String
   video_in: [String!]
