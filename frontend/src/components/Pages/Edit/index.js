@@ -36,6 +36,7 @@ class EditPage extends Component {
         slug: page.slug,
         type: page.type,
         vertical: page.vertical,
+        status: page.status,
       },
     })
 

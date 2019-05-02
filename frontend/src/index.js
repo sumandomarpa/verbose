@@ -33,6 +33,7 @@ const data = {
     image: '',
     vertical: 'home-loans',
     type: 'NEWS',
+    status: 'DRAFT',
     __typename: 'Page',
   },
   pageItems: [{ type: 'Block', itemId: blockId, __typename: 'PageItem' }],

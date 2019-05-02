@@ -22,7 +22,7 @@ export default {
   },
   Mutation: {
     async upsertPage (parent, args, ctx, info) {
-      const { id, title, slug, image, type, vertical } = args
+      const { id, title, slug, image, type, vertical, status } = args
 
       const page = await ctx.prisma.upsertPage({
         where: {
@@ -34,6 +34,7 @@ export default {
           image,
           type,
           vertical,
+          status,
         },
         create: {
           title,
@@ -41,6 +42,7 @@ export default {
           image,
           type,
           vertical,
+          status,
         }
       })
 

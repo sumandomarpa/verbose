@@ -27,7 +27,7 @@ class PageForm extends Component {
       <Query query={GET_PAGE}>
         {({ data: { page }, loading }) => {
           if (loading) return null
-          const { id, title, slug, image, vertical, type } = page
+          const { id, title, slug, image, vertical, type, status } = page
           const { upsertPage } = this.props
 
           return (
@@ -81,6 +81,17 @@ class PageForm extends Component {
                   <Option value="home-loans">Home Loans</Option>
                   <Option value="car-loans">Car Loans</Option>
                   <Option value="personal-loans">Personal Loans</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item label="Status">
+                <Select
+                  defaultValue={status}
+                  onChange={value => {
+                    this.handleInputChange(id, null, 'status', value)
+                  }}
+                >
+                  <Option value="DRAFT">Draft</Option>
+                  <Option value="PUBLISHED">Published</Option>
                 </Select>
               </Form.Item>
             </PageFormWrapper>

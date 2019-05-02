@@ -91,6 +91,7 @@ export const UPSERT_PAGE_TO_DB = gql`
     $slug: String!
     $type: PageType!
     $vertical: String
+    $status: PageStatus!
   ) {
     upsertPage(
       id: $id
@@ -98,12 +99,14 @@ export const UPSERT_PAGE_TO_DB = gql`
       slug: $slug
       type: $type
       vertical: $vertical
+      status: $status
     ) {
       id
       title
       slug
       type
       vertical
+      status
     }
   }
 `

@@ -500,7 +500,19 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type Permission = "ADMIN" | "USER";
+export type FaqCategoryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "slug_ASC"
+  | "slug_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type BlockOrderByInput =
   | "id_ASC"
@@ -515,6 +527,28 @@ export type BlockOrderByInput =
   | "content_DESC"
   | "order_ASC"
   | "order_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type Permission = "ADMIN" | "USER";
+
+export type PageOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "slug_ASC"
+  | "slug_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "vertical_ASC"
+  | "vertical_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -538,23 +572,7 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type PageOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "image_ASC"
-  | "image_DESC"
-  | "slug_ASC"
-  | "slug_DESC"
-  | "type_ASC"
-  | "type_DESC"
-  | "vertical_ASC"
-  | "vertical_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type PageType = "PAGE" | "NEWS" | "ARTICLE";
 
 export type BoxOrderByInput =
   | "id_ASC"
@@ -610,6 +628,8 @@ export type ConsOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type PageStatus = "DRAFT" | "PUBLISHED";
+
 export type MediaOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -625,20 +645,6 @@ export type MediaOrderByInput =
   | "updatedAt_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export type FaqCategoryOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "slug_ASC"
-  | "slug_DESC"
-  | "description_ASC"
-  | "description_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
 
 export type FaqOrderByInput =
   | "id_ASC"
@@ -663,8 +669,6 @@ export type FaqOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
-
-export type PageType = "PAGE" | "NEWS" | "ARTICLE";
 
 export interface ProsAndConsScalarWhereInput {
   id?: ID_Input;
@@ -786,6 +790,7 @@ export interface PageCreateWithoutBoxesInput {
   image?: String;
   slug: String;
   type: PageType;
+  status: PageStatus;
   vertical?: String;
   blocks?: BlockCreateManyWithoutPageInput;
   prosAndCons?: ProsAndConsCreateManyWithoutPageInput;
@@ -1288,6 +1293,7 @@ export interface PageUpdateManyMutationInput {
   image?: String;
   slug?: String;
   type?: PageType;
+  status?: PageStatus;
   vertical?: String;
 }
 
@@ -1302,6 +1308,7 @@ export interface PageCreateInput {
   image?: String;
   slug: String;
   type: PageType;
+  status: PageStatus;
   vertical?: String;
   blocks?: BlockCreateManyWithoutPageInput;
   boxes?: BoxCreateManyWithoutPageInput;
@@ -1687,6 +1694,7 @@ export interface PageCreateWithoutBlocksInput {
   image?: String;
   slug: String;
   type: PageType;
+  status: PageStatus;
   vertical?: String;
   boxes?: BoxCreateManyWithoutPageInput;
   prosAndCons?: ProsAndConsCreateManyWithoutPageInput;
@@ -1803,6 +1811,7 @@ export interface PageUpdateWithoutBoxesDataInput {
   image?: String;
   slug?: String;
   type?: PageType;
+  status?: PageStatus;
   vertical?: String;
   blocks?: BlockUpdateManyWithoutPageInput;
   prosAndCons?: ProsAndConsUpdateManyWithoutPageInput;
@@ -2341,6 +2350,7 @@ export interface PageCreateWithoutProsAndConsInput {
   image?: String;
   slug: String;
   type: PageType;
+  status: PageStatus;
   vertical?: String;
   blocks?: BlockCreateManyWithoutPageInput;
   boxes?: BoxCreateManyWithoutPageInput;
@@ -2416,6 +2426,7 @@ export interface PageUpdateWithoutProsAndConsDataInput {
   image?: String;
   slug?: String;
   type?: PageType;
+  status?: PageStatus;
   vertical?: String;
   blocks?: BlockUpdateManyWithoutPageInput;
   boxes?: BoxUpdateManyWithoutPageInput;
@@ -2661,6 +2672,10 @@ export interface PageWhereInput {
   type_not?: PageType;
   type_in?: PageType[] | PageType;
   type_not_in?: PageType[] | PageType;
+  status?: PageStatus;
+  status_not?: PageStatus;
+  status_in?: PageStatus[] | PageStatus;
+  status_not_in?: PageStatus[] | PageStatus;
   vertical?: String;
   vertical_not?: String;
   vertical_in?: String[] | String;
@@ -2701,6 +2716,7 @@ export interface PageUpdateInput {
   image?: String;
   slug?: String;
   type?: PageType;
+  status?: PageStatus;
   vertical?: String;
   blocks?: BlockUpdateManyWithoutPageInput;
   boxes?: BoxUpdateManyWithoutPageInput;
@@ -2757,6 +2773,7 @@ export interface PageUpdateWithoutBlocksDataInput {
   image?: String;
   slug?: String;
   type?: PageType;
+  status?: PageStatus;
   vertical?: String;
   boxes?: BoxUpdateManyWithoutPageInput;
   prosAndCons?: ProsAndConsUpdateManyWithoutPageInput;
@@ -3537,6 +3554,7 @@ export interface Page {
   image?: String;
   slug: String;
   type: PageType;
+  status: PageStatus;
   vertical?: String;
 }
 
@@ -3546,6 +3564,7 @@ export interface PagePromise extends Promise<Page>, Fragmentable {
   image: () => Promise<String>;
   slug: () => Promise<String>;
   type: () => Promise<PageType>;
+  status: () => Promise<PageStatus>;
   vertical: () => Promise<String>;
   blocks: <T = FragmentableArray<Block>>(
     args?: {
@@ -3590,6 +3609,7 @@ export interface PageSubscription
   image: () => Promise<AsyncIterator<String>>;
   slug: () => Promise<AsyncIterator<String>>;
   type: () => Promise<AsyncIterator<PageType>>;
+  status: () => Promise<AsyncIterator<PageStatus>>;
   vertical: () => Promise<AsyncIterator<String>>;
   blocks: <T = Promise<AsyncIterator<BlockSubscription>>>(
     args?: {
@@ -4536,6 +4556,7 @@ export interface PagePreviousValues {
   image?: String;
   slug: String;
   type: PageType;
+  status: PageStatus;
   vertical?: String;
 }
 
@@ -4547,6 +4568,7 @@ export interface PagePreviousValuesPromise
   image: () => Promise<String>;
   slug: () => Promise<String>;
   type: () => Promise<PageType>;
+  status: () => Promise<PageStatus>;
   vertical: () => Promise<String>;
 }
 
@@ -4558,6 +4580,7 @@ export interface PagePreviousValuesSubscription
   image: () => Promise<AsyncIterator<String>>;
   slug: () => Promise<AsyncIterator<String>>;
   type: () => Promise<AsyncIterator<PageType>>;
+  status: () => Promise<AsyncIterator<PageStatus>>;
   vertical: () => Promise<AsyncIterator<String>>;
 }
 
@@ -4709,6 +4732,10 @@ export const models: Model[] = [
   },
   {
     name: "PageType",
+    embedded: false
+  },
+  {
+    name: "PageStatus",
     embedded: false
   },
   {
