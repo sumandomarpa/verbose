@@ -89,7 +89,6 @@ class Box extends Component {
         page: page.id,
         media: box.media && box.media.id,
         title: box.title,
-        image: box.image,
         video: box.video,
         style: box.style,
         content: box.content,
@@ -183,7 +182,7 @@ class Box extends Component {
       <Query query={GET_BOX} variables={{ itemId }}>
         {({ data: { box }, loading }) => {
           if (loading) return null
-          const { title, image, video, style, content, media } = box
+          const { title, video, style, content, media } = box
 
           const url = get(media, 'url')
           const renderMedia = url ? <MediaImage src={url} /> : null
@@ -195,15 +194,6 @@ class Box extends Component {
                   name="title"
                   type="text"
                   value={title}
-                  onChange={this.handleInputChange}
-                />
-              </Form.Item>
-              <Form.Item label="Image">
-                <Input
-                  name="image"
-                  type="text"
-                  placeholder="Image URL"
-                  value={image}
                   onChange={this.handleInputChange}
                 />
               </Form.Item>
