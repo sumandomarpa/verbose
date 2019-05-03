@@ -13,6 +13,7 @@ import AddFaq from '../components/Faqs/Add'
 import EditFaq from '../components/Faqs/Edit'
 import EditPage from '../components/Pages/Edit'
 import MediaLibrary from '../components/MediaLibrary'
+import FaqList from '../components/Faqs/FaqList'
 
 class AuthContent extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class AuthContent extends React.Component {
       <Router>
         <Switch>
           <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard/faqs" component={FaqList} />
           <Route exact path="/dashboard/faqs/add" component={AddFaq} />
           <Route exact path="/dashboard/faqs/edit/:id" component={EditFaq} />
           <Route exact path="/dashboard/pages" component={PagesList} />

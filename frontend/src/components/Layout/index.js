@@ -81,7 +81,9 @@ export default class DashboardLayout extends Component {
                       </span>
                     }
                   >
-                    <Menu.Item key="4">All Faqs</Menu.Item>
+                    <Menu.Item key="4">
+                      <Link to="/dashboard/faqs">All Faqs</Link>
+                    </Menu.Item>
                     <Menu.Item key="5">
                       <Link to="/dashboard/faqs/add">Add New</Link>
                     </Menu.Item>

@@ -24,3 +24,21 @@ export const GET_FAQ_DB = gql`
         }
     }
 `
+
+export const GET_FAQS_DB = gql`
+    {
+        faqs {
+            id
+            title
+            description
+            short_description
+            vertical
+            authors {
+                id
+                name
+            }
+            slug
+            order
+        }
+    }
+`
