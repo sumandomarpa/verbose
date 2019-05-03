@@ -33,6 +33,10 @@ var models = [
     embedded: false
   },
   {
+    name: "AlertBox",
+    embedded: false
+  },
+  {
     name: "ProsAndCons",
     embedded: false
   },

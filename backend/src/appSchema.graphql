@@ -73,6 +73,16 @@ type Mutation {
     order: Int
   ): Box
   deleteBox(id: ID!): Box
+  upsertAlertBox(
+    id: ID!
+    page: ID!
+    title: String!
+    content: String
+    prefix: String
+    style: String
+    order: Int
+  ): AlertBox
+  deleteAlertBox(id: ID!): AlertBox
   upsertProsAndCons(
     id: ID!
     page: ID!

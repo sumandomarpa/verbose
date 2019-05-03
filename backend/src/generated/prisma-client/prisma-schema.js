@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateBlock {
+/* GraphQL */ `type AggregateAlertBox {
+  count: Int!
+}
+
+type AggregateBlock {
   count: Int!
 }
 
@@ -41,6 +45,329 @@ type AggregateProsAndCons {
 
 type AggregateUser {
   count: Int!
+}
+
+type AlertBox {
+  id: ID!
+  page: Page!
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+type AlertBoxConnection {
+  pageInfo: PageInfo!
+  edges: [AlertBoxEdge]!
+  aggregate: AggregateAlertBox!
+}
+
+input AlertBoxCreateInput {
+  page: PageCreateOneWithoutAlertBoxesInput!
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+input AlertBoxCreateManyWithoutPageInput {
+  create: [AlertBoxCreateWithoutPageInput!]
+  connect: [AlertBoxWhereUniqueInput!]
+}
+
+input AlertBoxCreateWithoutPageInput {
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+type AlertBoxEdge {
+  node: AlertBox!
+  cursor: String!
+}
+
+enum AlertBoxOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  content_ASC
+  content_DESC
+  prefix_ASC
+  prefix_DESC
+  style_ASC
+  style_DESC
+  order_ASC
+  order_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AlertBoxPreviousValues {
+  id: ID!
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+input AlertBoxScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  prefix: String
+  prefix_not: String
+  prefix_in: [String!]
+  prefix_not_in: [String!]
+  prefix_lt: String
+  prefix_lte: String
+  prefix_gt: String
+  prefix_gte: String
+  prefix_contains: String
+  prefix_not_contains: String
+  prefix_starts_with: String
+  prefix_not_starts_with: String
+  prefix_ends_with: String
+  prefix_not_ends_with: String
+  style: String
+  style_not: String
+  style_in: [String!]
+  style_not_in: [String!]
+  style_lt: String
+  style_lte: String
+  style_gt: String
+  style_gte: String
+  style_contains: String
+  style_not_contains: String
+  style_starts_with: String
+  style_not_starts_with: String
+  style_ends_with: String
+  style_not_ends_with: String
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  AND: [AlertBoxScalarWhereInput!]
+  OR: [AlertBoxScalarWhereInput!]
+  NOT: [AlertBoxScalarWhereInput!]
+}
+
+type AlertBoxSubscriptionPayload {
+  mutation: MutationType!
+  node: AlertBox
+  updatedFields: [String!]
+  previousValues: AlertBoxPreviousValues
+}
+
+input AlertBoxSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AlertBoxWhereInput
+  AND: [AlertBoxSubscriptionWhereInput!]
+  OR: [AlertBoxSubscriptionWhereInput!]
+  NOT: [AlertBoxSubscriptionWhereInput!]
+}
+
+input AlertBoxUpdateInput {
+  page: PageUpdateOneRequiredWithoutAlertBoxesInput
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+input AlertBoxUpdateManyDataInput {
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+input AlertBoxUpdateManyMutationInput {
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+input AlertBoxUpdateManyWithoutPageInput {
+  create: [AlertBoxCreateWithoutPageInput!]
+  delete: [AlertBoxWhereUniqueInput!]
+  connect: [AlertBoxWhereUniqueInput!]
+  set: [AlertBoxWhereUniqueInput!]
+  disconnect: [AlertBoxWhereUniqueInput!]
+  update: [AlertBoxUpdateWithWhereUniqueWithoutPageInput!]
+  upsert: [AlertBoxUpsertWithWhereUniqueWithoutPageInput!]
+  deleteMany: [AlertBoxScalarWhereInput!]
+  updateMany: [AlertBoxUpdateManyWithWhereNestedInput!]
+}
+
+input AlertBoxUpdateManyWithWhereNestedInput {
+  where: AlertBoxScalarWhereInput!
+  data: AlertBoxUpdateManyDataInput!
+}
+
+input AlertBoxUpdateWithoutPageDataInput {
+  title: String
+  content: String
+  prefix: String
+  style: String
+  order: Int
+}
+
+input AlertBoxUpdateWithWhereUniqueWithoutPageInput {
+  where: AlertBoxWhereUniqueInput!
+  data: AlertBoxUpdateWithoutPageDataInput!
+}
+
+input AlertBoxUpsertWithWhereUniqueWithoutPageInput {
+  where: AlertBoxWhereUniqueInput!
+  update: AlertBoxUpdateWithoutPageDataInput!
+  create: AlertBoxCreateWithoutPageInput!
+}
+
+input AlertBoxWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  page: PageWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  prefix: String
+  prefix_not: String
+  prefix_in: [String!]
+  prefix_not_in: [String!]
+  prefix_lt: String
+  prefix_lte: String
+  prefix_gt: String
+  prefix_gte: String
+  prefix_contains: String
+  prefix_not_contains: String
+  prefix_starts_with: String
+  prefix_not_starts_with: String
+  prefix_ends_with: String
+  prefix_not_ends_with: String
+  style: String
+  style_not: String
+  style_in: [String!]
+  style_not_in: [String!]
+  style_lt: String
+  style_lte: String
+  style_gt: String
+  style_gte: String
+  style_contains: String
+  style_not_contains: String
+  style_starts_with: String
+  style_not_starts_with: String
+  style_ends_with: String
+  style_not_ends_with: String
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  AND: [AlertBoxWhereInput!]
+  OR: [AlertBoxWhereInput!]
+  NOT: [AlertBoxWhereInput!]
+}
+
+input AlertBoxWhereUniqueInput {
+  id: ID
 }
 
 type BatchPayload {
@@ -1802,6 +2129,12 @@ input MediaWhereUniqueInput {
 }
 
 type Mutation {
+  createAlertBox(data: AlertBoxCreateInput!): AlertBox!
+  updateAlertBox(data: AlertBoxUpdateInput!, where: AlertBoxWhereUniqueInput!): AlertBox
+  updateManyAlertBoxes(data: AlertBoxUpdateManyMutationInput!, where: AlertBoxWhereInput): BatchPayload!
+  upsertAlertBox(where: AlertBoxWhereUniqueInput!, create: AlertBoxCreateInput!, update: AlertBoxUpdateInput!): AlertBox!
+  deleteAlertBox(where: AlertBoxWhereUniqueInput!): AlertBox
+  deleteManyAlertBoxes(where: AlertBoxWhereInput): BatchPayload!
   createBlock(data: BlockCreateInput!): Block!
   updateBlock(data: BlockUpdateInput!, where: BlockWhereUniqueInput!): Block
   updateManyBlocks(data: BlockUpdateManyMutationInput!, where: BlockWhereInput): BatchPayload!
@@ -1885,6 +2218,7 @@ type Page {
   blocks(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Block!]
   boxes(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Box!]
   prosAndCons(where: ProsAndConsWhereInput, orderBy: ProsAndConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProsAndCons!]
+  alertBoxes(where: AlertBoxWhereInput, orderBy: AlertBoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AlertBox!]
 }
 
 type PageConnection {
@@ -1903,6 +2237,12 @@ input PageCreateInput {
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
+  alertBoxes: AlertBoxCreateManyWithoutPageInput
+}
+
+input PageCreateOneWithoutAlertBoxesInput {
+  create: PageCreateWithoutAlertBoxesInput
+  connect: PageWhereUniqueInput
 }
 
 input PageCreateOneWithoutBlocksInput {
@@ -1920,6 +2260,18 @@ input PageCreateOneWithoutProsAndConsInput {
   connect: PageWhereUniqueInput
 }
 
+input PageCreateWithoutAlertBoxesInput {
+  title: String!
+  image: String
+  slug: String!
+  type: PageType!
+  status: PageStatus!
+  vertical: String
+  blocks: BlockCreateManyWithoutPageInput
+  boxes: BoxCreateManyWithoutPageInput
+  prosAndCons: ProsAndConsCreateManyWithoutPageInput
+}
+
 input PageCreateWithoutBlocksInput {
   title: String!
   image: String
@@ -1929,6 +2281,7 @@ input PageCreateWithoutBlocksInput {
   vertical: String
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
+  alertBoxes: AlertBoxCreateManyWithoutPageInput
 }
 
 input PageCreateWithoutBoxesInput {
@@ -1940,6 +2293,7 @@ input PageCreateWithoutBoxesInput {
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
+  alertBoxes: AlertBoxCreateManyWithoutPageInput
 }
 
 input PageCreateWithoutProsAndConsInput {
@@ -1951,6 +2305,7 @@ input PageCreateWithoutProsAndConsInput {
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
+  alertBoxes: AlertBoxCreateManyWithoutPageInput
 }
 
 type PageEdge {
@@ -2036,6 +2391,7 @@ input PageUpdateInput {
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
+  alertBoxes: AlertBoxUpdateManyWithoutPageInput
 }
 
 input PageUpdateManyMutationInput {
@@ -2045,6 +2401,13 @@ input PageUpdateManyMutationInput {
   type: PageType
   status: PageStatus
   vertical: String
+}
+
+input PageUpdateOneRequiredWithoutAlertBoxesInput {
+  create: PageCreateWithoutAlertBoxesInput
+  update: PageUpdateWithoutAlertBoxesDataInput
+  upsert: PageUpsertWithoutAlertBoxesInput
+  connect: PageWhereUniqueInput
 }
 
 input PageUpdateOneRequiredWithoutBlocksInput {
@@ -2068,6 +2431,18 @@ input PageUpdateOneRequiredWithoutProsAndConsInput {
   connect: PageWhereUniqueInput
 }
 
+input PageUpdateWithoutAlertBoxesDataInput {
+  title: String
+  image: String
+  slug: String
+  type: PageType
+  status: PageStatus
+  vertical: String
+  blocks: BlockUpdateManyWithoutPageInput
+  boxes: BoxUpdateManyWithoutPageInput
+  prosAndCons: ProsAndConsUpdateManyWithoutPageInput
+}
+
 input PageUpdateWithoutBlocksDataInput {
   title: String
   image: String
@@ -2077,6 +2452,7 @@ input PageUpdateWithoutBlocksDataInput {
   vertical: String
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
+  alertBoxes: AlertBoxUpdateManyWithoutPageInput
 }
 
 input PageUpdateWithoutBoxesDataInput {
@@ -2088,6 +2464,7 @@ input PageUpdateWithoutBoxesDataInput {
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
+  alertBoxes: AlertBoxUpdateManyWithoutPageInput
 }
 
 input PageUpdateWithoutProsAndConsDataInput {
@@ -2099,6 +2476,12 @@ input PageUpdateWithoutProsAndConsDataInput {
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
+  alertBoxes: AlertBoxUpdateManyWithoutPageInput
+}
+
+input PageUpsertWithoutAlertBoxesInput {
+  update: PageUpdateWithoutAlertBoxesDataInput!
+  create: PageCreateWithoutAlertBoxesInput!
 }
 
 input PageUpsertWithoutBlocksInput {
@@ -2204,6 +2587,9 @@ input PageWhereInput {
   prosAndCons_every: ProsAndConsWhereInput
   prosAndCons_some: ProsAndConsWhereInput
   prosAndCons_none: ProsAndConsWhereInput
+  alertBoxes_every: AlertBoxWhereInput
+  alertBoxes_some: AlertBoxWhereInput
+  alertBoxes_none: AlertBoxWhereInput
   AND: [PageWhereInput!]
   OR: [PageWhereInput!]
   NOT: [PageWhereInput!]
@@ -2715,6 +3101,9 @@ input ProsWhereUniqueInput {
 }
 
 type Query {
+  alertBox(where: AlertBoxWhereUniqueInput!): AlertBox
+  alertBoxes(where: AlertBoxWhereInput, orderBy: AlertBoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AlertBox]!
+  alertBoxesConnection(where: AlertBoxWhereInput, orderBy: AlertBoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AlertBoxConnection!
   block(where: BlockWhereUniqueInput!): Block
   blocks(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Block]!
   blocksConnection(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlockConnection!
@@ -2749,6 +3138,7 @@ type Query {
 }
 
 type Subscription {
+  alertBox(where: AlertBoxSubscriptionWhereInput): AlertBoxSubscriptionPayload
   block(where: BlockSubscriptionWhereInput): BlockSubscriptionPayload
   box(where: BoxSubscriptionWhereInput): BoxSubscriptionPayload
   cons(where: ConsSubscriptionWhereInput): ConsSubscriptionPayload

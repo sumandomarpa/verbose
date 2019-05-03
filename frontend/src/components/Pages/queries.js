@@ -31,6 +31,7 @@ export const GET_BLOCKS = gql`
       video
       style
       content
+      order
       media {
         id
         url
@@ -47,6 +48,7 @@ export const GET_BLOCK = gql`
       content
       video
       style
+      order
       media {
         id
         url
@@ -63,6 +65,7 @@ export const GET_BOXES = gql`
       video
       style
       content
+      order
       media {
         id
         url
@@ -79,10 +82,37 @@ export const GET_BOX = gql`
       content
       video
       style
+      order
       media {
         id
         url
       }
+    }
+  }
+`
+
+export const GET_ALERT_BOXES = gql`
+  query GetAlertBoxes {
+    alertBoxes @client {
+      id
+      title
+      content
+      prefix
+      style
+      order
+    }
+  }
+`
+
+export const GET_ALERT_BOX = gql`
+  query GetBox($itemId: String) {
+    alertBox(itemId: $itemId) @client {
+      id
+      title
+      content
+      prefix
+      style
+      order
     }
   }
 `
@@ -92,6 +122,7 @@ export const GET_PROS_AND_CONS = gql`
     prosAndCons @client {
       id
       title
+      order
       pros {
         id
         content
@@ -109,6 +140,7 @@ export const GET_PROS_AND_CONS_BY_ID = gql`
     prosAndConsById(itemId: $itemId) @client {
       id
       title
+      order
       pros {
         id
         content
@@ -167,6 +199,14 @@ export const GET_PAGE_DB = gql`
           id
           url
         }
+      }
+      alertBoxes {
+        id
+        title
+        content
+        prefix
+        style
+        order
       }
       prosAndCons {
         id

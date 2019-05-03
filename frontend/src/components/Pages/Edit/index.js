@@ -60,14 +60,23 @@ class EditPage extends Component {
       variables: { id },
     })
 
-    const pageData = omit(page, ['blocks', 'boxes', 'prosAndCons'])
+    const pageData = omit(page, [
+      'blocks',
+      'boxes',
+      'prosAndCons',
+      'alertBoxes',
+    ])
+
     const { blocks } = page
     const { boxes } = page
     const { prosAndCons } = page
+    const { alertBoxes } = page
+
+    console.log(page, 'page')
 
     const pageItems = []
 
-    const pageItemsMerge = [...blocks, ...boxes, ...prosAndCons]
+    const pageItemsMerge = [...blocks, ...boxes, ...prosAndCons, ...alertBoxes]
 
     sortBy(pageItemsMerge, ['order']).forEach(item => {
       const pageItem = {
@@ -85,6 +94,7 @@ class EditPage extends Component {
         pageItems,
         blocks,
         boxes,
+        alertBoxes,
         prosAndCons,
       },
     })

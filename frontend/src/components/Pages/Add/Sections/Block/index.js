@@ -107,11 +107,6 @@ class Block extends Component {
           value: upsertBlock.id,
           itemId: block.id,
         },
-        refetchQueries: [
-          {
-            query: GET_BLOCK,
-          },
-        ],
       })
       client
         .mutate({
@@ -226,7 +221,7 @@ class Block extends Component {
                     Content Left Column
                   </Option>
                   <Option value="content-right-column">
-                    Content Left Column
+                    Content Right Column
                   </Option>
                 </Select>
               </Form.Item>
