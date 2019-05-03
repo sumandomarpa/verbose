@@ -196,6 +196,7 @@ export const GET_PAGES_DB = gql`
       slug
       type
       vertical
+      status
     }
   }
 `
