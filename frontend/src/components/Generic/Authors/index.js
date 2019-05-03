@@ -2,13 +2,13 @@ import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import SelectBox from '../SelectBox'
+import MultiSelectBox from '../MultiSelectBox'
 
 const GET_USERS = gql`
     {
         users {
             id
-            name
+            email
         }
     }
 `
@@ -18,9 +18,9 @@ export default function Authors (props) {
         {({ data: { users }, loading }) => {
             if (loading) return null
             const { name, value, label, onChange } = props
-            let options = users.map(user => ({name: user.name, value: user.id}))
+            let options = users.map(user => ({name: user.email, value: user.id}))
             return (
-            <SelectBox mode="multiple" name={name || "authors"} value={value}
+            <MultiSelectBox name={name || "authors"} value={value}
                 label={label || "Authors"}
                 onChange={onChange} options={options} />
             )
