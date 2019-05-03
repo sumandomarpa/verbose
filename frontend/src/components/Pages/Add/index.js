@@ -48,7 +48,7 @@ class AddPage extends Component {
             <AddPageItem />
             <ActionButtonsWrapper>
               <Button type="primary" onClick={this.upsertPage}>
-                Publish
+                Add Page
               </Button>
             </ActionButtonsWrapper>
           </Card>

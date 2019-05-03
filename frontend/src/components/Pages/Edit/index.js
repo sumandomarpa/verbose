@@ -65,19 +65,23 @@ class EditPage extends Component {
       'boxes',
       'prosAndCons',
       'alertBoxes',
+      'quickTips',
     ])
 
     const { blocks } = page
     const { boxes } = page
     const { prosAndCons } = page
+    const { quickTips } = page
     const { alertBoxes } = page
 
-    console.log(page, 'page')
-
     const pageItems = []
-
-    const pageItemsMerge = [...blocks, ...boxes, ...prosAndCons, ...alertBoxes]
-
+    const pageItemsMerge = [
+      ...blocks,
+      ...boxes,
+      ...prosAndCons,
+      ...alertBoxes,
+      ...quickTips,
+    ]
     sortBy(pageItemsMerge, ['order']).forEach(item => {
       const pageItem = {
         type: item.__typename,
@@ -96,6 +100,7 @@ class EditPage extends Component {
         boxes,
         alertBoxes,
         prosAndCons,
+        quickTips,
       },
     })
 
@@ -115,7 +120,7 @@ class EditPage extends Component {
             <PageItem />
             <ActionButtonsWrapper>
               <Button type="primary" onClick={this.upsertPage}>
-                Publish
+                Update Page
               </Button>
             </ActionButtonsWrapper>
           </Card>

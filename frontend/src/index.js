@@ -56,6 +56,7 @@ const data = {
   boxes: [],
   alertBoxes: [],
   prosAndCons: [],
+  quickTips: [],
 }
 cache.writeData({
   data,

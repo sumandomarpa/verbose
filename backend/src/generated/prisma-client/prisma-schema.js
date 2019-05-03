@@ -43,6 +43,10 @@ type AggregateProsAndCons {
   count: Int!
 }
 
+type AggregateQuickTip {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -2189,6 +2193,12 @@ type Mutation {
   upsertProsAndCons(where: ProsAndConsWhereUniqueInput!, create: ProsAndConsCreateInput!, update: ProsAndConsUpdateInput!): ProsAndCons!
   deleteProsAndCons(where: ProsAndConsWhereUniqueInput!): ProsAndCons
   deleteManyProsAndConses(where: ProsAndConsWhereInput): BatchPayload!
+  createQuickTip(data: QuickTipCreateInput!): QuickTip!
+  updateQuickTip(data: QuickTipUpdateInput!, where: QuickTipWhereUniqueInput!): QuickTip
+  updateManyQuickTips(data: QuickTipUpdateManyMutationInput!, where: QuickTipWhereInput): BatchPayload!
+  upsertQuickTip(where: QuickTipWhereUniqueInput!, create: QuickTipCreateInput!, update: QuickTipUpdateInput!): QuickTip!
+  deleteQuickTip(where: QuickTipWhereUniqueInput!): QuickTip
+  deleteManyQuickTips(where: QuickTipWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -2219,6 +2229,7 @@ type Page {
   boxes(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Box!]
   prosAndCons(where: ProsAndConsWhereInput, orderBy: ProsAndConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProsAndCons!]
   alertBoxes(where: AlertBoxWhereInput, orderBy: AlertBoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AlertBox!]
+  quickTips(where: QuickTipWhereInput, orderBy: QuickTipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QuickTip!]
 }
 
 type PageConnection {
@@ -2238,6 +2249,7 @@ input PageCreateInput {
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
+  quickTips: QuickTipCreateManyWithoutPageInput
 }
 
 input PageCreateOneWithoutAlertBoxesInput {
@@ -2260,6 +2272,11 @@ input PageCreateOneWithoutProsAndConsInput {
   connect: PageWhereUniqueInput
 }
 
+input PageCreateOneWithoutQuickTipsInput {
+  create: PageCreateWithoutQuickTipsInput
+  connect: PageWhereUniqueInput
+}
+
 input PageCreateWithoutAlertBoxesInput {
   title: String!
   image: String
@@ -2270,6 +2287,7 @@ input PageCreateWithoutAlertBoxesInput {
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
+  quickTips: QuickTipCreateManyWithoutPageInput
 }
 
 input PageCreateWithoutBlocksInput {
@@ -2282,6 +2300,7 @@ input PageCreateWithoutBlocksInput {
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
+  quickTips: QuickTipCreateManyWithoutPageInput
 }
 
 input PageCreateWithoutBoxesInput {
@@ -2294,6 +2313,7 @@ input PageCreateWithoutBoxesInput {
   blocks: BlockCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
+  quickTips: QuickTipCreateManyWithoutPageInput
 }
 
 input PageCreateWithoutProsAndConsInput {
@@ -2305,6 +2325,20 @@ input PageCreateWithoutProsAndConsInput {
   vertical: String
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
+  alertBoxes: AlertBoxCreateManyWithoutPageInput
+  quickTips: QuickTipCreateManyWithoutPageInput
+}
+
+input PageCreateWithoutQuickTipsInput {
+  title: String!
+  image: String
+  slug: String!
+  type: PageType!
+  status: PageStatus!
+  vertical: String
+  blocks: BlockCreateManyWithoutPageInput
+  boxes: BoxCreateManyWithoutPageInput
+  prosAndCons: ProsAndConsCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
 }
 
@@ -2392,6 +2426,7 @@ input PageUpdateInput {
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
+  quickTips: QuickTipUpdateManyWithoutPageInput
 }
 
 input PageUpdateManyMutationInput {
@@ -2431,6 +2466,13 @@ input PageUpdateOneRequiredWithoutProsAndConsInput {
   connect: PageWhereUniqueInput
 }
 
+input PageUpdateOneRequiredWithoutQuickTipsInput {
+  create: PageCreateWithoutQuickTipsInput
+  update: PageUpdateWithoutQuickTipsDataInput
+  upsert: PageUpsertWithoutQuickTipsInput
+  connect: PageWhereUniqueInput
+}
+
 input PageUpdateWithoutAlertBoxesDataInput {
   title: String
   image: String
@@ -2441,6 +2483,7 @@ input PageUpdateWithoutAlertBoxesDataInput {
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
+  quickTips: QuickTipUpdateManyWithoutPageInput
 }
 
 input PageUpdateWithoutBlocksDataInput {
@@ -2453,6 +2496,7 @@ input PageUpdateWithoutBlocksDataInput {
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
+  quickTips: QuickTipUpdateManyWithoutPageInput
 }
 
 input PageUpdateWithoutBoxesDataInput {
@@ -2465,6 +2509,7 @@ input PageUpdateWithoutBoxesDataInput {
   blocks: BlockUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
+  quickTips: QuickTipUpdateManyWithoutPageInput
 }
 
 input PageUpdateWithoutProsAndConsDataInput {
@@ -2476,6 +2521,20 @@ input PageUpdateWithoutProsAndConsDataInput {
   vertical: String
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
+  alertBoxes: AlertBoxUpdateManyWithoutPageInput
+  quickTips: QuickTipUpdateManyWithoutPageInput
+}
+
+input PageUpdateWithoutQuickTipsDataInput {
+  title: String
+  image: String
+  slug: String
+  type: PageType
+  status: PageStatus
+  vertical: String
+  blocks: BlockUpdateManyWithoutPageInput
+  boxes: BoxUpdateManyWithoutPageInput
+  prosAndCons: ProsAndConsUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
 }
 
@@ -2497,6 +2556,11 @@ input PageUpsertWithoutBoxesInput {
 input PageUpsertWithoutProsAndConsInput {
   update: PageUpdateWithoutProsAndConsDataInput!
   create: PageCreateWithoutProsAndConsInput!
+}
+
+input PageUpsertWithoutQuickTipsInput {
+  update: PageUpdateWithoutQuickTipsDataInput!
+  create: PageCreateWithoutQuickTipsInput!
 }
 
 input PageWhereInput {
@@ -2590,6 +2654,9 @@ input PageWhereInput {
   alertBoxes_every: AlertBoxWhereInput
   alertBoxes_some: AlertBoxWhereInput
   alertBoxes_none: AlertBoxWhereInput
+  quickTips_every: QuickTipWhereInput
+  quickTips_some: QuickTipWhereInput
+  quickTips_none: QuickTipWhereInput
   AND: [PageWhereInput!]
   OR: [PageWhereInput!]
   NOT: [PageWhereInput!]
@@ -3131,10 +3198,342 @@ type Query {
   prosAndCons(where: ProsAndConsWhereUniqueInput!): ProsAndCons
   prosAndConses(where: ProsAndConsWhereInput, orderBy: ProsAndConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProsAndCons]!
   prosAndConsesConnection(where: ProsAndConsWhereInput, orderBy: ProsAndConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProsAndConsConnection!
+  quickTip(where: QuickTipWhereUniqueInput!): QuickTip
+  quickTips(where: QuickTipWhereInput, orderBy: QuickTipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QuickTip]!
+  quickTipsConnection(where: QuickTipWhereInput, orderBy: QuickTipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuickTipConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
+}
+
+type QuickTip {
+  id: ID!
+  page: Page!
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  media: Media
+  order: Int
+}
+
+type QuickTipConnection {
+  pageInfo: PageInfo!
+  edges: [QuickTipEdge]!
+  aggregate: AggregateQuickTip!
+}
+
+input QuickTipCreateInput {
+  page: PageCreateOneWithoutQuickTipsInput!
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  media: MediaCreateOneInput
+  order: Int
+}
+
+input QuickTipCreateManyWithoutPageInput {
+  create: [QuickTipCreateWithoutPageInput!]
+  connect: [QuickTipWhereUniqueInput!]
+}
+
+input QuickTipCreateWithoutPageInput {
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  media: MediaCreateOneInput
+  order: Int
+}
+
+type QuickTipEdge {
+  node: QuickTip!
+  cursor: String!
+}
+
+enum QuickTipOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  content_ASC
+  content_DESC
+  buttonText_ASC
+  buttonText_DESC
+  buttonLink_ASC
+  buttonLink_DESC
+  order_ASC
+  order_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type QuickTipPreviousValues {
+  id: ID!
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  order: Int
+}
+
+input QuickTipScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  buttonText: String
+  buttonText_not: String
+  buttonText_in: [String!]
+  buttonText_not_in: [String!]
+  buttonText_lt: String
+  buttonText_lte: String
+  buttonText_gt: String
+  buttonText_gte: String
+  buttonText_contains: String
+  buttonText_not_contains: String
+  buttonText_starts_with: String
+  buttonText_not_starts_with: String
+  buttonText_ends_with: String
+  buttonText_not_ends_with: String
+  buttonLink: String
+  buttonLink_not: String
+  buttonLink_in: [String!]
+  buttonLink_not_in: [String!]
+  buttonLink_lt: String
+  buttonLink_lte: String
+  buttonLink_gt: String
+  buttonLink_gte: String
+  buttonLink_contains: String
+  buttonLink_not_contains: String
+  buttonLink_starts_with: String
+  buttonLink_not_starts_with: String
+  buttonLink_ends_with: String
+  buttonLink_not_ends_with: String
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  AND: [QuickTipScalarWhereInput!]
+  OR: [QuickTipScalarWhereInput!]
+  NOT: [QuickTipScalarWhereInput!]
+}
+
+type QuickTipSubscriptionPayload {
+  mutation: MutationType!
+  node: QuickTip
+  updatedFields: [String!]
+  previousValues: QuickTipPreviousValues
+}
+
+input QuickTipSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: QuickTipWhereInput
+  AND: [QuickTipSubscriptionWhereInput!]
+  OR: [QuickTipSubscriptionWhereInput!]
+  NOT: [QuickTipSubscriptionWhereInput!]
+}
+
+input QuickTipUpdateInput {
+  page: PageUpdateOneRequiredWithoutQuickTipsInput
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  media: MediaUpdateOneInput
+  order: Int
+}
+
+input QuickTipUpdateManyDataInput {
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  order: Int
+}
+
+input QuickTipUpdateManyMutationInput {
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  order: Int
+}
+
+input QuickTipUpdateManyWithoutPageInput {
+  create: [QuickTipCreateWithoutPageInput!]
+  delete: [QuickTipWhereUniqueInput!]
+  connect: [QuickTipWhereUniqueInput!]
+  set: [QuickTipWhereUniqueInput!]
+  disconnect: [QuickTipWhereUniqueInput!]
+  update: [QuickTipUpdateWithWhereUniqueWithoutPageInput!]
+  upsert: [QuickTipUpsertWithWhereUniqueWithoutPageInput!]
+  deleteMany: [QuickTipScalarWhereInput!]
+  updateMany: [QuickTipUpdateManyWithWhereNestedInput!]
+}
+
+input QuickTipUpdateManyWithWhereNestedInput {
+  where: QuickTipScalarWhereInput!
+  data: QuickTipUpdateManyDataInput!
+}
+
+input QuickTipUpdateWithoutPageDataInput {
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  media: MediaUpdateOneInput
+  order: Int
+}
+
+input QuickTipUpdateWithWhereUniqueWithoutPageInput {
+  where: QuickTipWhereUniqueInput!
+  data: QuickTipUpdateWithoutPageDataInput!
+}
+
+input QuickTipUpsertWithWhereUniqueWithoutPageInput {
+  where: QuickTipWhereUniqueInput!
+  update: QuickTipUpdateWithoutPageDataInput!
+  create: QuickTipCreateWithoutPageInput!
+}
+
+input QuickTipWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  page: PageWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  buttonText: String
+  buttonText_not: String
+  buttonText_in: [String!]
+  buttonText_not_in: [String!]
+  buttonText_lt: String
+  buttonText_lte: String
+  buttonText_gt: String
+  buttonText_gte: String
+  buttonText_contains: String
+  buttonText_not_contains: String
+  buttonText_starts_with: String
+  buttonText_not_starts_with: String
+  buttonText_ends_with: String
+  buttonText_not_ends_with: String
+  buttonLink: String
+  buttonLink_not: String
+  buttonLink_in: [String!]
+  buttonLink_not_in: [String!]
+  buttonLink_lt: String
+  buttonLink_lte: String
+  buttonLink_gt: String
+  buttonLink_gte: String
+  buttonLink_contains: String
+  buttonLink_not_contains: String
+  buttonLink_starts_with: String
+  buttonLink_not_starts_with: String
+  buttonLink_ends_with: String
+  buttonLink_not_ends_with: String
+  media: MediaWhereInput
+  order: Int
+  order_not: Int
+  order_in: [Int!]
+  order_not_in: [Int!]
+  order_lt: Int
+  order_lte: Int
+  order_gt: Int
+  order_gte: Int
+  AND: [QuickTipWhereInput!]
+  OR: [QuickTipWhereInput!]
+  NOT: [QuickTipWhereInput!]
+}
+
+input QuickTipWhereUniqueInput {
+  id: ID
 }
 
 type Subscription {
@@ -3148,6 +3547,7 @@ type Subscription {
   page(where: PageSubscriptionWhereInput): PageSubscriptionPayload
   pros(where: ProsSubscriptionWhereInput): ProsSubscriptionPayload
   prosAndCons(where: ProsAndConsSubscriptionWhereInput): ProsAndConsSubscriptionPayload
+  quickTip(where: QuickTipSubscriptionWhereInput): QuickTipSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 

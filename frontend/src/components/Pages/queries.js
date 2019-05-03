@@ -117,6 +117,40 @@ export const GET_ALERT_BOX = gql`
   }
 `
 
+export const GET_QUICK_TIPS = gql`
+  query GetQuickTips {
+    quickTips @client {
+      id
+      title
+      content
+      buttonText
+      buttonLink
+      order
+      media {
+        id
+        url
+      }
+    }
+  }
+`
+
+export const GET_QUICK_TIP = gql`
+  query GetQuickTip($itemId: String) {
+    quickTip(itemId: $itemId) @client {
+      id
+      title
+      content
+      buttonText
+      buttonLink
+      order
+      media {
+        id
+        url
+      }
+    }
+  }
+`
+
 export const GET_PROS_AND_CONS = gql`
   query GetProsAndCons {
     prosAndCons @client {
@@ -207,6 +241,18 @@ export const GET_PAGE_DB = gql`
         prefix
         style
         order
+      }
+      quickTips {
+        id
+        title
+        content
+        buttonText
+        buttonLink
+        order
+        media {
+          id
+          url
+        }
       }
       prosAndCons {
         id

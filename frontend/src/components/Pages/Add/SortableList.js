@@ -23,6 +23,7 @@ import {
   UPDATE_SECTIONS_ORDER_TO_DB,
 } from '../mutaitons'
 import AlertBox from './Sections/AlertBox'
+import QuickTip from './Sections/QuickTip'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -63,6 +64,8 @@ class SortableList extends Component {
         return <FaqAccordion {...props} />
       case 'Grid':
         return <Grid {...props} />
+      case 'QuickTip':
+        return <QuickTip {...props} />
       default:
         return null
     }

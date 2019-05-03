@@ -36,6 +36,17 @@ export const UPDATE_ALERT_BOX = gql`
   }
 `
 
+export const UPDATE_QUICK_TIP = gql`
+  mutation UpdateQuickTip($name: String, $value: String, $itemId: String) {
+    updateQuickTip(name: $name, value: $value, itemId: $itemId) @client
+  }
+`
+export const UPDATE_QUICK_TIP_MEDIA = gql`
+  mutation UpdateQuickTip($media: Media, $itemId: String) {
+    updateQuickTipMedia(media: $media, itemId: $itemId) @client
+  }
+`
+
 export const UPDATE_PROS_AND_CONS = gql`
   mutation UpdateProsAndCons(
     $name: String
@@ -227,6 +238,45 @@ export const UPSERT_ALERT_BOX_TO_DB = gql`
 export const DELETE_ALERT_BOX_TO_DB = gql`
   mutation DELETE_ALERT_BOX($id: ID!) {
     deleteAlertBox(id: $id) {
+      id
+    }
+  }
+`
+
+export const UPSERT_QUICK_TIP_TO_DB = gql`
+  mutation UPSERT_QUICK_TIP(
+    $id: ID!
+    $page: ID!
+    $media: ID
+    $title: String!
+    $content: String
+    $buttonText: String
+    $buttonLink: String
+    $order: Int
+  ) {
+    upsertQuickTip(
+      id: $id
+      page: $page
+      media: $media
+      title: $title
+      content: $content
+      buttonText: $buttonText
+      buttonLink: $buttonLink
+      order: $order
+    ) {
+      id
+      title
+      content
+      buttonText
+      buttonLink
+      order
+    }
+  }
+`
+
+export const DELETE_QUICK_TIP_TO_DB = gql`
+  mutation DELETE_QUICK_TIP($id: ID!) {
+    deleteQuickTip(id: $id) {
       id
     }
   }

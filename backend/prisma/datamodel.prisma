@@ -37,6 +37,7 @@ type Page {
   boxes: [Box]!
   prosAndCons: [ProsAndCons]!
   alertBoxes: [AlertBox]!
+  quickTips: [QuickTip]
 }
 
 type Block {
@@ -68,6 +69,17 @@ type AlertBox {
   content: String
   prefix: String
   style: String
+  order: Int
+}
+
+type QuickTip {
+  id: ID! @unique
+  page: Page!
+  title: String
+  content: String
+  buttonText: String
+  buttonLink: String
+  media: Media
   order: Int
 }
 
