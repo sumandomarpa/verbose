@@ -8,3 +8,4 @@ export const VERTICAL_OPTIONS = [
     {name:'Personal Loans', value:"personal-loans"},
     {name:'Car Loans', value:"car-loans"}
 ]
+

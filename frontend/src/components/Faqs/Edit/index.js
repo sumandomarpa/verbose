@@ -43,9 +43,4 @@ class EditFaq extends Component {
   }
 }
 
-EditFaq.propTypes = {
-  client: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-}
-
 export default withApollo(EditFaq)
