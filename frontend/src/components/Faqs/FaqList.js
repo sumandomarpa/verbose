@@ -6,9 +6,6 @@ import { GET_FAQS_DB } from './queries'
 import Layout from '../Layout'
 
 export default class FaqList extends React.Component {
-    componentDidMount () {
-        
-    }
     render () {
         return (
             <Query query={GET_FAQS_DB} fetchPolicy="network-only">
