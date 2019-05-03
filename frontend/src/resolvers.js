@@ -9,6 +9,7 @@ import {
   GET_BOXES,
   GET_ALERT_BOXES,
   GET_PROS_AND_CONS,
+  GET_QUICK_TIPS,
 } from './components/Pages/queries'
 
 export const resolvers = {
@@ -36,6 +37,14 @@ export const resolvers = {
       const { alertBoxes } = cache.readQuery({ query: GET_ALERT_BOXES })
       const alertBox = alertBoxes.filter(item => item.id === itemId)[0]
       return alertBox
+    },
+    quickTip: (_root, variables, { cache }) => {
+      const { itemId } = variables
+      const { quickTips } = cache.readQuery({ query: GET_QUICK_TIPS })
+
+      const quickTip = quickTips.filter(item => item.id === itemId)[0]
+
+      return quickTip
     },
     prosAndConsById: (_root, variables, { cache }) => {
       const { itemId } = variables
@@ -152,6 +161,26 @@ export const resolvers = {
           alertBoxes: [...alertBoxes, newAlertBox],
         }
         cache.writeQuery({ query: GET_ALERT_BOXES, data })
+      } else if (type === 'QuickTip') {
+        const { quickTips } = cache.readQuery({ query: GET_QUICK_TIPS })
+        const newquickTip = {
+          id: newPageItem.itemId,
+          title: '',
+          content: '<p></p>',
+          buttonText: '',
+          buttonLink: '',
+          media: {
+            id: null,
+            url: null,
+            __typename: 'Media',
+          },
+          order,
+          __typename: 'QuickTip',
+        }
+        data = {
+          quickTips: [...quickTips, newquickTip],
+        }
+        cache.writeQuery({ query: GET_QUICK_TIPS, data })
       } else if (type === 'ProsAndCons') {
         const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
         const newProsAndCons = {
@@ -307,6 +336,37 @@ export const resolvers = {
       const previous = cache.readFragment({ fragment, id })
 
       const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
+    },
+    updateQuickTip: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'QuickTip', id: itemId })
+      const fragment = gql`
+        fragment updateQuickTip on QuickTip {
+          ${name}
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, [`${name}`]: value }
+      cache.writeData({ id, data })
+    },
+    updateQuickTipMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { media, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'QuickTip', id: itemId })
+      const fragment = gql`
+        fragment updateQuickTip on QuickTip {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, media }
       cache.writeData({ id, data })
     },
     updateProsAndCons: (_root, variables, { cache, getCacheKey }) => {

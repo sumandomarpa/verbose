@@ -37,6 +37,10 @@ var models = [
     embedded: false
   },
   {
+    name: "QuickTip",
+    embedded: false
+  },
+  {
     name: "ProsAndCons",
     embedded: false
   },

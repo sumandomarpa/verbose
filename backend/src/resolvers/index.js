@@ -7,6 +7,7 @@ import block from './block'
 import box from './box'
 import prosAndCons from './prosAndCons'
 import alertBox from './alertBox'
+import quickTip from './quickTip'
 
 export default [
   user,
@@ -17,5 +18,6 @@ export default [
   block,
   box,
   prosAndCons,
-  alertBox
+  alertBox,
+  quickTip
 ]

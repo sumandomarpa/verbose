@@ -83,6 +83,17 @@ type Mutation {
     order: Int
   ): AlertBox
   deleteAlertBox(id: ID!): AlertBox
+  upsertQuickTip(
+    id: ID!
+    page: ID!
+    media: ID
+    title: String!
+    content: String
+    buttonText: String
+    buttonLink: String
+    order: Int
+  ): QuickTip
+  deleteQuickTip(id: ID!): QuickTip
   upsertProsAndCons(
     id: ID!
     page: ID!
