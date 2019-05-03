@@ -117,6 +117,13 @@ export default class PagesList extends Component {
         ...this.getColumnSearchProps('vertical'),
       },
       {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        width: '30%',
+        ...this.getColumnSearchProps('status'),
+      },
+      {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
@@ -135,7 +142,7 @@ export default class PagesList extends Component {
           if (loading) return null
           return (
             <Layout>
-              <Table columns={columns} dataSource={pages} />
+              <Table columns={columns} dataSource={pages} rowKey="id" />
             </Layout>
           )
         }}
