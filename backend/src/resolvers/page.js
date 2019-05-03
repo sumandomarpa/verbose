@@ -68,6 +68,9 @@ export default {
           else if(section.type == 'Box') {
             return await ctx.prisma.updateBox(query)
           }
+          else if(section.type == 'AlertBox') {
+            return await ctx.prisma.updateAlertBox(query)
+          }
           else if(section.type == 'ProsAndCons') {
             return await ctx.prisma.updateProsAndCons(query)
           }
@@ -89,6 +92,11 @@ export default {
       return ctx.prisma.page({
         id: parent.id
       }).boxes()
+    },
+    alertBoxes: (parent, args, ctx, info) => {
+      return ctx.prisma.page({
+        id: parent.id
+      }).alertBoxes()
     },
     prosAndCons: (parent, args, ctx, info) => {
       return ctx.prisma.page({

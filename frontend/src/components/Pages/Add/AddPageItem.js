@@ -47,7 +47,6 @@ class AddPageItem extends Component {
           <Option value="FaqAccordion">Faq Accordion</Option>
           <Option value="QuickTip">Quick Tip</Option>
           <Option value="Grid">Grid</Option>
-          <Option value="CaseStudies">Case Studies</Option>
         </Select>
         <Button type="default" onClick={() => this.handleAddPageItem()}>
           Add Section

@@ -22,6 +22,7 @@ import {
   REMOVE_PAGE_ITEM,
   UPDATE_SECTIONS_ORDER_TO_DB,
 } from '../mutaitons'
+import AlertBox from './Sections/AlertBox'
 
 const SortableListWrapper = styled.div`
   .editorClassName {
@@ -52,6 +53,8 @@ class SortableList extends Component {
         return <Block {...props} />
       case 'Box':
         return <Box {...props} />
+      case 'AlertBox':
+        return <AlertBox {...props} />
       case 'ProsAndCons':
         return <ProsAndCons {...props} />
       case 'Faq':

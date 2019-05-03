@@ -30,6 +30,12 @@ export const UPDATE_BOX_MEDIA = gql`
   }
 `
 
+export const UPDATE_ALERT_BOX = gql`
+  mutation UpdateAlertBox($name: String, $value: String, $itemId: String) {
+    updateAlertBox(name: $name, value: $value, itemId: $itemId) @client
+  }
+`
+
 export const UPDATE_PROS_AND_CONS = gql`
   mutation UpdateProsAndCons(
     $name: String
@@ -184,6 +190,43 @@ export const UPSERT_BOX_TO_DB = gql`
 export const DELETE_BOX_TO_DB = gql`
   mutation DELETE_BOX($id: ID!) {
     deleteBox(id: $id) {
+      id
+    }
+  }
+`
+
+export const UPSERT_ALERT_BOX_TO_DB = gql`
+  mutation UPSERT_ALERT_BOX(
+    $id: ID!
+    $page: ID!
+    $title: String!
+    $content: String
+    $prefix: String
+    $style: String
+    $order: Int
+  ) {
+    upsertAlertBox(
+      id: $id
+      page: $page
+      title: $title
+      content: $content
+      prefix: $prefix
+      order: $order
+      style: $style
+    ) {
+      id
+      title
+      content
+      prefix
+      style
+      order
+    }
+  }
+`
+
+export const DELETE_ALERT_BOX_TO_DB = gql`
+  mutation DELETE_ALERT_BOX($id: ID!) {
+    deleteAlertBox(id: $id) {
       id
     }
   }

@@ -54,6 +54,7 @@ const data = {
     },
   ],
   boxes: [],
+  alertBoxes: [],
   prosAndCons: [],
 }
 cache.writeData({

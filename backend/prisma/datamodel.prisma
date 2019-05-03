@@ -36,6 +36,7 @@ type Page {
   blocks: [Block]!
   boxes: [Box]!
   prosAndCons: [ProsAndCons]!
+  alertBoxes: [AlertBox]!
 }
 
 type Block {
@@ -57,6 +58,16 @@ type Box {
   video: String
   style: String
   content: String
+  order: Int
+}
+
+type AlertBox {
+  id: ID! @unique
+  page: Page!
+  title: String
+  content: String
+  prefix: String
+  style: String
   order: Int
 }
 

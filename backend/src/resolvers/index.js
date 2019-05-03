@@ -6,6 +6,7 @@ import faqCategory from './faqCategory'
 import block from './block'
 import box from './box'
 import prosAndCons from './prosAndCons'
+import alertBox from './alertBox'
 
 export default [
   user,
@@ -15,5 +16,6 @@ export default [
   faqCategory,
   block,
   box,
-  prosAndCons
+  prosAndCons,
+  alertBox
 ]

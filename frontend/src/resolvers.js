@@ -7,6 +7,7 @@ import {
   GET_PAGE_ITEMS,
   GET_BLOCKS,
   GET_BOXES,
+  GET_ALERT_BOXES,
   GET_PROS_AND_CONS,
 } from './components/Pages/queries'
 
@@ -29,6 +30,12 @@ export const resolvers = {
       const box = boxes.filter(item => item.id === itemId)[0]
 
       return box
+    },
+    alertBox: (_root, variables, { cache }) => {
+      const { itemId } = variables
+      const { alertBoxes } = cache.readQuery({ query: GET_ALERT_BOXES })
+      const alertBox = alertBoxes.filter(item => item.id === itemId)[0]
+      return alertBox
     },
     prosAndConsById: (_root, variables, { cache }) => {
       const { itemId } = variables
@@ -130,6 +137,21 @@ export const resolvers = {
           boxes: [...boxes, newBox],
         }
         cache.writeQuery({ query: GET_BOXES, data })
+      } else if (type === 'AlertBox') {
+        const { alertBoxes } = cache.readQuery({ query: GET_ALERT_BOXES })
+        const newAlertBox = {
+          id: newPageItem.itemId,
+          title: '',
+          content: '<p></p>',
+          prefix: '',
+          style: 'tip',
+          order,
+          __typename: 'AlertBox',
+        }
+        data = {
+          alertBoxes: [...alertBoxes, newAlertBox],
+        }
+        cache.writeQuery({ query: GET_ALERT_BOXES, data })
       } else if (type === 'ProsAndCons') {
         const { prosAndCons } = cache.readQuery({ query: GET_PROS_AND_CONS })
         const newProsAndCons = {
@@ -271,6 +293,20 @@ export const resolvers = {
       const previous = cache.readFragment({ fragment, id })
 
       const data = { ...previous, media }
+      cache.writeData({ id, data })
+    },
+    updateAlertBox: (_root, variables, { cache, getCacheKey }) => {
+      const { name, value, itemId } = variables
+
+      const id = getCacheKey({ __typename: 'AlertBox', id: itemId })
+      const fragment = gql`
+        fragment updateAlertBox on AlertBox {
+          ${name}
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
     },
     updateProsAndCons: (_root, variables, { cache, getCacheKey }) => {
