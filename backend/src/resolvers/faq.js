@@ -18,8 +18,8 @@ export default {
           return ctx.prisma.faq(args, info)
         },
         async searchFaq(parent, args, ctx, info) {
-          const { searchString: title_contains, searchString: description_contains, searchString:short_description_contains } = args
-          return ctx.prisma.faqs({where: {OR: [{title_contains}, {description_contains}, {short_description_contains}]}}, info);
+          const { searchString } = args
+          return ctx.prisma.faqs({where: {OR: [{OR: searchString.split(' ').map((item) => {return {title_contains: item}})}, {OR: searchString.split(' ').map((item) => {return {description_contains: item}})}, {OR: searchString.split(' ').map((item) => {return {short_description_contains: item}})}]}}, info);
         },
       },
 
