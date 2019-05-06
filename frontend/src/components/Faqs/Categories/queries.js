@@ -18,3 +18,14 @@ export const GET_FAQ_CATEGORY_DB = gql`
         }
     }
 `
+
+export const GET_FAQ_CATEGORIES_DB = gql`
+    {
+      faqCategories {         
+          id
+          name
+          slug
+          description
+        }
+    }
+`

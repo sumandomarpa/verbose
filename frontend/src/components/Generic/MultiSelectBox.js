@@ -1,6 +1,7 @@
 import React from 'react'
 import { Form, Select } from 'antd'
 import isObject from 'lodash/isObject'
+import isEmpty from 'lodash/isEmpty'
 
 const { Option } = Select
 
@@ -14,7 +15,9 @@ export default function MultiSelectBox(props) {
     const handleChange = (value, options) => {
         onChange(null, name, options.map(option => option.props['data-value']))
     }
-    value = options.filter(option => value.includes(option.value)).map(option => option.name)
+    if (!isEmpty(value)) {
+      value = options.filter(option => value.includes(option.value)).map(option => option.name)
+    }
     return (
       <Form.Item label={label}>
         <Select

@@ -9,12 +9,12 @@ import {
 import Dashboard from '../components/Dashboard'
 import PagesList from '../components/Pages/List'
 import AddPage from '../components/Pages/Add'
-import AddFaq from '../components/Faqs/Add'
+import {AddFaq, EditFaq, FaqList} from '../components/Faqs'
 import { AddFaqCategory, EditFaqCategory } from '../components/Faqs/Categories'
-import EditFaq from '../components/Faqs/Edit'
+//import EditFaq from '../components/Faqs/Edit'
 import EditPage from '../components/Pages/Edit'
 import MediaLibrary from '../components/MediaLibrary'
-import FaqList from '../components/Faqs/FaqList'
+//import FaqList from '../components/Faqs/FaqList'
 
 class AuthContent extends React.Component {
   render() {
