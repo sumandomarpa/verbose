@@ -9,6 +9,8 @@ export const SAVE_FAQ_TO_DB = gql`
     $vertical: String
     $order: Int
     $authors: [ID!]!
+    $category: [ID!]
+    $variant: [String]
   ) {
     addFaq(
       title: $title
@@ -18,6 +20,8 @@ export const SAVE_FAQ_TO_DB = gql`
       vertical: $vertical
       order: $order
       authors: $authors
+      category: $category
+      variant: $variant
     ) {
       id
       title
@@ -37,6 +41,8 @@ export const UPDATE_FAQ_TO_DB = gql`
     $vertical: String
     $order: Int
     $authors: [ID!]!
+    $category: [ID!]
+    $variant: [String]
   ) {
     updateFaq(
       id: $id
@@ -47,6 +53,8 @@ export const UPDATE_FAQ_TO_DB = gql`
       vertical: $vertical
       order: $order
       authors: $authors
+      category: $category
+      variant: $variant
     ) {
       id
       title

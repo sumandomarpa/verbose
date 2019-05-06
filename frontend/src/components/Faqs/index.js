@@ -5,18 +5,23 @@ import EditFormPage from '../Generic/FormPage/Edit'
 import ListPage from '../Generic/FormPage/List'
 import SelectBox from '../Generic/SelectBox'
 import EditorBox from '../Generic/EditorBox'
-import Authors from '../Generic/Authors'
-import { VERTICAL_OPTIONS } from '../../constants/common'
+import { VERTICAL_OPTIONS, VARIANT_OPTIONS } from '../../constants/common'
 import { UPDATE_FAQ_TO_DB, SAVE_FAQ_TO_DB } from './mutations'
-import { GET_FAQ_DB, GET_FAQS_DB } from './queries'
+import { GET_FAQ_DB, GET_FAQS_DB, GET_USERS, GET_FAQ_CATEGORIES } from './queries'
 
 const faqFormFields = [
     { attribute: 'title' },
     { attribute: 'description', Component: EditorBox, id: 'faq' },
     { attribute: 'short_description', type:'textarea' },
-    { attribute: 'slug'},
+    { attribute: 'slug' },
     { attribute: 'vertical', Component: SelectBox, options: VERTICAL_OPTIONS },
-    { attribute: 'authors', Component: Authors },
+    { attribute: 'variant', Component: SelectBox, mode:'multiple', options: VARIANT_OPTIONS },
+    { attribute: 'authors', Component: SelectBox, mode: 'multiple',
+        optionsQuery: { QUERY: GET_USERS, nameKey: 'email', valueKey: 'id' }
+    },
+    { attribute: 'category', label: 'FAQ Category', Component: SelectBox, mode: 'multiple',
+        optionsQuery: { QUERY: GET_FAQ_CATEGORIES, nameKey: 'name', valueKey: 'id' }
+    },
     { attribute: 'order', type: 'number' },
 ]
 const attributes = ['title', 'short_description', 'slug', 'vertical']

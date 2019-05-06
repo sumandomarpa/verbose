@@ -19,12 +19,16 @@ class EditFormPage extends Component {
       loaded: false
   }
   componentDidMount () {
-    const { client, match: {params : {id}}, getDataQuery } = this.props
+    const { client, match: {params : {id}}, getDataQuery, fields } = this.props
     client.query({ query: getDataQuery, variables: {id} }).then(({ data }) => {
       let formData = data[keys(data)[0]]
-      if (formData.authors) {
-          formData.authors = formData.authors.map(e => e.id)  
-      }
+      fields.forEach(element => {
+        if (element.optionsQuery) {
+          formData[element.attribute] = formData[element.attribute].map(
+            e => e[element.optionsQuery.valueKey || 'id']
+          )
+        }
+      })
       this.setState({formData, loaded: true})
     })
   } 

@@ -9,3 +9,17 @@ export const VERTICAL_OPTIONS = [
     {name:'Car Loans', value:"car-loans"}
 ]
 
+export const VARIANT_OPTIONS = [
+    'Product',
+    'Calculator',
+    'Article',
+    'Search',
+    'Companies',
+    'Guide',
+    'Landing',
+    'News',
+    'RTR',
+    'Whitelabel',
+    'Widget'
+]
+
