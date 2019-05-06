@@ -4,12 +4,14 @@ import { Table, Input, Button, Icon } from 'antd'
 import Highlighter from 'react-highlight-words'
 import { titleCase } from 'change-case'
 import { Link } from 'react-router-dom'
+import isEmpty from 'lodash/isEmpty'
 
 export default class DataTable extends React.Component {
   static propTypes = {
     attributes: array.isRequired,
     data: array.isRequired,
     editUrl: string,
+    customColumns: array,
   }
 
   state = {
@@ -75,8 +77,9 @@ export default class DataTable extends React.Component {
   }
 
   render() {
-    const { attributes, editUrl } = this.props
+    const { attributes, editUrl, customColumns } = this.props
     let { data } = this.props
+
     const columns = attributes.map(attribute => {
       const attributeName = attribute.name || attribute
       let searchFields = attribute.disableSearch ? {} : this.getColumnSearchProps(attributeName)
@@ -87,6 +90,18 @@ export default class DataTable extends React.Component {
         ...searchFields
       })
     })
+
+    if (!isEmpty(customColumns)) {
+      customColumns.forEach(element => {
+        let customColumnProps = {
+          title: titleCase(element.attribute),
+          key: element.attribute,
+          render: element.render
+        }
+        columns.push(customColumnProps)
+      })
+    }
+
     if (editUrl) {
       const editActionColumn = {
         title: 'Action',
@@ -95,7 +110,7 @@ export default class DataTable extends React.Component {
           return (
             <span>
               <Link to={`${editUrl}/${record.id}`}>
-                Edit {record.name}
+                Edit
               </Link>
             </span>
           )
@@ -103,7 +118,9 @@ export default class DataTable extends React.Component {
       }
       columns.push(editActionColumn)
     }
+
     data = data.map((e,i) => ({...e,key:i}))
+
     return <Table columns={columns} dataSource={data} />
   }
 }

@@ -10,7 +10,7 @@ import Dashboard from '../components/Dashboard'
 import PagesList from '../components/Pages/List'
 import AddPage from '../components/Pages/Add'
 import { AddFaq, EditFaq, FaqList } from '../components/Faqs'
-import { AddFaqCategory, EditFaqCategory } from '../components/Faqs/Categories'
+import { AddFaqCategory, EditFaqCategory, FaqCategoryList } from '../components/Faqs/Categories'
 import EditPage from '../components/Pages/Edit'
 import MediaLibrary from '../components/MediaLibrary'
 
@@ -23,6 +23,7 @@ class AuthContent extends React.Component {
           <Route exact path="/dashboard/faqs" component={FaqList} />
           <Route exact path="/dashboard/faqs/add" component={AddFaq} />
           <Route exact path="/dashboard/faqs/edit/:id" component={EditFaq} />
+          <Route exact path="/dashboard/faqs/categories" component={FaqCategoryList} />
           <Route exact path="/dashboard/faqs/categories/add" component={AddFaqCategory} />
           <Route exact path="/dashboard/faqs/categories/edit/:id" component={EditFaqCategory} />
           <Route exact path="/dashboard/pages" component={PagesList} />

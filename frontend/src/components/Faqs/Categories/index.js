@@ -7,13 +7,20 @@ import EditorBox from '../../Generic/EditorBox'
 import { SAVE_FAQ_CATEGORY_TO_DB, UPDATE_FAQ_CATEGORY_TO_DB } from './mutations'
 import { GET_FAQ_CATEGORY_DB, GET_FAQ_CATEGORIES_DB } from './queries'
 
+const renderCountOfFaqs = (record) => <span>{record.faqs.length}</span>
+
 const faqCategoriesFormFields = [
     { attribute: 'name' },
     { attribute: 'description', Component: EditorBox, id: 'faqCategory' },
     { attribute: 'slug' },
 ]
+
 const attributes = ['name', 'description', 'slug']
+
 const editUrl="/dashboard/faqs/categories/edit"
+
+const customColumns = [{attribute: 'count', render: renderCountOfFaqs}]
+
 export function AddFaqCategory ({history}) {
     return (
         <CreateFormPage
@@ -42,6 +49,7 @@ export function EditFaqCategory ({match}) {
 export function FaqCategoryList () {
     return (
         <ListPage
+            customColumns={customColumns}
             getListQuery={GET_FAQ_CATEGORIES_DB}
             editUrl={editUrl}
             attributes={attributes}
