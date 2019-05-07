@@ -39,3 +39,11 @@ export const UPDATE_FAQ_CATEGORY_TO_DB = gql`
     }
   }
 `
+
+export const DELETE_FAQ_CATEGORY = gql`
+  mutation deleteFaqCategory($id: ID!) {
+    deleteFaqCategory(id: $id) {
+      id
+    }
+  }
+`

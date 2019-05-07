@@ -41,6 +41,7 @@ export const GET_FAQ_DB = gql`
                 id
             }
             variant
+            tag
             slug
             order
         }
@@ -62,6 +63,7 @@ export const GET_FAQS_DB = gql`
                 id
             }
             variant
+            tag
             slug
             order
         }

@@ -85,10 +85,13 @@ export default class DashboardLayout extends Component {
                       <Link to="/dashboard/faqs">All Faqs</Link>
                     </Menu.Item>
                     <Menu.Item key="5">
-                      <Link to="/dashboard/faqs/add">Add New</Link>
+                      <Link to="/dashboard/faqs/add">Add Faq</Link>
                     </Menu.Item>
                     <Menu.Item key="6">
-                      <Link to="/dashboard/faqs/categories">Faq Categories</Link>
+                      <Link to="/dashboard/faqs/categories">All Categories</Link>
+                    </Menu.Item>
+                    <Menu.Item key="7">
+                      <Link to="/dashboard/faqs/categories/add">Add Category</Link>
                     </Menu.Item>
                   </SubMenu>
                   <SubMenu
@@ -100,7 +103,7 @@ export default class DashboardLayout extends Component {
                       </span>
                     }
                   >
-                    <Menu.Item key="7">
+                    <Menu.Item key="8">
                       <Link to="/dashboard/media">Library</Link>
                     </Menu.Item>
                   </SubMenu>

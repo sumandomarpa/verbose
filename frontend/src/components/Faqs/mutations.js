@@ -11,6 +11,7 @@ export const SAVE_FAQ_TO_DB = gql`
     $authors: [ID!]!
     $category: [ID!]
     $variant: [String]
+    $tag: [String]
   ) {
     addFaq(
       title: $title
@@ -22,6 +23,7 @@ export const SAVE_FAQ_TO_DB = gql`
       authors: $authors
       category: $category
       variant: $variant
+      tag: $tag
     ) {
       id
       title
@@ -43,6 +45,7 @@ export const UPDATE_FAQ_TO_DB = gql`
     $authors: [ID!]!
     $category: [ID!]
     $variant: [String]
+    $tag: [String]
   ) {
     updateFaq(
       id: $id
@@ -55,11 +58,20 @@ export const UPDATE_FAQ_TO_DB = gql`
       authors: $authors
       category: $category
       variant: $variant
+      tag: $tag
     ) {
       id
       title
       slug
       vertical
+    }
+  }
+`
+
+export const DELETE_FAQ = gql`
+  mutation deleteFaq($id: ID!) {
+    deleteFaq(id: $id) {
+      id
     }
   }
 `
