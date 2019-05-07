@@ -9,6 +9,7 @@ type Query {
   mediaFile(id: ID): Media
   faqs: [Faq]
   faq(id: ID): Faq
+  searchFaq(searchString: String) : [Faq]
   faqCategories: [FaqCategory]
   faqCategory(id: ID): FaqCategory
 }
