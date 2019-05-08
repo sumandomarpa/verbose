@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Form, Input, Button, Modal, Select, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
-import TinyMCEditor from '../../../../TinyMCEditor'
+import EditorBox from '../../../../Generic/EditorBox'
 import { GET_ALERT_BOX, GET_PAGE } from '../../../queries'
 import {
   UPDATE_ALERT_BOX,
@@ -155,19 +155,14 @@ class AlertBox extends Component {
                   <Option value="info">Info</Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Content">
-                <TinyMCEditor
-                  id={`${itemId}-editor`}
-                  onEditorChange={content =>
-                    this.handleInputChange(
-                      null,
-                      'content',
-                      content || '<p></p>'
-                    )
-                  }
-                  content={content}
-                />
-              </Form.Item>
+              <EditorBox
+                label="Content"
+                name="content"
+                value={content}
+                id={itemId}
+                onChange={this.handleInputChange}
+                insertImage
+              />
               <AlertBoxSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteAlertBox}>
                   Delete

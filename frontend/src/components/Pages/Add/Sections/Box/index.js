@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { Form, Input, Select, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
+import EditorBox from '../../../../Generic/EditorBox'
 import SelectMedia from '../../../../Generic/SelectMedia'
-import TinyMCEditor from '../../../../TinyMCEditor'
 import { GET_BOX, GET_PAGE } from '../../../queries'
 import {
   UPDATE_BOX,
@@ -173,19 +173,14 @@ class Box extends Component {
                   <Option value="vertical">Vertical</Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Content">
-                <TinyMCEditor
-                  id={`${itemId}-editor`}
-                  onEditorChange={content =>
-                    this.handleInputChange(
-                      null,
-                      'content',
-                      content || '<p></p>'
-                    )
-                  }
-                  content={content}
-                />
-              </Form.Item>
+              <EditorBox
+                label="Content"
+                name="content"
+                value={content}
+                id={itemId}
+                onChange={this.handleInputChange}
+                insertImage
+              />
               <BoxSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteBox}>
                   Delete
