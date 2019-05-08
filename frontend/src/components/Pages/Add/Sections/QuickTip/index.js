@@ -2,9 +2,8 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
-import get from 'lodash/get'
 
-import MediaLibrary from '../../../../MediaLibrary'
+import SelectMedia from '../../../../Generic/SelectMedia'
 import TinyMCEditor from '../../../../TinyMCEditor'
 import { GET_QUICK_TIP, GET_PAGE } from '../../../queries'
 import {
@@ -14,46 +13,11 @@ import {
   REPLACE_PAGE_ITEMS_ID,
   UPDATE_QUICK_TIP_MEDIA,
 } from '../../../mutaitons'
-import { MediaImage, QuickTipSaveButtonWrapper } from './styles'
+import { QuickTipSaveButtonWrapper } from './styles'
 
 const { confirm } = Modal
 
 class QuickTip extends Component {
-  state = { visible: false, selectedMedia: {} }
-
-  selectImage = () => {
-    this.setState({ visible: true })
-  }
-
-  handleOk = async () => {
-    const { client, itemId } = this.props
-    const { selectedMedia } = this.state
-    this.setState({
-      visible: false,
-    })
-
-    if (selectedMedia.id) {
-      await client.mutate({
-        mutation: UPDATE_QUICK_TIP_MEDIA,
-        variables: {
-          itemId,
-          media: selectedMedia,
-        },
-      })
-    }
-  }
-
-  handleCancel = () => {
-    this.setState({
-      visible: false,
-      selectedMedia: {},
-    })
-  }
-
-  onMediaSelect = selectedMedia => {
-    this.setState({ selectedMedia })
-  }
-
   handleInputChange = (e, name, value) => {
     const { client, itemId } = this.props
 
@@ -155,34 +119,12 @@ class QuickTip extends Component {
 
   render() {
     const { itemId } = this.props
-    const { visible } = this.state
-
-    const renderMediaLibrary = visible ? (
-      <Modal
-        title="Select an Image"
-        visible={visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-        width={1400}
-        style={{ top: 10 }}
-        okText="Insert Image"
-      >
-        <MediaLibrary
-          includeLayout={false}
-          onMediaSelect={this.onMediaSelect}
-        />
-      </Modal>
-    ) : null
 
     return (
       <Query query={GET_QUICK_TIP} variables={{ itemId }}>
         {({ data: { quickTip }, loading }) => {
           if (loading) return null
           const { title, content, buttonText, buttonLink, media } = quickTip
-
-          const url = get(media, 'url')
-          const renderMedia = url ? <MediaImage src={url} /> : null
-
           return (
             <Fragment>
               <Form.Item label="Title">
@@ -211,11 +153,14 @@ class QuickTip extends Component {
                   onChange={this.handleInputChange}
                 />
               </Form.Item>
-              <Form.Item label="Image">
-                {renderMedia}
-                <Button onClick={this.selectImage}>Select Image</Button>
-              </Form.Item>
-              {renderMediaLibrary}
+              <SelectMedia
+                updateMediaMutation={UPDATE_QUICK_TIP_MEDIA}
+                variables={{
+                  itemId,
+                  media: 'selectedMediaValue',
+                }}
+                currentMedia={media}
+              />
               <Form.Item label="Content">
                 <TinyMCEditor
                   id={`${itemId}-editor`}
