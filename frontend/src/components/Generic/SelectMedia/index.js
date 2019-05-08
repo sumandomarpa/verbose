@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Modal, Form, Button } from 'antd'
+import { Modal, Form, Button, Icon, Tooltip } from 'antd'
 import { withApollo } from 'react-apollo'
 import PropTypes from 'prop-types'
 import get from 'lodash/get'
 import findKey from 'lodash/findKey'
 
 import MediaLibrary from '../../MediaLibrary'
-import { MediaImage } from './styles'
+import { MediaWrapper } from './styles'
 
 class SelectMedia extends Component {
   state = { visible: false, selectedMedia: {} }
@@ -29,9 +29,6 @@ class SelectMedia extends Component {
   handleOk = async () => {
     const { client, updateMediaMutation, variables } = this.props
     const { selectedMedia } = this.state
-    this.setState({
-      visible: false,
-    })
 
     const mediaKey = findKey(variables, val => val === 'selectedMediaValue')
     variables[mediaKey] = selectedMedia
@@ -42,6 +39,18 @@ class SelectMedia extends Component {
         variables,
       })
     }
+
+    this.setState({
+      visible: false,
+    })
+  }
+
+  removeImage = async () => {
+    const { client, deleteMediaMutation, variables } = this.props
+    await client.mutate({
+      mutation: deleteMediaMutation,
+      variables,
+    })
   }
 
   render() {
@@ -49,7 +58,16 @@ class SelectMedia extends Component {
     const { currentMedia } = this.props
 
     const url = get(currentMedia, 'url')
-    const renderMedia = url ? <MediaImage src={url} /> : null
+    const renderMedia = url ? (
+      <MediaWrapper>
+        <img src={url} alt="" />
+        <Tooltip title="Remove image">
+          <Button type="danger" onClick={this.removeImage} size="small">
+            <Icon type="close" />
+          </Button>
+        </Tooltip>
+      </MediaWrapper>
+    ) : null
 
     const renderMediaLibrary = visible ? (
       <Modal
@@ -82,6 +100,7 @@ class SelectMedia extends Component {
 SelectMedia.propTypes = {
   client: PropTypes.object.isRequired,
   updateMediaMutation: PropTypes.object.isRequired,
+  deleteMediaMutation: PropTypes.object,
   currentMedia: PropTypes.object,
   variables: PropTypes.object.isRequired,
 }

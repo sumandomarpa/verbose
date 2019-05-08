@@ -12,6 +12,7 @@ import {
   DELETE_QUICK_TIP_TO_DB,
   REPLACE_PAGE_ITEMS_ID,
   UPDATE_QUICK_TIP_MEDIA,
+  DELETE_QUICK_TIP_MEDIA,
 } from '../../../mutaitons'
 import { QuickTipSaveButtonWrapper } from './styles'
 
@@ -155,6 +156,7 @@ class QuickTip extends Component {
               </Form.Item>
               <SelectMedia
                 updateMediaMutation={UPDATE_QUICK_TIP_MEDIA}
+                deleteMediaMutation={DELETE_QUICK_TIP_MEDIA}
                 variables={{
                   itemId,
                   media: 'selectedMediaValue',

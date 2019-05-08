@@ -87,6 +87,22 @@ export const resolvers = {
       const data = { ...previous, media }
       cache.writeData({ id, data })
     },
+    deletePageMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { pageId } = variables
+
+      const id = getCacheKey({ __typename: 'Page', id: pageId })
+      const fragment = gql`
+        fragment updatePage on Page {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+      previous.media = null
+      cache.writeData({ id, data: previous })
+    },
     orderPageItems: (_root, variables, { cache }) => {
       const { itemIds } = variables
       const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })
@@ -310,6 +326,22 @@ export const resolvers = {
       const data = { ...previous, media }
       cache.writeData({ id, data })
     },
+    deleteBlockMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { itemId } = variables
+
+      const id = getCacheKey({ __typename: 'Block', id: itemId })
+      const fragment = gql`
+        fragment updateBlock on Block {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+      previous.media = null
+      cache.writeData({ id, data: previous })
+    },
     updateBox: (_root, variables, { cache, getCacheKey }) => {
       const { name, value, itemId } = variables
 
@@ -340,6 +372,22 @@ export const resolvers = {
 
       const data = { ...previous, media }
       cache.writeData({ id, data })
+    },
+    deleteBoxMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { itemId } = variables
+
+      const id = getCacheKey({ __typename: 'Box', id: itemId })
+      const fragment = gql`
+        fragment updateBox on Box {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+      previous.media = null
+      cache.writeData({ id, data: previous })
     },
     updateAlertBox: (_root, variables, { cache, getCacheKey }) => {
       const { name, value, itemId } = variables
@@ -385,6 +433,22 @@ export const resolvers = {
 
       const data = { ...previous, media }
       cache.writeData({ id, data })
+    },
+    deleteQuickTipMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { itemId } = variables
+
+      const id = getCacheKey({ __typename: 'QuickTip', id: itemId })
+      const fragment = gql`
+        fragment updateQuickTip on QuickTip {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+      previous.media = null
+      cache.writeData({ id, data: previous })
     },
     updateProsAndCons: (_root, variables, { cache, getCacheKey }) => {
       const { name, value, itemId, prosId, consId } = variables
