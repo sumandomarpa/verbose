@@ -4,7 +4,7 @@ import { Form, Input, Select, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
 import SelectMedia from '../../../../Generic/SelectMedia'
-import TinyMCEditor from '../../../../TinyMCEditor'
+import EditorBox from '../../../../Generic/EditorBox'
 import { GET_BLOCK, GET_PAGE } from '../../../queries'
 import {
   UPDATE_BLOCK,
@@ -174,19 +174,14 @@ class Block extends Component {
                   </Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Content">
-                <TinyMCEditor
-                  id={`${itemId}-editor`}
-                  onEditorChange={content =>
-                    this.handleInputChange(
-                      null,
-                      'content',
-                      content || '<p></p>'
-                    )
-                  }
-                  content={content}
-                />
-              </Form.Item>
+              <EditorBox
+                label="Content"
+                name="content"
+                value={content}
+                id={itemId}
+                onChange={this.handleInputChange}
+                insertImage
+              />
               <BlockSaveButtonWrapper>
                 <Button type="danger" onClick={this.deleteBlock}>
                   Delete
