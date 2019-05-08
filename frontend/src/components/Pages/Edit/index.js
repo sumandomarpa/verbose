@@ -58,6 +58,7 @@ class EditPage extends Component {
     } = await client.query({
       query: GET_PAGE_DB,
       variables: { id },
+      fetchPolicy: 'network-only',
     })
 
     const pageData = omit(page, [
