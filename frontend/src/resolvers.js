@@ -70,6 +70,23 @@ export const resolvers = {
       const data = { ...previous, [`${name}`]: value }
       cache.writeData({ id, data })
     },
+    updatePageMedia: (_root, variables, { cache, getCacheKey }) => {
+      const { media, pageId } = variables
+
+      const id = getCacheKey({ __typename: 'Page', id: pageId })
+      const fragment = gql`
+        fragment updatePage on Page {
+          media {
+            id
+            url
+          }
+        }
+      `
+      const previous = cache.readFragment({ fragment, id })
+
+      const data = { ...previous, media }
+      cache.writeData({ id, data })
+    },
     orderPageItems: (_root, variables, { cache }) => {
       const { itemIds } = variables
       const { pageItems } = cache.readQuery({ query: GET_PAGE_ITEMS })

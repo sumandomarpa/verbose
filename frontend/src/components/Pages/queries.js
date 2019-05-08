@@ -5,11 +5,14 @@ export const GET_PAGE = gql`
     page @client {
       id
       title
-      image
       vertical
       type
       slug
       status
+      media {
+        id
+        url
+      }
     }
   }
 `
@@ -192,7 +195,6 @@ export const GET_PAGES_DB = gql`
     pages {
       id
       title
-      image
       slug
       type
       vertical
@@ -206,11 +208,14 @@ export const GET_PAGE_DB = gql`
     page(id: $id) {
       id
       title
-      image
       slug
       type
       vertical
       status
+      media {
+        id
+        url
+      }
       blocks {
         id
         title

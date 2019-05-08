@@ -22,29 +22,46 @@ export default {
   },
   Mutation: {
     async upsertPage (parent, args, ctx, info) {
-      const { id, title, slug, image, type, vertical, status } = args
+      const { id, media, title, slug, type, vertical, status } = args
+
+      const mediaQuery = media ? { connect: { id: media } } : null
 
       const page = await ctx.prisma.upsertPage({
         where: {
           id
         },
         update: {
+          media: mediaQuery,
           title,
           slug,
-          image,
           type,
           vertical,
           status,
         },
         create: {
+          media: mediaQuery,
           title,
           slug,
-          image,
           type,
           vertical,
           status,
         }
       })
+
+      // disconnecting the media if not provied
+      if (page.id && page.media && !media) {
+        await ctx.prisma.updatePage({
+          where: {
+            id: page.id
+          },
+          data: {
+            media:
+            {
+              disconnect: true
+            },
+          }
+        })
+      }
 
       return page
     },
@@ -86,6 +103,11 @@ export default {
     }
   },
   Page: {
+    media: (parent, args, ctx, info) => {
+      return ctx.prisma.page({
+        id: parent.id
+      }).media()
+    },
     blocks: (parent, args, ctx, info) => {
       return ctx.prisma.page({
         id: parent.id

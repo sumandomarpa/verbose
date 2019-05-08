@@ -28,11 +28,11 @@ type User {
 type Page {
   id: ID! @unique
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: Media
   blocks: [Block]!
   boxes: [Box]!
   prosAndCons: [ProsAndCons]!
