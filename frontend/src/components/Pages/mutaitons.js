@@ -12,6 +12,12 @@ export const UPDATE_PAGE_MEDIA = gql`
   }
 `
 
+export const DELETE_PAGE_MEDIA = gql`
+  mutation DeletePageMedia($pageId: String) {
+    deletePageMedia(pageId: $pageId) @client
+  }
+`
+
 export const UPDATE_BLOCK = gql`
   mutation UpdateBlock($name: String, $value: String, $itemId: String) {
     updateBlock(name: $name, value: $value, itemId: $itemId) @client
@@ -24,6 +30,12 @@ export const UPDATE_BLOCK_MEDIA = gql`
   }
 `
 
+export const DELETE_BLOCK_MEDIA = gql`
+  mutation DeleteBlockMedia($itemId: String) {
+    deleteBlockMedia(itemId: $itemId) @client
+  }
+`
+
 export const UPDATE_BOX = gql`
   mutation UpdateBox($name: String, $value: String, $itemId: String) {
     updateBox(name: $name, value: $value, itemId: $itemId) @client
@@ -33,6 +45,12 @@ export const UPDATE_BOX = gql`
 export const UPDATE_BOX_MEDIA = gql`
   mutation UpdateBoxMedia($media: Media, $itemId: String) {
     updateBoxMedia(media: $media, itemId: $itemId) @client
+  }
+`
+
+export const DELETE_BOX_MEDIA = gql`
+  mutation DeleteBoxMedia($itemId: String) {
+    deleteBoxMedia(itemId: $itemId) @client
   }
 `
 
@@ -50,6 +68,12 @@ export const UPDATE_QUICK_TIP = gql`
 export const UPDATE_QUICK_TIP_MEDIA = gql`
   mutation UpdateQuickTip($media: Media, $itemId: String) {
     updateQuickTipMedia(media: $media, itemId: $itemId) @client
+  }
+`
+
+export const DELETE_QUICK_TIP_MEDIA = gql`
+  mutation DeleteQuickTipMedia($itemId: String) {
+    deleteQuickTipMedia(itemId: $itemId) @client
   }
 `
 

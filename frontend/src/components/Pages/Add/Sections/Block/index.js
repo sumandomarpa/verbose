@@ -12,6 +12,7 @@ import {
   DELETE_BLOCK_TO_DB,
   REPLACE_PAGE_ITEMS_ID,
   UPDATE_BLOCK_MEDIA,
+  DELETE_BLOCK_MEDIA,
 } from '../../../mutaitons'
 import { BlockSaveButtonWrapper } from './styles'
 
@@ -139,6 +140,7 @@ class Block extends Component {
               </Form.Item>
               <SelectMedia
                 updateMediaMutation={UPDATE_BLOCK_MEDIA}
+                deleteMediaMutation={DELETE_BLOCK_MEDIA}
                 variables={{
                   itemId,
                   media: 'selectedMediaValue',

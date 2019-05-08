@@ -36,20 +36,22 @@ export default {
       })
 
       // disconnecting the media if not provied
-      if (quickTip.id && quickTip.media && !media) {
-        await ctx.prisma.updateQuickTip({
-          where: {
-            id: quickTip.id
-          },
-          data: {
-            media:
-            {
-              disconnect: true
+      if (quickTip.id && !media) {
+        const currentMedia = await ctx.prisma.quickTip({ id: quickTip.id }).media()
+        if ( currentMedia ) {
+          await ctx.prisma.updateQuickTip({
+            where: {
+              id: quickTip.id
             },
-          }
-        })
+            data: {
+              media:
+              {
+                disconnect: true
+              },
+            }
+          })
+        }
       }
-
       return quickTip
     },
     async deleteQuickTip (parent, args, ctx, info) {

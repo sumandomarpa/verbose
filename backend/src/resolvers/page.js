@@ -1,8 +1,3 @@
-import differenceBy from 'lodash/differenceBy'
-import intersectionBy from 'lodash/intersectionBy'
-import omit from 'lodash/omit'
-import findIndex from 'lodash/findIndex'
-
 export default {
   Query: {
     async pages(parent, args, ctx, info) {
@@ -49,18 +44,21 @@ export default {
       })
 
       // disconnecting the media if not provied
-      if (page.id && page.media && !media) {
-        await ctx.prisma.updatePage({
-          where: {
-            id: page.id
-          },
-          data: {
-            media:
-            {
-              disconnect: true
+      if (page.id && !media) {
+        const currentMedia = await ctx.prisma.page({ id: page.id }).media()
+        if(currentMedia) {
+          await ctx.prisma.updatePage({
+            where: {
+              id: page.id
             },
-          }
-        })
+            data: {
+              media:
+              {
+                disconnect: true
+              },
+            }
+          })
+        }
       }
 
       return page

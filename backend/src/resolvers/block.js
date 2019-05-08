@@ -36,18 +36,21 @@ export default {
       })
 
       // disconnecting the media if not provied
-      if (block.id && block.media && !media) {
-        await ctx.prisma.updateBlock({
-          where: {
-            id: block.id
-          },
-          data: {
-            media:
-            {
-              disconnect: true
+      if (block.id && !media) {
+        const currentMedia = await ctx.prisma.block({ id: block.id }).media()
+        if(currentMedia ) {
+          await ctx.prisma.updateBlock({
+            where: {
+              id: block.id
             },
-          }
-        })
+            data: {
+              media:
+              {
+                disconnect: true
+              },
+            }
+          })
+        }
       }
 
       return block

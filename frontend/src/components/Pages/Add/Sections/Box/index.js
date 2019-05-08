@@ -12,6 +12,7 @@ import {
   REPLACE_PAGE_ITEMS_ID,
   DELETE_BOX_TO_DB,
   UPDATE_BOX_MEDIA,
+  DELETE_BOX_MEDIA,
 } from '../../../mutaitons'
 import { BoxSaveButtonWrapper } from './styles'
 
@@ -144,6 +145,7 @@ class Box extends Component {
               </Form.Item>
               <SelectMedia
                 updateMediaMutation={UPDATE_BOX_MEDIA}
+                deleteMediaMutation={DELETE_BOX_MEDIA}
                 variables={{
                   itemId,
                   media: 'selectedMediaValue',

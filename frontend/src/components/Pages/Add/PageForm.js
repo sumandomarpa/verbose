@@ -5,7 +5,7 @@ import { Query, withApollo } from 'react-apollo'
 
 import SelectMedia from '../../Generic/SelectMedia'
 import { GET_PAGE } from '../queries'
-import { UPDATE_PAGE, UPDATE_PAGE_MEDIA } from '../mutaitons'
+import { UPDATE_PAGE, UPDATE_PAGE_MEDIA, DELETE_PAGE_MEDIA } from '../mutaitons'
 import { PageFormWrapper } from './styles'
 
 const { Option } = Select
@@ -44,6 +44,7 @@ class PageForm extends Component {
               </Form.Item>
               <SelectMedia
                 updateMediaMutation={UPDATE_PAGE_MEDIA}
+                deleteMediaMutation={DELETE_PAGE_MEDIA}
                 variables={{
                   pageId: id,
                   media: 'selectedMediaValue',
