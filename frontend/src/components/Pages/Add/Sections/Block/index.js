@@ -2,9 +2,8 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Select, Button, Modal, message } from 'antd'
 import { Query, withApollo } from 'react-apollo'
-import get from 'lodash/get'
 
-import MediaLibrary from '../../../../MediaLibrary'
+import SelectMedia from '../../../../Generic/SelectMedia'
 import TinyMCEditor from '../../../../TinyMCEditor'
 import { GET_BLOCK, GET_PAGE } from '../../../queries'
 import {
@@ -14,14 +13,12 @@ import {
   REPLACE_PAGE_ITEMS_ID,
   UPDATE_BLOCK_MEDIA,
 } from '../../../mutaitons'
-import { MediaImage, BlockSaveButtonWrapper } from './styles'
+import { BlockSaveButtonWrapper } from './styles'
 
 const { Option } = Select
 const { confirm } = Modal
 
 class Block extends Component {
-  state = { visible: false, selectedMedia: {} }
-
   handleInputChange = (e, name, value) => {
     const { client, itemId } = this.props
 
@@ -33,39 +30,6 @@ class Block extends Component {
         itemId,
       },
     })
-  }
-
-  selectImage = () => {
-    this.setState({ visible: true })
-  }
-
-  handleOk = async () => {
-    const { client, itemId } = this.props
-    const { selectedMedia } = this.state
-    this.setState({
-      visible: false,
-    })
-
-    if (selectedMedia.id) {
-      await client.mutate({
-        mutation: UPDATE_BLOCK_MEDIA,
-        variables: {
-          itemId,
-          media: selectedMedia,
-        },
-      })
-    }
-  }
-
-  handleCancel = () => {
-    this.setState({
-      visible: false,
-      selectedMedia: {},
-    })
-  }
-
-  onMediaSelect = selectedMedia => {
-    this.setState({ selectedMedia })
   }
 
   upsertBlock = async () => {
@@ -156,24 +120,6 @@ class Block extends Component {
 
   render() {
     const { itemId } = this.props
-    const { visible } = this.state
-
-    const renderMediaLibrary = visible ? (
-      <Modal
-        title="Select an Image"
-        visible={visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
-        width={1400}
-        style={{ top: 10 }}
-        okText="Insert Image"
-      >
-        <MediaLibrary
-          includeLayout={false}
-          onMediaSelect={this.onMediaSelect}
-        />
-      </Modal>
-    ) : null
 
     return (
       <Query query={GET_BLOCK} variables={{ itemId }}>
@@ -181,8 +127,6 @@ class Block extends Component {
           if (loading) return null
           const { title, video, style, content, media } = block
 
-          const url = get(media, 'url')
-          const renderMedia = url ? <MediaImage src={url} /> : null
           return (
             <Fragment>
               <Form.Item label="Title">
@@ -193,11 +137,14 @@ class Block extends Component {
                   onChange={this.handleInputChange}
                 />
               </Form.Item>
-              <Form.Item label="Image">
-                {renderMedia}
-                <Button onClick={this.selectImage}>Select Image</Button>
-              </Form.Item>
-              {renderMediaLibrary}
+              <SelectMedia
+                updateMediaMutation={UPDATE_BLOCK_MEDIA}
+                variables={{
+                  itemId,
+                  media: 'selectedMediaValue',
+                }}
+                currentMedia={media}
+              />
               <Form.Item label="Video">
                 <Input
                   name="video"
