@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { Form, Input, Select } from 'antd'
 import { Query, withApollo } from 'react-apollo'
 
+import SelectMedia from '../../Generic/SelectMedia'
 import { GET_PAGE } from '../queries'
-import { UPDATE_PAGE } from '../mutaitons'
+import { UPDATE_PAGE, UPDATE_PAGE_MEDIA } from '../mutaitons'
 import { PageFormWrapper } from './styles'
 
 const { Option } = Select
@@ -27,7 +28,7 @@ class PageForm extends Component {
       <Query query={GET_PAGE}>
         {({ data: { page }, loading }) => {
           if (loading) return null
-          const { id, title, slug, image, vertical, type, status } = page
+          const { id, title, slug, vertical, type, status, media } = page
           const { upsertPage } = this.props
 
           return (
@@ -41,15 +42,14 @@ class PageForm extends Component {
                   onBlur={upsertPage}
                 />
               </Form.Item>
-              <Form.Item label="Image">
-                <Input
-                  name="image"
-                  type="text"
-                  placeholder="Image URL"
-                  value={image}
-                  onChange={e => this.handleInputChange(id, e)}
-                />
-              </Form.Item>
+              <SelectMedia
+                updateMediaMutation={UPDATE_PAGE_MEDIA}
+                variables={{
+                  pageId: id,
+                  media: 'selectedMediaValue',
+                }}
+                currentMedia={media}
+              />
               <Form.Item label="Type">
                 <Select
                   defaultValue={type}

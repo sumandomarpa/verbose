@@ -34,6 +34,7 @@ class EditPage extends Component {
         id: page.id,
         title: page.title,
         slug: page.slug,
+        media: page.media && page.media.id,
         type: page.type,
         vertical: page.vertical,
         status: page.status,

@@ -24,6 +24,7 @@ class AddPage extends Component {
       mutation: UPSERT_PAGE_TO_DB,
       variables: {
         id: page.id,
+        media: page.media && page.media.id,
         title: page.title,
         slug: page.slug,
         type: page.type,

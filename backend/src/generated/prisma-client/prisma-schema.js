@@ -2220,11 +2220,11 @@ interface Node {
 type Page {
   id: ID!
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: Media
   blocks(where: BlockWhereInput, orderBy: BlockOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Block!]
   boxes(where: BoxWhereInput, orderBy: BoxOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Box!]
   prosAndCons(where: ProsAndConsWhereInput, orderBy: ProsAndConsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProsAndCons!]
@@ -2240,11 +2240,11 @@ type PageConnection {
 
 input PageCreateInput {
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: MediaCreateOneInput
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
@@ -2279,11 +2279,11 @@ input PageCreateOneWithoutQuickTipsInput {
 
 input PageCreateWithoutAlertBoxesInput {
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: MediaCreateOneInput
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
@@ -2292,11 +2292,11 @@ input PageCreateWithoutAlertBoxesInput {
 
 input PageCreateWithoutBlocksInput {
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: MediaCreateOneInput
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
@@ -2305,11 +2305,11 @@ input PageCreateWithoutBlocksInput {
 
 input PageCreateWithoutBoxesInput {
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: MediaCreateOneInput
   blocks: BlockCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
@@ -2318,11 +2318,11 @@ input PageCreateWithoutBoxesInput {
 
 input PageCreateWithoutProsAndConsInput {
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: MediaCreateOneInput
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
   alertBoxes: AlertBoxCreateManyWithoutPageInput
@@ -2331,11 +2331,11 @@ input PageCreateWithoutProsAndConsInput {
 
 input PageCreateWithoutQuickTipsInput {
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
   vertical: String
+  media: MediaCreateOneInput
   blocks: BlockCreateManyWithoutPageInput
   boxes: BoxCreateManyWithoutPageInput
   prosAndCons: ProsAndConsCreateManyWithoutPageInput
@@ -2359,8 +2359,6 @@ enum PageOrderByInput {
   id_DESC
   title_ASC
   title_DESC
-  image_ASC
-  image_DESC
   slug_ASC
   slug_DESC
   type_ASC
@@ -2378,7 +2376,6 @@ enum PageOrderByInput {
 type PagePreviousValues {
   id: ID!
   title: String!
-  image: String
   slug: String!
   type: PageType!
   status: PageStatus!
@@ -2417,11 +2414,11 @@ enum PageType {
 
 input PageUpdateInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
   vertical: String
+  media: MediaUpdateOneInput
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
@@ -2431,7 +2428,6 @@ input PageUpdateInput {
 
 input PageUpdateManyMutationInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
@@ -2475,11 +2471,11 @@ input PageUpdateOneRequiredWithoutQuickTipsInput {
 
 input PageUpdateWithoutAlertBoxesDataInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
   vertical: String
+  media: MediaUpdateOneInput
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
@@ -2488,11 +2484,11 @@ input PageUpdateWithoutAlertBoxesDataInput {
 
 input PageUpdateWithoutBlocksDataInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
   vertical: String
+  media: MediaUpdateOneInput
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
@@ -2501,11 +2497,11 @@ input PageUpdateWithoutBlocksDataInput {
 
 input PageUpdateWithoutBoxesDataInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
   vertical: String
+  media: MediaUpdateOneInput
   blocks: BlockUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
@@ -2514,11 +2510,11 @@ input PageUpdateWithoutBoxesDataInput {
 
 input PageUpdateWithoutProsAndConsDataInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
   vertical: String
+  media: MediaUpdateOneInput
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
   alertBoxes: AlertBoxUpdateManyWithoutPageInput
@@ -2527,11 +2523,11 @@ input PageUpdateWithoutProsAndConsDataInput {
 
 input PageUpdateWithoutQuickTipsDataInput {
   title: String
-  image: String
   slug: String
   type: PageType
   status: PageStatus
   vertical: String
+  media: MediaUpdateOneInput
   blocks: BlockUpdateManyWithoutPageInput
   boxes: BoxUpdateManyWithoutPageInput
   prosAndCons: ProsAndConsUpdateManyWithoutPageInput
@@ -2592,20 +2588,6 @@ input PageWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  image: String
-  image_not: String
-  image_in: [String!]
-  image_not_in: [String!]
-  image_lt: String
-  image_lte: String
-  image_gt: String
-  image_gte: String
-  image_contains: String
-  image_not_contains: String
-  image_starts_with: String
-  image_not_starts_with: String
-  image_ends_with: String
-  image_not_ends_with: String
   slug: String
   slug_not: String
   slug_in: [String!]
@@ -2642,6 +2624,7 @@ input PageWhereInput {
   vertical_not_starts_with: String
   vertical_ends_with: String
   vertical_not_ends_with: String
+  media: MediaWhereInput
   blocks_every: BlockWhereInput
   blocks_some: BlockWhereInput
   blocks_none: BlockWhereInput

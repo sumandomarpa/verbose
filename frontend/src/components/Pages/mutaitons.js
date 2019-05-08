@@ -6,6 +6,12 @@ export const UPDATE_PAGE = gql`
   }
 `
 
+export const UPDATE_PAGE_MEDIA = gql`
+  mutation UpdatePageMedia($media: Media, $pageId: String) {
+    updatePageMedia(media: $media, pageId: $pageId) @client
+  }
+`
+
 export const UPDATE_BLOCK = gql`
   mutation UpdateBlock($name: String, $value: String, $itemId: String) {
     updateBlock(name: $name, value: $value, itemId: $itemId) @client
@@ -105,6 +111,7 @@ export const UPSERT_PAGE_TO_DB = gql`
   mutation UPSERT_PAGE(
     $id: ID!
     $title: String!
+    $media: ID
     $slug: String!
     $type: PageType!
     $vertical: String
@@ -112,6 +119,7 @@ export const UPSERT_PAGE_TO_DB = gql`
   ) {
     upsertPage(
       id: $id
+      media: $media
       title: $title
       slug: $slug
       type: $type

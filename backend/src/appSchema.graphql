@@ -9,7 +9,7 @@ type Query {
   mediaFile(id: ID): Media
   faqs: [Faq]
   faq(id: ID): Faq
-  searchFaq(searchString: String) : [Faq]
+  searchFaq(searchString: String): [Faq]
   faqCategories: [FaqCategory]
   faqCategory(id: ID): FaqCategory
 }
@@ -45,9 +45,9 @@ type Mutation {
   ): User!
   upsertPage(
     id: ID!
+    media: ID
     title: String!
     slug: String!
-    image: String
     type: PageType!
     vertical: String
     status: PageStatus!
