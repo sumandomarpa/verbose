@@ -37,8 +37,8 @@ export default {
               },
               readingTime,
               order,
-              variant,
-              tag,
+              variant: {set: variant},
+              tag: {set: tag},
               authors: {
                 connect: authors.map((authorId) => {return {id: authorId}})
               },
@@ -88,8 +88,8 @@ export default {
                 category: categoryQuery,
                 readingTime,
                 order,
-                variant,
-                tag,
+                variant: {set: variant},
+                tag: {set: tag},
                 authors: authorsQuery
               },
               where: { id }
